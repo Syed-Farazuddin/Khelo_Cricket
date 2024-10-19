@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khelo_cricket/feature/dashboard/presentation/dashboard.dart';
 import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:khelo_cricket/feature/splashScreens/main_splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 }
 
 final GoRouter _router = GoRouter(
-  initialLocation: "/home",
+  initialLocation: "/splash",
   routes: [
     GoRoute(
       path: "/home",
@@ -48,15 +49,24 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: "/tossCoin",
+      name: "/tossCoin",
       builder: (context, state) {
         return const TossACoin();
       },
     ),
     GoRoute(
+      path: "/splash",
+      name: "/splash",
+      builder: (context, state) {
+        return const MainSplash();
+      },
+    ),
+    GoRoute(
       path: "/getNumber",
+      name: "/getNumber",
       builder: (context, state) {
         return const DashboardPage();
       },
-    )
+    ),
   ],
 );

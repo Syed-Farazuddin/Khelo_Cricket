@@ -20,7 +20,6 @@ class _GetYourNumberState extends State<GetYourNumber> {
   @override
   void dispose() {
     numbers.dispose();
-    check.length = 0;
     super.dispose();
   }
 
