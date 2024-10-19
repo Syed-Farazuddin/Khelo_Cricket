@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Custombutton extends StatelessWidget {
   const Custombutton({super.key, required this.onTap});
-  final int Function() onTap;
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return Container(

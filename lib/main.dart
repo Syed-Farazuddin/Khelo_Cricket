@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khelo_cricket/feature/dashboard/presentation/dashboard.dart';
-import 'package:khelo_cricket/feature/flpCoin/presentation/pages/FlipCoin.dart';
+import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
 
 void main() {
   runApp(const MyApp());
