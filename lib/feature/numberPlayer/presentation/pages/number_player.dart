@@ -15,7 +15,8 @@ class GetYourNumber extends StatefulWidget {
 class _GetYourNumberState extends State<GetYourNumber> {
   TextEditingController numbers = TextEditingController();
   int currNumber = 0;
-  late List<bool> check = List.filled(50, growable: true, false);
+  int loopCount = 0;
+  late List<bool> check = List.filled(50, false);
   @override
   void dispose() {
     numbers.dispose();
@@ -70,19 +71,22 @@ class _GetYourNumberState extends State<GetYourNumber> {
 
   void returnAPlayer() {
     int currNum = 0;
+    debugPrint("The loop count is $loopCount");
     int totalPlayers = int.parse(numbers.text);
-    // check = List.filled(totalPlayers + 1, false);
+    if (loopCount >= totalPlayers) {
+      debugPrint("All players are assigned");
+      return;
+    }
     bool getPlayerNum = true;
     while (getPlayerNum) {
       currNum = Random().nextInt(totalPlayers) + 1;
-      debugPrint(currNum.toString());
-      debugPrint(check.toString());
       if (check[currNum] != true) {
         getPlayerNum = false;
         check[currNum] = true;
       }
     }
     setState(() {
+      loopCount = loopCount + 1;
       currNumber = currNum;
     });
   }
