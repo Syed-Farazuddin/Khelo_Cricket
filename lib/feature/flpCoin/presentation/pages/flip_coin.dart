@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:khelo_cricket/core/toaster/toaster.dart';
 
 class TossACoin extends StatefulWidget {
   const TossACoin({super.key});
@@ -74,6 +75,7 @@ class _TossACoinState extends State<TossACoin> {
     setState(() {
       _currTossValue = toss;
     });
-    debugPrint("The value of toss is $toss");
+    Toaster.onSuccess(
+        message: "Your toss value is ${toss == 0 ? "Heads " : "Tails"}");
   }
 }

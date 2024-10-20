@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:khelo_cricket/feature/numberPlayer/presentation/pages/number_player.dart';
-import 'package:khelo_cricket/feature/splashScreens/toss_coin.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -44,14 +43,16 @@ class _DashboardPageState extends State<DashboardPage> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage(
-                "lib/assets/flipCoin.jpg",
-              ),
-              width: 30,
-              height: 30,
-            ),
-            label: "toss a Coin",
+            icon:
+                // Image(
+                //   image: AssetImage(
+                //     "lib/assets/flipCoin.jpg",
+                //   ),
+                //   width: 30,
+                //   height: 30,
+                // ),
+                Icon(Icons.circle),
+            label: "Toss",
           ),
           BottomNavigationBarItem(
             icon: Image(
