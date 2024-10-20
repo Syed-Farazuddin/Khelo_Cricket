@@ -30,7 +30,7 @@ class _TossACoinState extends State<TossACoin> {
                   const Center(
                     child: Image(
                       image: AssetImage(
-                        "lib/assets/customHead.png",
+                        "lib/assets/images/customHead.png",
                       ),
                       height: 300,
                       width: 300,
@@ -42,7 +42,7 @@ class _TossACoinState extends State<TossACoin> {
                   const Center(
                     child: Image(
                       image: AssetImage(
-                        "lib/assets/customTail.png",
+                        "lib/assets/images/customTail.png",
                       ),
                       height: 300,
                       width: 300,

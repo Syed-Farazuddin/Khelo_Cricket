@@ -42,7 +42,7 @@ class _MainSplashState extends State<MainSplash> {
           child: Center(
             child: Image(
               image: const AssetImage(
-                "lib/assets/cricket.jpg",
+                "lib/assets/images/cricket.jpg",
               ),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,

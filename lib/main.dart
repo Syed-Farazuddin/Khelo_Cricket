@@ -17,9 +17,6 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-  // bool isDarkMode =
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // final themeMode = ref.watch(themeModeProvider);

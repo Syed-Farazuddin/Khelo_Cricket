@@ -32,7 +32,7 @@ class _TossCoinSplashState extends State<TossCoinSplash> {
           Center(
             child: Image(
               image: AssetImage(
-                "lib/assets/flipCoin.jpg",
+                "lib/assets/images/flipCoin.jpg",
               ),
             ),
           )

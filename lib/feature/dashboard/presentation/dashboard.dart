@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:khelo_cricket/feature/numberPlayer/presentation/pages/number_player.dart';
@@ -16,6 +17,7 @@ class _DashboardPageState extends State<DashboardPage> {
     TossACoin(),
     GetYourNumber(),
   ];
+
   @override
   void dispose() {
     super.dispose();
@@ -36,34 +38,33 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: pages[_currpage],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currpage,
+        selectedItemColor: Colors.blue, // Color for selected icon
+        unselectedItemColor: Colors.grey, // Color for unselected icon
+        selectedFontSize: 16, // Size of selected icon text
+        unselectedFontSize: 12, // Size of unselected icon text
         onTap: (value) {
           setState(() {
             _currpage = value;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon:
-                // Image(
-                //   image: AssetImage(
-                //     "lib/assets/flipCoin.jpg",
-                //   ),
-                //   width: 30,
-                //   height: 30,
-                // ),
-                Icon(Icons.circle),
+            icon: SvgPicture.asset(
+              "lib/assets/svgs/coinSvg.svg",
+              height: 30,
+              width: 30,
+            ),
             label: "Toss",
           ),
           BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage(
-                "lib/assets/selectNum.jpg",
-              ),
+            icon: SvgPicture.asset(
+              "lib/assets/svgs/numbers.svg",
               width: 30,
               height: 30,
             ),
             label: "Get your Number",
-          )
+          ),
         ],
       ),
     );
