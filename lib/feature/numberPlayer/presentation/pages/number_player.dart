@@ -63,7 +63,7 @@ class _GetYourNumberState extends State<GetYourNumber> {
                   if (order[index] == 0) return const SizedBox.shrink();
                   return ListTile(
                     title: Text(
-                      "Player ${index + 1} ---> ${order[index]}",
+                      "Player ${index + 1} --- > ${order[index]}",
                       style: GoogleFonts.golosText(
                         fontSize: 18,
                       ),
@@ -92,6 +92,10 @@ class _GetYourNumberState extends State<GetYourNumber> {
 
   void returnAPlayer() {
     int currNum = 0;
+    if (numbers.text == "") {
+      Toaster.onError(message: "Enter Total players");
+      return;
+    }
     debugPrint("The loop count is $loopCount");
     int totalPlayers = int.parse(numbers.text);
     if (loopCount >= totalPlayers) {
