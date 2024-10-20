@@ -19,6 +19,9 @@ class Toaster {
     Fluttertoast.showToast(
       msg: message,
       textColor: Colors.white,
+      toastLength: Toast.LENGTH_SHORT,
+      webPosition: "top",
+      gravity: ToastGravity.CENTER,
       fontSize: 20,
       backgroundColor: Colors.red,
     );

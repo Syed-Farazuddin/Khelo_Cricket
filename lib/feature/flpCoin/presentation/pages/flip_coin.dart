@@ -55,7 +55,7 @@ class _TossACoinState extends State<TossACoin> {
           ElevatedButton(
             onPressed: tossACoin,
             child: Text(
-              "Let's start",
+              "Flip the coin",
               style: GoogleFonts.golosText(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,

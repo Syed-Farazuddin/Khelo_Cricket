@@ -36,11 +36,53 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         backgroundColor: Colors.black,
       ),
+      drawer: Drawer(
+        // backgroundColor: Colors.amber[950],
+        child: ListView(
+          padding: EdgeInsets.zero, // Removes default padding
+          children: <Widget>[
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                  // color: Colors.black,
+                  ),
+              child: Text(
+                'Khelo Cricket',
+                style: GoogleFonts.golosText(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                // Handle navigation or actions here
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                // Handle navigation or actions here
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.contacts),
+              title: const Text('Contact'),
+              onTap: () {
+                // Handle navigation or actions here
+              },
+            ),
+          ],
+        ),
+      ),
       body: pages[_currpage],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currpage,
         selectedItemColor: Colors.blue, // Color for selected icon
-        unselectedItemColor: Colors.grey, // Color for unselected icon
+        unselectedItemColor: Colors.grey[850], // Color for unselected icon
         selectedFontSize: 16, // Size of selected icon text
         unselectedFontSize: 12, // Size of unselected icon text
         onTap: (value) {

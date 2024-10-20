@@ -19,8 +19,6 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // final themeMode = ref.watch(themeModeProvider);
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Khelo Cricket',
@@ -28,7 +26,6 @@ class _MyAppState extends ConsumerState<MyApp> {
         brightness: Brightness.dark,
       ),
       darkTheme: ThemeData.dark(),
-      // themeMode: themeMode,
       routerConfig: _router,
     );
   }

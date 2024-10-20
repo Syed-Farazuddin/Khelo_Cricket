@@ -17,6 +17,7 @@ class _TossCoinSplashState extends State<TossCoinSplash> {
 
   void goToMainPage() {
     Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
       context.goNamed("/tossCoin");
     });
   }
