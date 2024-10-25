@@ -99,6 +99,10 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             label: "Toss",
           ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               "lib/assets/svgs/numbers.svg",
