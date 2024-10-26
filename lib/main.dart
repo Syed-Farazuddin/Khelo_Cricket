@@ -45,7 +45,7 @@ final GoRouter _router = GoRouter(
       path: "/tossCoin",
       name: "/tossCoin",
       builder: (context, state) {
-        return const TossACoin();
+        return const TossMyCoin();
       },
     ),
     GoRoute(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:khelo_cricket/feature/Home/presentation/Home.dart';
 import 'package:khelo_cricket/feature/numberPlayer/presentation/pages/number_player.dart';
+import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -13,9 +14,10 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   int _currpage = 0;
-  List<Widget> pages = const [
-    TossACoin(),
-    GetYourNumber(),
+  List<Widget> pages = [
+    const TossMyCoin(),
+    const Home(),
+    const GetYourNumber(),
   ];
 
   @override
@@ -82,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currpage,
         selectedItemColor: Colors.blue, // Color for selected icon
-        unselectedItemColor: Colors.grey[850], // Color for unselected icon
+        // unselectedItemColor: Colors.grey[850], // Color for unselected icon
         selectedFontSize: 16, // Size of selected icon text
         unselectedFontSize: 12, // Size of unselected icon text
         onTap: (value) {

@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khelo_cricket/core/toaster/toaster.dart';
-import 'package:khelo_cricket/feature/numberPlayer/presentation/widget/custom_button.dart';
-import 'package:khelo_cricket/feature/numberPlayer/presentation/widget/custom_input.dart';
+import 'package:khelo_cricket/common/widgets/custom_button.dart';
+import 'package:khelo_cricket/common/widgets/custom_input.dart';
 
 class GetYourNumber extends StatefulWidget {
   const GetYourNumber({super.key});
@@ -78,6 +78,7 @@ class _GetYourNumberState extends State<GetYourNumber> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Custombutton(
+                title: "Get Your Number",
                 onTap: returnAPlayer,
               ),
             ],
