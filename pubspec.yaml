@@ -46,7 +46,8 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/images/cricket.jpg" # Path to your app icon image
+  image_path: "lib/assets/images/resized.png" # Path to your app icon image
+  adaptive_icon_background: "#FFFFFF" # Change to any color you'd like as the background
 
 flutter_native_splash:
   color: "#000000" # Background color (black, in your case)
