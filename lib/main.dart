@@ -1,9 +1,9 @@
+import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
+import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:crick_hub/feature/splashScreens/main_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:khelo_cricket/feature/dashboard/presentation/dashboard.dart';
-import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
-import 'package:khelo_cricket/feature/splashScreens/main_splash.dart';
 
 void main() {
   runApp(const MyApp());

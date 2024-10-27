@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:khelo_cricket/common/widgets/custom_button.dart';
+import 'package:crick_hub/common/widgets/custom_button.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:khelo_cricket/common/widgets/custom_button.dart';
-import 'package:khelo_cricket/core/toaster/toaster.dart';
+import 'package:crick_hub/common/widgets/custom_button.dart';
+import 'package:crick_hub/core/toaster/toaster.dart';
 
 class TossMyCoin extends StatefulWidget {
   const TossMyCoin({super.key});

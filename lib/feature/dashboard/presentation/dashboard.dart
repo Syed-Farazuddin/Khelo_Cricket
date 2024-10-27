@@ -1,9 +1,9 @@
+import 'package:crick_hub/feature/Home/presentation/home.dart';
+import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:crick_hub/feature/numberPlayer/presentation/pages/number_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:khelo_cricket/feature/Home/presentation/Home.dart';
-import 'package:khelo_cricket/feature/numberPlayer/presentation/pages/number_player.dart';
-import 'package:khelo_cricket/feature/flpCoin/presentation/pages/flip_coin.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

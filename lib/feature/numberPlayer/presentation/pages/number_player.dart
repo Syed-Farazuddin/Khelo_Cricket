@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:khelo_cricket/core/toaster/toaster.dart';
-import 'package:khelo_cricket/common/widgets/custom_button.dart';
-import 'package:khelo_cricket/common/widgets/custom_input.dart';
+import 'package:crick_hub/core/toaster/toaster.dart';
+import 'package:crick_hub/common/widgets/custom_button.dart';
+import 'package:crick_hub/common/widgets/custom_input.dart';
 
 class GetYourNumber extends StatefulWidget {
   const GetYourNumber({super.key});
