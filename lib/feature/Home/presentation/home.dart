@@ -6,10 +6,6 @@ class Home extends StatelessWidget {
   const Home({super.key});
   @override
   Widget build(BuildContext context) {
-    final headingStyle = GoogleFonts.golosText(
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-    );
     final previousMatches = [
       Match(
         firstTeam: "Faraz 11",
@@ -20,6 +16,26 @@ class Home extends StatelessWidget {
         matchStatus: "Faraz 11 won by 36 runs",
         status: 0,
         overs: "20",
+        teamA: TeamDetails(
+          dots: "20",
+          fours: "10",
+          overs: "8",
+          score: "180",
+          sixes: "4",
+          status: "Won by 36 runs",
+          wickets: "6",
+          won: true,
+        ),
+        teamB: TeamDetails(
+          dots: "20",
+          fours: "10",
+          overs: "8",
+          score: "180",
+          sixes: "4",
+          status: "Won by 36 runs",
+          wickets: "6",
+          won: false,
+        ),
       ),
       Match(
         firstTeam: "Faraz 11",
@@ -30,6 +46,26 @@ class Home extends StatelessWidget {
         matchStatus: "Faraz 11 won by 36 runs",
         status: 1,
         overs: "20",
+        teamA: TeamDetails(
+          dots: "20",
+          fours: "10",
+          overs: "8",
+          score: "180",
+          sixes: "4",
+          status: "Won by 36 runs",
+          wickets: "6",
+          won: true,
+        ),
+        teamB: TeamDetails(
+          dots: "20",
+          fours: "10",
+          overs: "8",
+          score: "180",
+          sixes: "4",
+          status: "Won by 36 runs",
+          wickets: "6",
+          won: false,
+        ),
       ),
       Match(
         firstTeam: "Faraz 11",
@@ -40,6 +76,26 @@ class Home extends StatelessWidget {
         matchStatus: "Faraz 11 won by 36 runs",
         status: 2,
         overs: "20",
+        teamA: TeamDetails(
+          dots: "20",
+          fours: "10",
+          overs: "8",
+          score: "180",
+          sixes: "4",
+          status: "Won by 36 runs",
+          wickets: "6",
+          won: true,
+        ),
+        teamB: TeamDetails(
+          dots: "20",
+          fours: "10",
+          overs: "8",
+          score: "180",
+          sixes: "4",
+          status: "Won by 36 runs",
+          wickets: "6",
+          won: false,
+        ),
       ),
     ];
     return Container(
@@ -96,50 +152,38 @@ class Home extends StatelessWidget {
             child: ListView.builder(
               itemCount: previousMatches.length,
               itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      12,
+                final match = previousMatches[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 12,
                     ),
-                    color: Colors.grey.withOpacity(0.17),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                previousMatches[index].firstTeam ??
-                                    "First Team",
-                                style: headingStyle,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    previousMatches[index].scoreA ??
-                                        "Score Team",
-                                    style: headingStyle,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    "(${previousMatches[index].overs})",
-                                    style: headingStyle,
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ],
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        12,
+                      ),
+                      color: Colors.grey.withOpacity(0.17),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            showTeam(
+                              teamName: match.firstTeam,
+                              score: match.scoreA,
+                              overs: match.overs,
+                            ),
+                            showTeam(
+                              teamName: match.secondTeam,
+                              score: match.scoreB,
+                              overs: match.overs,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -151,6 +195,37 @@ class Home extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget showTeam({String? teamName, String? overs, String? score}) {
+  final headingStyle = GoogleFonts.golosText(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  );
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        teamName ?? "First Team",
+        style: headingStyle,
+      ),
+      Row(
+        children: [
+          Text(
+            score ?? "Score Team",
+            style: headingStyle,
+          ),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(
+            "(${overs ?? 0})",
+            style: headingStyle,
+          ),
+        ],
+      ),
+    ],
+  );
 }
 
 enum Status {
@@ -182,6 +257,8 @@ class Match {
   String? overs;
   String? scheduledAt;
   int status;
+  TeamDetails teamA;
+  TeamDetails teamB;
 
   Match({
     required this.firstTeam,
@@ -193,6 +270,8 @@ class Match {
     required this.matchStatus,
     required this.overs,
     this.tossStatus,
+    required this.teamA,
+    required this.teamB,
   });
 }
 
