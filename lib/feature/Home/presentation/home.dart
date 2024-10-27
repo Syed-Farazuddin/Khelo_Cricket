@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 
@@ -228,7 +228,9 @@ class Home extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Custombutton(
-                      onTap: () {},
+                      onTap: () {
+                        context.pushNamed("/startMatch");
+                      },
                       title: "Start Match",
                       icon: (Icons.add),
                       showIcon: true,
@@ -239,7 +241,9 @@ class Home extends StatelessWidget {
                   ),
                   Expanded(
                     child: Custombutton(
-                      onTap: () {},
+                      onTap: () {
+                        context.goNamed("/startTournament");
+                      },
                       title: "Start  tournament",
                       icon: (Icons.add),
                       showIcon: true,

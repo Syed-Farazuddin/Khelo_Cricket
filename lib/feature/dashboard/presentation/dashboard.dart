@@ -13,7 +13,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  int _currpage = 0;
+  int _currpage = 1;
   List<Widget> pages = [
     const TossMyCoin(),
     const Home(),
