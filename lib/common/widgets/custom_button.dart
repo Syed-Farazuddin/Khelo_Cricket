@@ -7,25 +7,34 @@ class Custombutton extends StatelessWidget {
     required this.onTap,
     required this.title,
     this.icon,
+    required this.width,
+    this.isCircle = false,
     this.showIcon = false,
+    this.radius,
   });
+  final double width;
   final Function() onTap;
   final String title;
   final IconData? icon;
-  final bool? showIcon;
+  final bool showIcon;
+  final double? radius;
+  final bool isCircle;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2,
+      width: width,
       decoration: BoxDecoration(
+        shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
         color: Colors.white,
         border: Border.all(
           color: Colors.blue,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(
-          12,
-        ),
+        borderRadius: isCircle == false
+            ? BorderRadius.circular(
+                radius ?? 12,
+              )
+            : BorderRadius.zero,
       ),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
       child: InkWell(
@@ -49,10 +58,13 @@ class Custombutton extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(50)),
+                        border: Border.all(
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          50,
+                        ),
+                      ),
                       child: Icon(
                         icon,
                         color: Colors.black,

@@ -80,6 +80,7 @@ class _TossMyCoinState extends State<TossMyCoin>
                     ),
           const SizedBox(height: 60),
           Custombutton(
+            width: MediaQuery.of(context).size.width / 2,
             onTap: tossACoin,
             title: "Toss",
           )

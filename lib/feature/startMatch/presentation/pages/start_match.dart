@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StartMatch extends StatefulWidget {
@@ -40,17 +41,25 @@ class _StartMatchState extends State<StartMatch> {
   }
 
   Widget teamDisplay({required String label}) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        color: Colors.white,
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.golosText(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed(
+          "/selectTeam",
+          extra: label,
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.white,
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.golosText(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

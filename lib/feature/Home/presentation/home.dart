@@ -1,19 +1,24 @@
+import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int active = 0;
+  List<String> items = ["Completed", "Upcoming"];
   @override
   Widget build(BuildContext context) {
     final previousMatches = [
       Match(
-        firstTeam: "Faraz 11",
-        secondTeam: "Anjum 11",
         state: "Telangana",
-        scoreA: "180",
-        scoreB: "144",
         startedAt: "24th May,2024",
         matchStatus: "Faraz 11 won by 36 runs",
         status: 0,
@@ -44,10 +49,6 @@ class Home extends StatelessWidget {
       ),
       Match(
         state: "Telangana",
-        firstTeam: "Faraz 11",
-        secondTeam: "Anjum 11",
-        scoreA: "180",
-        scoreB: "144",
         startedAt: "24th May,2024",
         matchStatus: "Faraz 11 won by 36 runs",
         status: 1,
@@ -78,11 +79,7 @@ class Home extends StatelessWidget {
       ),
       Match(
         scheduledAt: "Mythri Cricket Club, Hyderabad",
-        firstTeam: "Faraz 11",
-        secondTeam: "Anjum 11",
-        scoreA: "180",
         state: "Telangana",
-        scoreB: "144",
         startedAt: "24th May,2024",
         matchStatus: "Faraz 11 won by 36 runs",
         status: 2,
@@ -111,13 +108,9 @@ class Home extends StatelessWidget {
         ),
       ),
       Match(
-        firstTeam: "Faraz 11",
-        secondTeam: "Anjum 11",
         state: "Telangana",
-        scoreA: "180",
-        scoreB: "144",
         startedAt: "24th May,2024",
-        matchStatus: "Faraz 11 won by 36 runs",
+        matchStatus: "Faraz 11 won by 24 runs",
         status: 0,
         overs: "20",
         scheduledAt: "Thrills Cricket Club, Moinabad",
@@ -146,10 +139,6 @@ class Home extends StatelessWidget {
       ),
       Match(
         state: "Telangana",
-        firstTeam: "Faraz 11",
-        secondTeam: "Anjum 11",
-        scoreA: "180",
-        scoreB: "144",
         startedAt: "24th May,2024",
         matchStatus: "Faraz 11 won by 36 runs",
         status: 1,
@@ -180,11 +169,7 @@ class Home extends StatelessWidget {
       ),
       Match(
         scheduledAt: "Mythri Cricket Club, Hyderabad",
-        firstTeam: "Faraz 11",
-        secondTeam: "Anjum 11",
-        scoreA: "180",
         state: "Telangana",
-        scoreB: "144",
         startedAt: "24th May,2024",
         matchStatus: "Faraz 11 won by 36 runs",
         status: 2,
@@ -231,6 +216,7 @@ class Home extends StatelessWidget {
                       onTap: () {
                         context.pushNamed("/startMatch");
                       },
+                      width: MediaQuery.of(context).size.width / 2,
                       title: "Start Match",
                       icon: (Icons.add),
                       showIcon: true,
@@ -241,6 +227,7 @@ class Home extends StatelessWidget {
                   ),
                   Expanded(
                     child: Custombutton(
+                      width: MediaQuery.of(context).size.width / 2,
                       onTap: () {
                         context.goNamed("/startTournament");
                       },
@@ -257,11 +244,24 @@ class Home extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "Your Previous Matches",
+              "Your Matches",
               style: GoogleFonts.golosText(
-                fontSize: 18,
+                fontSize: 24,
+                color: Colors.grey.withOpacity(0.9),
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            ButtonList(
+              list: items,
+              onTap: (val) {
+                setState(() {
+                  active = val;
+                });
+              },
+              active: active,
             ),
             const SizedBox(
               height: 30,
@@ -401,10 +401,6 @@ enum Status {
 }
 
 class Match {
-  String? firstTeam;
-  String? secondTeam;
-  String? scoreA;
-  String? scoreB;
   String? startedAt;
   String? tossStatus;
   String? matchStatus;
@@ -417,10 +413,6 @@ class Match {
 
   Match({
     required this.state,
-    required this.firstTeam,
-    required this.scoreA,
-    required this.scoreB,
-    required this.secondTeam,
     required this.startedAt,
     required this.status,
     required this.matchStatus,

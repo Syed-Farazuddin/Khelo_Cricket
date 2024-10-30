@@ -1,6 +1,8 @@
+import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/Home/presentation/home.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/numberPlayer/presentation/pages/number_player.dart';
+import 'package:crick_hub/feature/profile/presentation/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +19,7 @@ class _DashboardPageState extends State<DashboardPage> {
   List<Widget> pages = [
     const TossMyCoin(),
     const Home(),
+    const ProfilePage(),
     const GetYourNumber(),
   ];
 
@@ -30,13 +33,13 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Khelo Cricket",
+          "CrickHub",
           style: GoogleFonts.golosText(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.dark,
       ),
       drawer: Drawer(
         // backgroundColor: Colors.amber[950],
@@ -83,18 +86,28 @@ class _DashboardPageState extends State<DashboardPage> {
       body: pages[_currpage],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currpage,
-        selectedItemColor: Colors.blue, // Color for selected icon
-        // unselectedItemColor: Colors.grey[850], // Color for unselected icon
+        selectedItemColor:
+            Colors.grey.withOpacity(0.9), // Color for selected icon
+        unselectedItemColor:
+            Colors.grey.withOpacity(0.4), // Color for unselected icon
         selectedFontSize: 16, // Size of selected icon text
         unselectedFontSize: 12, // Size of unselected icon text
         onTap: (value) {
-          setState(() {
-            _currpage = value;
-          });
+          setState(
+            () {
+              _currpage = value;
+            },
+          );
         },
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
+              colorFilter: ColorFilter.mode(
+                _currpage == 0
+                    ? Colors.grey.withOpacity(0.9)
+                    : Colors.grey.withOpacity(0.4),
+                BlendMode.srcIn,
+              ),
               "lib/assets/svgs/coinSvg.svg",
               height: 30,
               width: 30,
@@ -105,8 +118,21 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: Icon(Icons.home),
             label: "Home",
           ),
+          const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              // color: AppColors.white,
+            ),
+            label: "Profile",
+          ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
+              colorFilter: ColorFilter.mode(
+                _currpage == 3
+                    ? Colors.grey.withOpacity(0.9)
+                    : Colors.grey.withOpacity(0.4),
+                BlendMode.srcIn,
+              ),
               "lib/assets/svgs/numbers.svg",
               width: 30,
               height: 30,

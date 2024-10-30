@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomInputField extends StatelessWidget {
-  const CustomInputField({super.key, required this.controller});
+  const CustomInputField({
+    super.key,
+    required this.controller,
+    this.label = "Enter Number of players",
+    this.maxlength = 2,
+  });
   final TextEditingController controller;
+  final String label;
+  final int maxlength;
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +24,20 @@ class CustomInputField extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(
-            width: 1,
+            width: 0.3,
             color: Colors.white,
           ),
         ),
         child: TextField(
           controller: controller,
+          // maxLength: 10,
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(maxlength)
           ],
-          decoration: const InputDecoration(
-            hintText: "Enter Number of players",
+          decoration: InputDecoration(
+            hintText: label,
             border: InputBorder.none,
           ),
         ),

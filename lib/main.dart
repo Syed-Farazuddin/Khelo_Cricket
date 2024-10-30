@@ -1,7 +1,9 @@
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
+import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
+import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +24,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Khelo Cricket',
+      title: 'CrickHub',
       theme: ThemeData(
         brightness: Brightness.dark,
       ),
@@ -46,7 +48,7 @@ final GoRouter _router = GoRouter(
       path: "/startTournament",
       name: "/startTournament",
       builder: (context, state) {
-        return const DashboardPage();
+        return const StartTournament();
       },
     ),
     GoRoute(
@@ -54,6 +56,16 @@ final GoRouter _router = GoRouter(
       name: "/startMatch",
       builder: (context, state) {
         return const StartMatch();
+      },
+    ),
+    GoRoute(
+      path: "/selectTeam",
+      name: "/selectTeam",
+      builder: (context, state) {
+        final String name = state.extra as String;
+        return SelectTeam(
+          teamName: name,
+        );
       },
     ),
     GoRoute(

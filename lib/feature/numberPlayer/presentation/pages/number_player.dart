@@ -79,6 +79,7 @@ class _GetYourNumberState extends State<GetYourNumber> {
             children: [
               Custombutton(
                 title: "Get Your Number",
+                width: MediaQuery.of(context).size.width / 2,
                 onTap: returnAPlayer,
               ),
             ],
