@@ -121,11 +121,28 @@ class _SelectTeamState extends State<SelectTeam> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          child: Image.network(
-                            player.image,
-                            fit: BoxFit.cover,
+                          child: ClipOval(
+                            child: Padding(
+                              padding: const EdgeInsets.all(1.0),
+                              child: Image.network(
+                                player.image,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                            ),
                           ),
-                        )
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          player.name,
+                          style: GoogleFonts.golosText(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ],
                     ),
                   );
