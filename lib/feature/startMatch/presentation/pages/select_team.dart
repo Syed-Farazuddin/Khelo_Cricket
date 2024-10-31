@@ -18,19 +18,19 @@ class SelectTeam extends StatefulWidget {
 class _SelectTeamState extends State<SelectTeam> {
   final List players = [
     Players(
-      name: "Faraz",
+      name: "Syed Farazuddin",
       id: 1,
       image: "http://surl.li/glzedz",
     ),
     Players(
-      name: "Faraz",
+      name: "Shaik Anjum",
       id: 1,
-      image: "http://surl.li/glzedz",
+      image: "http://surl.li/vaenjj",
     ),
     Players(
-      name: "Faraz",
+      name: "Rabada",
       id: 1,
-      image: "http://surl.li/glzedz",
+      image: "http://surl.li/upxncu",
     )
   ];
   int _active = 0;
@@ -110,6 +110,9 @@ class _SelectTeamState extends State<SelectTeam> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -117,33 +120,60 @@ class _SelectTeamState extends State<SelectTeam> {
                 itemBuilder: (builder, index) {
                   Players player = players[index];
                   return Container(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          child: ClipOval(
-                            child: Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: Image.network(
-                                player.image,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white.withOpacity(
+                          0.1,
+                        ),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0,
+                        vertical: 2,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                child: ClipOval(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Image.network(
+                                      player.image,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
+                                  ),
+                                ),
                               ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                player.name,
+                                style: GoogleFonts.golosText(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Text(
+                              "Select",
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          player.name,
-                          style: GoogleFonts.golosText(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },

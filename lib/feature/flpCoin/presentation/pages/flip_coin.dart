@@ -72,11 +72,15 @@ class _TossMyCoinState extends State<TossMyCoin>
               : tossVal == 0
                   ? Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Image.asset("lib/assets/images/customTail.png"),
+                      child: Image.asset(
+                        "lib/assets/images/customTail.png",
+                      ),
                     )
                   : Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Image.asset("lib/assets/images/customHead.png"),
+                      child: Image.asset(
+                        "lib/assets/images/customHead.png",
+                      ),
                     ),
           const SizedBox(height: 60),
           Custombutton(
@@ -107,7 +111,8 @@ class _TossMyCoinState extends State<TossMyCoin>
         showAnimation = false;
       });
       Toaster.onSuccess(
-          message: "Your toss value is ${tossVal == 0 ? "Tails" : "Heads"}");
+        message: "Your toss value is ${tossVal == 0 ? "Tails" : "Heads"}",
+      );
     });
   }
 }

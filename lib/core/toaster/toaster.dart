@@ -15,6 +15,10 @@ class Toaster {
     );
   }
 
+  static void cancelToasts() {
+    Fluttertoast.cancel();
+  }
+
   static void onError({required String message}) {
     Fluttertoast.showToast(
       msg: message,
