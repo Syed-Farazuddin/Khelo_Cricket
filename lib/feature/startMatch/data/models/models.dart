@@ -18,3 +18,14 @@ class StartMatchExtras {
     required this.teamName,
   });
 }
+
+class Team {
+  String name;
+  int id;
+  List<Players> players;
+  Team({
+    required this.name,
+    required this.id,
+    required this.players,
+  });
+}
