@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/widgets/button_list.dart';
+import 'package:crick_hub/feature/profile/data/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,6 +11,48 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  List<List<StatsItem>> stats = [
+    [
+      StatsItem(name: "Matches", stats: "88"),
+      StatsItem(name: "Innings", stats: "42"),
+      StatsItem(name: "Runs", stats: "1442"),
+      StatsItem(name: "NO", stats: "10"),
+      StatsItem(name: "Balls", stats: "141"),
+      StatsItem(name: "Highest", stats: "124"),
+      StatsItem(name: "Average", stats: "41"),
+      StatsItem(name: "Strike Rate", stats: "136.3"),
+      StatsItem(name: "100s", stats: "3"),
+      StatsItem(name: "50s", stats: "6"),
+      StatsItem(name: "0s", stats: "9"),
+      StatsItem(name: "Boundaries", stats: "34"),
+      StatsItem(name: "Fours", stats: "28"),
+      StatsItem(name: "Sixes", stats: "6"),
+    ],
+    [
+      StatsItem(name: "Matches", stats: "24"),
+      StatsItem(name: "Innings", stats: "18"),
+      StatsItem(name: "Runs", stats: "152"),
+      StatsItem(name: "Wickets", stats: "14"),
+      StatsItem(name: "Average", stats: "17"),
+      StatsItem(name: "Economy", stats: "7.2"),
+      StatsItem(name: "Wides", stats: "9"),
+      StatsItem(name: "No Balls", stats: "4"),
+      StatsItem(name: "Best", stats: "6/18"),
+      StatsItem(name: "3 Wickets", stats: "3"),
+      StatsItem(name: "5 Wickets", stats: "6"),
+      StatsItem(name: "Maidens", stats: "3"),
+      StatsItem(name: "Boundaries", stats: "14"),
+      StatsItem(name: "Fours", stats: "9"),
+      StatsItem(name: "Sixes", stats: "5"),
+    ],
+    [
+      StatsItem(name: "Matches", stats: "88"),
+      StatsItem(name: "Innings", stats: "42"),
+      StatsItem(name: "Run outs", stats: "8"),
+      StatsItem(name: "Catches", stats: "30"),
+      StatsItem(name: "Stumps", stats: "3"),
+    ]
+  ];
   int active = 0;
   List<String> fields = ["Batting", "Bowling", "Fielding"];
   @override
@@ -56,10 +99,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: GoogleFonts.golosText(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
                         ),
                         const SizedBox(
-                          height: 8,
+                          height: 2,
                         ),
                         Text(
                           "21 years (24-05-2003)",
@@ -69,10 +113,30 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 8,
+                          height: 2,
                         ),
                         Text(
                           "All Rounder",
+                          style: GoogleFonts.golosText(
+                            color: Colors.white,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Right hand Bat",
+                          style: GoogleFonts.golosText(
+                            color: Colors.white,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Right arm Medium",
                           style: GoogleFonts.golosText(
                             color: Colors.white,
                             // fontWeight: FontWeight.bold,
@@ -116,6 +180,53 @@ class _ProfilePageState extends State<ProfilePage> {
                         () {
                           active = val;
                         },
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemCount: stats[active].length,
+                    itemBuilder: (builder, index) {
+                      final StatsItem item = stats[active][index];
+                      return Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.09),
+                            ),
+                            color: Colors.white.withOpacity(0.04)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              item.name,
+                              style: GoogleFonts.golosText(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              item.stats,
+                              style: GoogleFonts.golosText(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   )

@@ -1,7 +1,7 @@
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
-import 'package:crick_hub/feature/startMatch/data/models/extra.dart';
+import 'package:crick_hub/feature/startMatch/data/models/models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
 import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';

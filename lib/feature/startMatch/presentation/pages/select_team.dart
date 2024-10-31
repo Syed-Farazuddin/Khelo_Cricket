@@ -2,7 +2,7 @@ import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
-import 'package:crick_hub/feature/startMatch/data/models/players.dart';
+import 'package:crick_hub/feature/startMatch/data/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

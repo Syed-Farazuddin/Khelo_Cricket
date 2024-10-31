@@ -10,6 +10,8 @@ class StartTournament extends StatefulWidget {
 class _StartTournamentState extends State<StartTournament> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(),
+    );
   }
 }
