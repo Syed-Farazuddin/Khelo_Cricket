@@ -1,15 +1,16 @@
+import 'package:crick_hub/feature/startMatch/data/models/extra.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StartMatch extends StatefulWidget {
   const StartMatch({super.key});
-
   @override
   State<StartMatch> createState() => _StartMatchState();
 }
 
 class _StartMatchState extends State<StartMatch> {
+  List<int> selectedPlayers = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +46,10 @@ class _StartMatchState extends State<StartMatch> {
       onTap: () {
         context.pushNamed(
           "/selectTeam",
-          extra: label,
+          extra: StartMatchExtras(
+            selectedPlayers: selectedPlayers,
+            teamName: label,
+          ),
         );
       },
       child: Container(

@@ -1,6 +1,7 @@
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/players.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,8 +10,10 @@ class SelectTeam extends StatefulWidget {
   const SelectTeam({
     super.key,
     required this.teamName,
+    required this.selectedPlayers,
   });
   final String teamName;
+  final List selectedPlayers;
   @override
   State<SelectTeam> createState() => _SelectTeamState();
 }
@@ -24,12 +27,12 @@ class _SelectTeamState extends State<SelectTeam> {
     ),
     Players(
       name: "Shaik Anjum",
-      id: 1,
+      id: 2,
       image: "http://surl.li/vaenjj",
     ),
     Players(
       name: "Rabada",
-      id: 1,
+      id: 3,
       image: "http://surl.li/upxncu",
     )
   ];
@@ -91,7 +94,13 @@ class _SelectTeamState extends State<SelectTeam> {
                     ),
                   ),
                   Custombutton(
-                    onTap: () {},
+                    onTap: () {
+                      // Take the number from controller
+                      // Fetch the user associated from number
+                      // Add the player in the previous added
+                      // Can also add it in selectedPlayers
+                      // That's it
+                    },
                     width: 80.0,
                     showIcon: true,
                     title: "Add",
@@ -113,22 +122,35 @@ class _SelectTeamState extends State<SelectTeam> {
               const SizedBox(
                 height: 20,
               ),
-              ListView.builder(
+              ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: players.length,
                 itemBuilder: (builder, index) {
                   Players player = players[index];
-                  return Container(
+                  return AnimatedContainer(
+                    duration: const Duration(
+                      microseconds: 1000,
+                    ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
+                      color: widget.selectedPlayers.contains(player.id)
+                          ? Colors.blue
+                          : Colors.white.withOpacity(
+                              0.1,
+                            ),
                       border: Border.all(
-                        color: Colors.white.withOpacity(
-                          0.1,
-                        ),
+                        color: widget.selectedPlayers.contains(player.id)
+                            ? Colors.blue
+                            : Colors.white.withOpacity(
+                                0.1,
+                              ),
                       ),
                     ),
                     child: Padding(
@@ -167,7 +189,24 @@ class _SelectTeamState extends State<SelectTeam> {
                             ],
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              if (widget.selectedPlayers.contains(player.id)) {
+                                setState(() {
+                                  widget.selectedPlayers.remove(player.id);
+                                });
+                              } else if (widget.selectedPlayers.length <= 11) {
+                                setState(() {
+                                  widget.selectedPlayers.add(
+                                    player.id,
+                                  );
+                                });
+                              } else {
+                                Toaster.onError(
+                                  message: "11 Players are already selected",
+                                );
+                              }
+                              debugPrint(widget.selectedPlayers.toString());
+                            },
                             child: const Text(
                               "Select",
                             ),

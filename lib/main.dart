@@ -1,6 +1,7 @@
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
+import 'package:crick_hub/feature/startMatch/data/models/extra.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
 import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';
@@ -62,9 +63,11 @@ final GoRouter _router = GoRouter(
       path: "/selectTeam",
       name: "/selectTeam",
       builder: (context, state) {
-        final String name = state.extra as String;
+        final StartMatchExtras extra = state.extra as StartMatchExtras;
+
         return SelectTeam(
-          teamName: name,
+          teamName: extra.teamName,
+          selectedPlayers: extra.selectedPlayers,
         );
       },
     ),

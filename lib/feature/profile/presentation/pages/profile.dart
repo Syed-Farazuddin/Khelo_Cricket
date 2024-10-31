@@ -112,9 +112,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     list: fields,
                     active: active,
                     onTap: (val) {
-                      setState(() {
-                        active = val;
-                      });
+                      setState(
+                        () {
+                          active = val;
+                        },
+                      );
                     },
                   )
                 ],
