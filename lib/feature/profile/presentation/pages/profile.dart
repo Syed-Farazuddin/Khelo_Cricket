@@ -191,9 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 10,
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
                     ),
                     itemCount: stats[active].length,
                     itemBuilder: (builder, index) {
@@ -214,6 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(
                               height: 10,
@@ -224,6 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),

@@ -38,7 +38,57 @@ class _SelectTeamState extends State<SelectTeam> {
       name: "Rabada",
       id: 3,
       image: "http://surl.li/upxncu",
-    )
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 9,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 8,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 4,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 5,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 6,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 7,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 10,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 11,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 12,
+      image: "http://surl.li/glzedz",
+    ),
+    Players(
+      name: "Syed Farazuddin",
+      id: 13,
+      image: "http://surl.li/glzedz",
+    ),
   ];
   final TextEditingController _controller = TextEditingController();
   int selectedTeam = 0;
@@ -51,11 +101,18 @@ class _SelectTeamState extends State<SelectTeam> {
             ? ShowSelectTeam(
                 yourTeams: yourTeams,
                 selectedTeam: selectedTeam,
-              )
+                selectTeam: (val) {
+                  setState(() {
+                    selectedTeam = val;
+                    teamSelected = true;
+                  });
+                })
             : SelectTeamPlayer(
                 controller: _controller,
                 players: players,
-                teamName: teamSelected ? "Team A" : "Team not Selected",
+                teamName: teamSelected
+                    ? yourTeams[selectedTeam].toString()
+                    : "Team not Selected",
                 selectedPlayers: widget.selectedPlayers as List<int>,
               ),
       ),

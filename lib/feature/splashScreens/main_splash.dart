@@ -18,7 +18,7 @@ class _MainSplashState extends State<MainSplash> {
   void visitDashBoard() {
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
-      context.goNamed("/home");
+      true ? context.goNamed('/authentication') : context.goNamed("/home");
     });
   }
 

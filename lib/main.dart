@@ -1,3 +1,4 @@
+import 'package:crick_hub/feature/authentication/presentation/pages/authentication.dart';
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
@@ -43,6 +44,13 @@ final GoRouter _router = GoRouter(
       name: "/home",
       builder: (context, state) {
         return const DashboardPage();
+      },
+    ),
+    GoRoute(
+      path: "/authentication",
+      name: "/authentication",
+      builder: (context, state) {
+        return const AuthenticationPage();
       },
     ),
     GoRoute(

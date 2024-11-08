@@ -37,7 +37,7 @@ class _SelectTeamPlayerState extends State<SelectTeamPlayer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.teamName,
+            "Team :  ${widget.teamName}",
             style: GoogleFonts.golosText(
               color: Colors.white.withOpacity(0.9),
               fontSize: 24,

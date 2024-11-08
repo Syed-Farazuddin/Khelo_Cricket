@@ -6,10 +6,11 @@ class ShowSelectTeam extends StatefulWidget {
   const ShowSelectTeam({
     super.key,
     required this.yourTeams,
+    required this.selectTeam,
     required this.selectedTeam,
   });
   final int selectedTeam;
-
+  final Function(int value) selectTeam;
   @override
   State<ShowSelectTeam> createState() => _ShowSelectTeamState();
 }
@@ -51,11 +52,7 @@ class _ShowSelectTeamState extends State<ShowSelectTeam> {
             ),
             itemBuilder: (builder, index) {
               return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTeam = index;
-                  });
-                },
+                onTap: () => widget.selectTeam(index),
                 child: Container(
                   decoration: BoxDecoration(
                     color: index == selectedTeam
@@ -94,7 +91,7 @@ class _ShowSelectTeamState extends State<ShowSelectTeam> {
               fontSize: 24,
               fontWeight: FontWeight.w400,
             ),
-          )
+          ),
         ],
       ),
     );
