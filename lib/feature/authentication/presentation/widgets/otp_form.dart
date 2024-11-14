@@ -73,6 +73,7 @@ class _OtpFormWidgetState extends State<OtpFormWidget> {
                 value == widget.verifyOtp
                     ? context.goNamed('/home')
                     : Toaster.onError(message: "Invalid Credentials");
+                return "Invalid OTP";
               },
               hapticFeedbackType: HapticFeedbackType.lightImpact,
               onCompleted: (pin) {
