@@ -21,7 +21,7 @@ class BaseService {
   }
   final Dio dio;
 
-  Future<Response> get(
+  Future<dynamic> get(
     String url, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -36,7 +36,7 @@ class BaseService {
         cancelToken: cancelToken,
         onReceiveProgress: onRecieveProgress,
       );
-      return response;
+      return response.data;
     } catch (e) {
       debugPrint("get Method Error $e");
       final DioException exception = e as DioException;
@@ -46,7 +46,7 @@ class BaseService {
     }
   }
 
-  Future<Response> post(
+  Future<dynamic> post(
     String url, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -63,7 +63,8 @@ class BaseService {
         cancelToken: cancelToken,
         onReceiveProgress: onRecieveProgress,
       );
-      return response;
+      debugPrint("Successfully fetched response");
+      return response.data;
     } catch (e) {
       debugPrint("get Method Error $e");
       final DioException exception = e as DioException;
@@ -73,7 +74,7 @@ class BaseService {
     }
   }
 
-  Future<Response> put(
+  Future<dynamic> put(
     String url, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -90,7 +91,7 @@ class BaseService {
         cancelToken: cancelToken,
         onReceiveProgress: onRecieveProgress,
       );
-      return response;
+      return response.data;
     } catch (e) {
       debugPrint("get Method Error $e");
       final DioException exception = e as DioException;
@@ -100,7 +101,7 @@ class BaseService {
     }
   }
 
-  Future<Response> delete(
+  Future<dynamic> delete(
     String url, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -114,7 +115,7 @@ class BaseService {
         options: options,
         cancelToken: cancelToken,
       );
-      return response;
+      return response.data;
     } catch (e) {
       debugPrint("get Method Error $e");
       final DioException exception = e as DioException;

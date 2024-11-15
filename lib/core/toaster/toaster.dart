@@ -3,14 +3,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class Toaster {
   // Toaster
-  static void onSuccess({required String message}) {
+  static void onSuccess({
+    required String message,
+    ToastGravity gravity = ToastGravity.CENTER,
+  }) {
     Fluttertoast.showToast(
       msg: message,
       textColor: Colors.white,
       fontSize: 20,
       toastLength: Toast.LENGTH_SHORT,
-      webPosition: "top",
-      gravity: ToastGravity.CENTER,
+      webPosition: 'top',
+      gravity: gravity,
       backgroundColor: Colors.green,
     );
   }

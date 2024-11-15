@@ -26,14 +26,16 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'CrickHub',
-      theme: ThemeData(
-        brightness: Brightness.dark,
+    return ProviderScope(
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'CrickHub',
+        theme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        darkTheme: ThemeData.dark(),
+        routerConfig: _router,
       ),
-      darkTheme: ThemeData.dark(),
-      routerConfig: _router,
     );
   }
 }

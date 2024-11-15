@@ -1,16 +1,18 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/feature/authentication/presentation/provider/auth_provider.dart';
 import 'package:crick_hub/feature/authentication/presentation/widgets/otp_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AuthenticationPage extends StatefulWidget {
+class AuthenticationPage extends ConsumerStatefulWidget {
   const AuthenticationPage({super.key});
 
   @override
-  State<AuthenticationPage> createState() => _AuthenticationPageState();
+  ConsumerState<AuthenticationPage> createState() => _AuthenticationPageState();
 }
 
-class _AuthenticationPageState extends State<AuthenticationPage> {
+class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
   final TextEditingController controller = TextEditingController();
   bool showOtp = false;
   @override
@@ -35,8 +37,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               : const SizedBox.shrink(),
           !showOtp
               ? Custombutton(
-                  onTap: () {
-                    showOtp = true;
+                  onTap: () async {
+                    await sendOtp(mobile: controller.text);
                   },
                   title: "Send OTP",
                   width: MediaQuery.of(context).size.width / 2,
@@ -45,5 +47,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         ],
       ),
     );
+  }
+
+  Future<void> sendOtp({required String mobile}) async {
+    final result =
+        await ref.read(authProviderProvider.notifier).sendOtp(mobile: mobile);
+    debugPrint(result.toString());
   }
 }
