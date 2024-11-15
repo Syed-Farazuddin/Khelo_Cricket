@@ -49,6 +49,7 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/svgs/
+    - .env
 
 flutter_icons:
   android: true
