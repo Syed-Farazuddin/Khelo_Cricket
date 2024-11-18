@@ -1,14 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:crick_hub/core/storage/storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class MainSplash extends StatefulWidget {
+class MainSplash extends ConsumerStatefulWidget {
   const MainSplash({super.key});
 
   @override
-  State<MainSplash> createState() => _MainSplashState();
+  ConsumerState<MainSplash> createState() => _MainSplashState();
 }
 
-class _MainSplashState extends State<MainSplash> {
+class _MainSplashState extends ConsumerState<MainSplash> {
   @override
   void initState() {
     super.initState();
@@ -16,9 +20,10 @@ class _MainSplashState extends State<MainSplash> {
   }
 
   void visitDashBoard() {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () async {
       if (!mounted) return;
-      true ? context.goNamed('/authentication') : context.goNamed("/home");
+      bool isLogin = await ref.read(storageProvider).isLogin();
+      !isLogin ? context.goNamed('/authentication') : context.goNamed("/home");
     });
   }
 

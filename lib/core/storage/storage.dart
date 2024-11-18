@@ -27,4 +27,12 @@ class Storage {
   void read({required String key}) {
     _storage.read(key: key);
   }
+
+  Future<bool> isLogin() async {
+    String? token = await _storage.read(key: 'token');
+    if (token != null) {
+      return true;
+    }
+    return false;
+  }
 }
