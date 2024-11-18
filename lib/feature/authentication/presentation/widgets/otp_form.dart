@@ -1,19 +1,21 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
-import 'package:crick_hub/core/toaster/toaster.dart';
-import 'package:crick_hub/feature/authentication/presentation/widgets/sms_retriever.dart';
+import 'package:crick_hub/feature/authentication/presentation/provider/auth_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:crick_hub/feature/authentication/presentation/widgets/sms_retriever.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pinput.dart';
 import 'package:smart_auth/smart_auth.dart';
 
-class OtpFormWidget extends StatefulWidget {
-  const OtpFormWidget({super.key, required this.verifyOtp});
-  final String verifyOtp;
+class OtpFormWidget extends ConsumerStatefulWidget {
+  const OtpFormWidget({super.key, required this.mobile});
+  final String mobile;
+
   @override
-  State<OtpFormWidget> createState() => _OtpFormWidgetState();
+  ConsumerState<OtpFormWidget> createState() => _OtpFormWidgetState();
 }
 
-class _OtpFormWidgetState extends State<OtpFormWidget> {
+class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
   late final SmsRetriever smsRetriever;
   late final TextEditingController pinController;
   late final FocusNode focusNode;
@@ -40,6 +42,7 @@ class _OtpFormWidgetState extends State<OtpFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final otp = TextEditingController();
     const focusedBorderColor = Colors.white;
     const borderColor = Colors.grey;
 
@@ -69,17 +72,12 @@ class _OtpFormWidgetState extends State<OtpFormWidget> {
               focusNode: focusNode,
               defaultPinTheme: defaultPinTheme,
               separatorBuilder: (index) => const SizedBox(width: 8),
-              validator: (value) {
-                value == widget.verifyOtp
-                    ? context.goNamed('/home')
-                    : Toaster.onError(message: "Invalid Credentials");
-                return "Invalid OTP";
-              },
               hapticFeedbackType: HapticFeedbackType.lightImpact,
               onCompleted: (pin) {
                 debugPrint('onCompleted: $pin');
               },
               onChanged: (value) {
+                otp.text = value;
                 debugPrint('onChanged: $value');
               },
               cursor: Column(
@@ -116,12 +114,15 @@ class _OtpFormWidgetState extends State<OtpFormWidget> {
             height: 30,
           ),
           Custombutton(
-            onTap: () {
+            onTap: () async {
               focusNode.unfocus();
-              debugPrint(
-                  "${formKey.currentState} This is the thing we are validating");
-              debugPrint("${formKey.currentState}");
-              formKey.currentState!.validate();
+              bool res = await verifyOtp(
+                mobile: widget.mobile,
+                otp: otp.text,
+              );
+              if (res) {
+                context.goNamed('/home');
+              }
             },
             title: "Verify Otp",
             width: 300,
@@ -129,5 +130,15 @@ class _OtpFormWidgetState extends State<OtpFormWidget> {
         ],
       ),
     );
+  }
+
+  Future<bool> verifyOtp({
+    required String mobile,
+    required String otp,
+  }) async {
+    bool result = await ref
+        .read(authProviderProvider.notifier)
+        .verifyOtp(mobile: mobile, otp: otp);
+    return result;
   }
 }

@@ -31,8 +31,8 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
             height: 20,
           ),
           showOtp
-              ? const OtpFormWidget(
-                  verifyOtp: "1234",
+              ? OtpFormWidget(
+                  mobile: controller.text,
                 )
               : const SizedBox.shrink(),
           !showOtp
@@ -53,5 +53,8 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
     final result =
         await ref.read(authProviderProvider.notifier).sendOtp(mobile: mobile);
     debugPrint(result.toString());
+    setState(() {
+      showOtp = result;
+    });
   }
 }

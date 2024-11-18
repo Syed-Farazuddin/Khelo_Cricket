@@ -50,9 +50,24 @@ class AuthRepository extends AuthenticationRepository {
   }
 
   @override
-  Future<bool> verifyOtp() async {
+  Future<bool> verifyOtp({required String mobile, required String otp}) async {
+    final body = {
+      'mobile': mobile,
+      'otp': otp,
+    };
     bool result = false;
-    try {} catch (e) {
+    try {
+      final response = await baseService.post(Network.verifyOtp(), body: body);
+      debugPrint(response.toString());
+      Toaster.onSuccess(
+        message: response['message'],
+        gravity: ToastGravity.BOTTOM,
+      );
+      result = response['success'];
+      if (result == true) {
+        saveUserCredentials(response: response);
+      }
+    } catch (e) {
       debugPrint("Error in verify OTP API $e");
     }
     return result;
@@ -60,4 +75,21 @@ class AuthRepository extends AuthenticationRepository {
 
   @override
   Future<void> updateFirebaseToken() async {}
+
+  void saveUserCredentials({
+    required Map<String, dynamic> response,
+  }) {
+    Storage storage = Storage();
+    String token = response['token'];
+    String refreshToken = response['refreshToken'];
+    String userId = response['id'];
+    String? name = response['name'];
+    String? mobile = response['mobile'];
+
+    storage.addItem(key: 'token', value: token);
+    storage.addItem(key: 'refreshToken', value: refreshToken);
+    storage.addItem(key: 'id', value: userId);
+    storage.addItem(key: 'name', value: name ?? "");
+    storage.addItem(key: 'mobile', value: mobile ?? "");
+  }
 }
