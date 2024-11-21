@@ -1,4 +1,4 @@
-import 'package:crick_hub/feature/startMatch/data/models/models.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/select_team_player.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_select_team.dart';
@@ -19,74 +19,8 @@ class SelectTeam extends ConsumerStatefulWidget {
 
 class _SelectTeamState extends ConsumerState<SelectTeam> {
   bool teamSelected = false;
-  late List yourTeams = [];
-  final List players = [
-    Players(
-      name: "Syed Farazuddin",
-      id: 1,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Shaik Anjum",
-      id: 2,
-      image: "http://surl.li/vaenjj",
-    ),
-    Players(
-      name: "Rabada",
-      id: 3,
-      image: "http://surl.li/upxncu",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 9,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 8,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 4,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 5,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 6,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 7,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 10,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 11,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 12,
-      image: "http://surl.li/glzedz",
-    ),
-    Players(
-      name: "Syed Farazuddin",
-      id: 13,
-      image: "http://surl.li/glzedz",
-    ),
-  ];
+  late List<Team> yourTeams = [];
+
   final TextEditingController _controller = TextEditingController();
   int selectedTeam = 0;
 
@@ -106,16 +40,19 @@ class _SelectTeamState extends ConsumerState<SelectTeam> {
                 yourTeams: yourTeams,
                 selectedTeam: selectedTeam,
                 selectTeam: (val) {
-                  setState(() {
-                    selectedTeam = val;
-                    teamSelected = true;
-                  });
-                })
+                  setState(
+                    () {
+                      selectedTeam = val;
+                      teamSelected = true;
+                    },
+                  );
+                },
+              )
             : SelectTeamPlayer(
                 controller: _controller,
-                players: players,
+                players: yourTeams[selectedTeam].players,
                 teamName: teamSelected
-                    ? yourTeams[selectedTeam].toString()
+                    ? yourTeams[selectedTeam].name.toString()
                     : "Team not Selected",
                 selectedPlayers: widget.selectedPlayers as List<int>,
               ),
@@ -127,7 +64,7 @@ class _SelectTeamState extends ConsumerState<SelectTeam> {
     final res =
         await ref.read(startMatchControllerProvider.notifier).fetchYourTeams();
     setState(() {
-      yourTeams = res as List;
+      yourTeams = res;
     });
   }
 }

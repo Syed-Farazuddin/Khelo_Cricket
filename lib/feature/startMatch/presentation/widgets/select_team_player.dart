@@ -2,7 +2,7 @@ import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
-import 'package:crick_hub/feature/startMatch/data/models/models.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -154,7 +154,7 @@ class _SelectTeamPlayerState extends State<SelectTeamPlayer> {
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
                                 child: Image.network(
-                                  player.image,
+                                  player.image ?? "",
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: double.infinity,
@@ -166,7 +166,7 @@ class _SelectTeamPlayerState extends State<SelectTeamPlayer> {
                             width: 15,
                           ),
                           Text(
-                            player.name,
+                            player.name ?? "",
                             style: GoogleFonts.golosText(
                               fontSize: 18,
                               fontWeight: FontWeight.w400,

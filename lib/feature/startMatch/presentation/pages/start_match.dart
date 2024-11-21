@@ -1,4 +1,4 @@
-import 'package:crick_hub/feature/startMatch/data/models/models.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';

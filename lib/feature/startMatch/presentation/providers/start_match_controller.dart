@@ -1,3 +1,4 @@
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/data/repository/start_match_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,7 +11,7 @@ class StartMatchController extends _$StartMatchController {
     return;
   }
 
-  Future<void> fetchYourTeams() async {
-    await ref.read(startMatchRepositoryProvider).fetchYourTeams();
+  Future<List<Team>> fetchYourTeams() async {
+    return await ref.read(startMatchRepositoryProvider).fetchYourTeams();
   }
 }
