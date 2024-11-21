@@ -1,14 +1,11 @@
-// import 'package:crick_hub/common/widgets/button_list.dart';
-// import 'package:crick_hub/common/widgets/custom_button.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:crick_hub/common/widgets/custom_input.dart';
-// import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/select_team_player.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_select_team.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectTeam extends StatefulWidget {
+class SelectTeam extends ConsumerStatefulWidget {
   const SelectTeam({
     super.key,
     required this.teamName,
@@ -17,12 +14,12 @@ class SelectTeam extends StatefulWidget {
   final String teamName;
   final List selectedPlayers;
   @override
-  State<SelectTeam> createState() => _SelectTeamState();
+  ConsumerState<SelectTeam> createState() => _SelectTeamState();
 }
 
-class _SelectTeamState extends State<SelectTeam> {
+class _SelectTeamState extends ConsumerState<SelectTeam> {
   bool teamSelected = false;
-  List yourTeams = ["Rebel Warrios", "Falcons", "Bandlaguda Bulls"];
+  late List yourTeams = [];
   final List players = [
     Players(
       name: "Syed Farazuddin",
@@ -92,6 +89,13 @@ class _SelectTeamState extends State<SelectTeam> {
   ];
   final TextEditingController _controller = TextEditingController();
   int selectedTeam = 0;
+
+  @override
+  void initState() {
+    fetchYourTeams();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,5 +121,13 @@ class _SelectTeamState extends State<SelectTeam> {
               ),
       ),
     );
+  }
+
+  Future<void> fetchYourTeams() async {
+    final res =
+        await ref.read(startMatchControllerProvider.notifier).fetchYourTeams();
+    setState(() {
+      yourTeams = res as List;
+    });
   }
 }

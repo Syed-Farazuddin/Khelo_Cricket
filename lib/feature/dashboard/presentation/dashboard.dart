@@ -1,20 +1,23 @@
 import 'package:crick_hub/core/colors/colors.dart';
+import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/Home/presentation/home.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:go_router/go_router.dart';
 import 'package:crick_hub/feature/numberPlayer/presentation/pages/number_player.dart';
 import 'package:crick_hub/feature/profile/presentation/pages/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DashboardPage extends StatefulWidget {
+class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  ConsumerState<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends ConsumerState<DashboardPage> {
   int _currpage = 1;
   List<Widget> pages = [
     const TossMyCoin(),
@@ -39,6 +42,25 @@ class _DashboardPageState extends State<DashboardPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              final storage = ref.read(storageProvider);
+              storage.deleteAll();
+
+              final token = await storage.read(key: 'token');
+              debugPrint("After deleting storage my token is $token");
+
+              context.pushNamed('/authentication');
+            },
+            child: Text(
+              'Sign out',
+              style: GoogleFonts.golosText(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
         backgroundColor: AppColors.dark,
       ),
       drawer: Drawer(

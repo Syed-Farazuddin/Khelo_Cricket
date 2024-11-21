@@ -1,3 +1,5 @@
+import 'package:crick_hub/common/widgets/custom_button.dart';
+import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,6 +18,7 @@ class ShowSelectTeam extends StatefulWidget {
 }
 
 class _ShowSelectTeamState extends State<ShowSelectTeam> {
+  TextEditingController newTeamController = TextEditingController();
   late int selectedTeam;
   @override
   void initState() {
@@ -62,7 +65,7 @@ class _ShowSelectTeamState extends State<ShowSelectTeam> {
                           ),
                     border: Border.all(
                       color: Colors.white.withOpacity(
-                        0.6,
+                        0.2,
                       ),
                     ),
                   ),
@@ -92,6 +95,25 @@ class _ShowSelectTeamState extends State<ShowSelectTeam> {
               fontWeight: FontWeight.w400,
             ),
           ),
+          CustomInputField(
+            controller: newTeamController,
+            label: 'Enter team name',
+            textAllowed: true,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Custombutton(
+                    onTap: () {},
+                    title: "Add",
+                    width: 100,
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

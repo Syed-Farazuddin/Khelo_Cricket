@@ -1,64 +1,40 @@
 import 'package:crick_hub/common/widgets/button_list.dart';
-import 'package:crick_hub/feature/profile/data/models.dart';
+import 'package:crick_hub/feature/profile/data/profile_models.dart';
+import 'package:crick_hub/feature/profile/presentation/providers/profile_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  List<List<StatsItem>> stats = [
-    [
-      StatsItem(name: "Matches", stats: "88"),
-      StatsItem(name: "Innings", stats: "42"),
-      StatsItem(name: "Runs", stats: "1442"),
-      StatsItem(name: "NO", stats: "10"),
-      StatsItem(name: "Balls", stats: "141"),
-      StatsItem(name: "Highest", stats: "124"),
-      StatsItem(name: "Average", stats: "41"),
-      StatsItem(name: "Strike Rate", stats: "136.3"),
-      StatsItem(name: "100s", stats: "3"),
-      StatsItem(name: "50s", stats: "6"),
-      StatsItem(name: "0s", stats: "9"),
-      StatsItem(name: "Boundaries", stats: "34"),
-      StatsItem(name: "Fours", stats: "28"),
-      StatsItem(name: "Sixes", stats: "6"),
-    ],
-    [
-      StatsItem(name: "Matches", stats: "24"),
-      StatsItem(name: "Innings", stats: "18"),
-      StatsItem(name: "Runs", stats: "152"),
-      StatsItem(name: "Wickets", stats: "14"),
-      StatsItem(name: "Average", stats: "17"),
-      StatsItem(name: "Economy", stats: "7.2"),
-      StatsItem(name: "Wides", stats: "9"),
-      StatsItem(name: "No Balls", stats: "4"),
-      StatsItem(name: "Best", stats: "6/18"),
-      StatsItem(name: "3 Wickets", stats: "3"),
-      StatsItem(name: "5 Wickets", stats: "6"),
-      StatsItem(name: "Maidens", stats: "3"),
-      StatsItem(name: "Boundaries", stats: "14"),
-      StatsItem(name: "Fours", stats: "9"),
-      StatsItem(name: "Sixes", stats: "5"),
-    ],
-    [
-      StatsItem(name: "Matches", stats: "88"),
-      StatsItem(name: "Innings", stats: "42"),
-      StatsItem(name: "Run outs", stats: "8"),
-      StatsItem(name: "Catches", stats: "30"),
-      StatsItem(name: "Stumps", stats: "3"),
-    ]
-  ];
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   int active = 0;
   List<String> fields = ["Batting", "Bowling", "Fielding"];
+  bool loading = false;
+  late List<List<StatsItem>> stats = [[], [], []];
+  @override
+  void initState() {
+    getProfileData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+      return Center(
+        child: LoadingAnimationWidget.inkDrop(
+          color: Colors.white,
+          size: 80,
+        ),
+      );
+    }
     return Scaffold(
-      // appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -239,6 +215,20 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future<void> getProfileData() async {
+    setState(() {
+      loading = true;
+    });
+    ProfileInfo profile =
+        await ref.read(profileProviderProvider.notifier).getProfileInfo();
+    setState(() {
+      stats = profile.stats.stats;
+    });
+    setState(() {
+      loading = false;
+    });
   }
 }
 

@@ -32,8 +32,12 @@ class _StartMatchState extends State<StartMatch> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              teamDisplay(label: "Team A"),
-              teamDisplay(label: "Team B"),
+              teamDisplay(
+                label: "Team A",
+              ),
+              teamDisplay(
+                label: "Team B",
+              ),
             ],
           ),
         ],

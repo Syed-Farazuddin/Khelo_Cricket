@@ -7,10 +7,12 @@ class CustomInputField extends StatelessWidget {
     required this.controller,
     this.label = "Enter Number of players",
     this.maxlength = 2,
+    this.textAllowed = false,
   });
   final TextEditingController controller;
   final String label;
   final int maxlength;
+  final bool textAllowed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +33,13 @@ class CustomInputField extends StatelessWidget {
         child: TextField(
           controller: controller,
           // maxLength: 10,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(maxlength)
-          ],
+          keyboardType: textAllowed ? null : TextInputType.number,
+          inputFormatters: textAllowed
+              ? []
+              : <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(maxlength)
+                ],
           decoration: InputDecoration(
             hintText: label,
             border: InputBorder.none,
