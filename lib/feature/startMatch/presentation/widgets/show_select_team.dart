@@ -1,10 +1,12 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ShowSelectTeam extends StatefulWidget {
+class ShowSelectTeam extends ConsumerStatefulWidget {
   const ShowSelectTeam({
     super.key,
     required this.yourTeams,
@@ -15,10 +17,10 @@ class ShowSelectTeam extends StatefulWidget {
   final int selectedTeam;
   final Function(int value) selectTeam;
   @override
-  State<ShowSelectTeam> createState() => _ShowSelectTeamState();
+  ConsumerState<ShowSelectTeam> createState() => _ShowSelectTeamState();
 }
 
-class _ShowSelectTeamState extends State<ShowSelectTeam> {
+class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
   TextEditingController newTeamController = TextEditingController();
   late int selectedTeam;
   @override
@@ -68,7 +70,9 @@ class _ShowSelectTeamState extends State<ShowSelectTeam> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Custombutton(
-                    onTap: () {},
+                    onTap: () async {
+                      await addNewTeam(name: newTeamController.text);
+                    },
                     title: "Add",
                     width: 100,
                   ),
@@ -122,5 +126,13 @@ class _ShowSelectTeamState extends State<ShowSelectTeam> {
         );
       },
     );
+  }
+
+  Future<void> addNewTeam({required String name}) async {
+    await ref
+        .read(
+          startMatchControllerProvider.notifier,
+        )
+        .addNewTeam(name: name);
   }
 }

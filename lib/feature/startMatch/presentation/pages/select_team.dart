@@ -51,10 +51,12 @@ class _SelectTeamState extends ConsumerState<SelectTeam> {
             : SelectTeamPlayer(
                 controller: _controller,
                 players: yourTeams[selectedTeam].players,
+                teamId: yourTeams[selectedTeam].teamId,
                 teamName: teamSelected
                     ? yourTeams[selectedTeam].name.toString()
                     : "Team not Selected",
                 selectedPlayers: widget.selectedPlayers as List<int>,
+                refreshData: fetchYourTeams,
               ),
       ),
     );

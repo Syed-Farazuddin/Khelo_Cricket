@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Players {
   String? name;
   int id;
@@ -16,11 +14,11 @@ class Players {
 
   factory Players.fromJson(json) {
     Players player = Players(
-      name: json['user']['name'].toString() ?? "NA",
+      name: json['user']['name'].toString(),
       id: json['id'],
-      image: json['imageUrl'].toString() ?? "NA",
-      battingStyle: json['battingStyle'].toString() ?? "NA",
-      bowlingStyle: json['bowlingStyle'].toString() ?? "NA",
+      image: json['imageUrl'].toString(),
+      battingStyle: json['battingStyle'].toString(),
+      bowlingStyle: json['bowlingStyle'].toString(),
     );
     return player;
   }
@@ -64,5 +62,25 @@ class Team {
       image: json['imageUrl'].toString(),
     );
     return team;
+  }
+}
+
+class AddTeamResponse {
+  final bool playerExists;
+  final bool success;
+  final String? message;
+  AddTeamResponse({
+    required this.playerExists,
+    required this.success,
+    required this.message,
+  });
+
+  factory AddTeamResponse.fromJson(json) {
+    AddTeamResponse res = AddTeamResponse(
+      playerExists: json['playerExists'],
+      success: json['success'],
+      message: json['message'],
+    );
+    return res;
   }
 }
