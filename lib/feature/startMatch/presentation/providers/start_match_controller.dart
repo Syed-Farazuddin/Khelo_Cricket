@@ -12,7 +12,8 @@ class StartMatchController extends _$StartMatchController {
   }
 
   Future<List<Team>> fetchYourTeams() async {
-    return await ref.read(startMatchRepositoryProvider).fetchYourTeams();
+    final teams = await ref.read(startMatchRepositoryProvider).fetchYourTeams();
+    return teams;
   }
 
   Future<void> addNewTeam({required String name}) async {

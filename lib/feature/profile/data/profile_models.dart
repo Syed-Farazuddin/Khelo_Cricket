@@ -62,7 +62,7 @@ class ProfileInfo {
       },
     ).toList();
     return ProfileInfo(
-      age: json['age'],
+      age: json['age'].toString(),
       dob: json['dob'],
       name: json['name'],
       number: json['mobile'],

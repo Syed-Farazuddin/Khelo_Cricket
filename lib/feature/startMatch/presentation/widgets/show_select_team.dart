@@ -1,6 +1,7 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,10 +13,16 @@ class ShowSelectTeam extends ConsumerStatefulWidget {
     required this.yourTeams,
     required this.selectTeam,
     required this.selectedTeam,
+    required this.refreshTeamsData,
+    required this.teamIds,
   });
   final List<Team> yourTeams;
+  final SelectedTeamIds teamIds;
   final int selectedTeam;
+  final Future<void> Function() refreshTeamsData;
+
   final Function(int value) selectTeam;
+
   @override
   ConsumerState<ShowSelectTeam> createState() => _ShowSelectTeamState();
 }
@@ -31,8 +38,21 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
 
   @override
   Widget build(BuildContext context) {
+    // Team teamA = widget.yourTeams
+    //     .where(
+    //       (team) => team.teamId == widget.teamIds.teamA,
+    //     )
+    //     .toList()[0];
+    // Team teamB = widget.yourTeams
+    //     .where(
+    //       (team) => team.teamId == widget.teamIds.teamB,
+    //     )
+    //     .toList()[0];
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+      padding: const EdgeInsets.symmetric(
+        vertical: 8.0,
+        horizontal: 10,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,5 +154,8 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
           startMatchControllerProvider.notifier,
         )
         .addNewTeam(name: name);
+    setState(() {
+      widget.refreshTeamsData();
+    });
   }
 }

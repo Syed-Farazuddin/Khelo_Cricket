@@ -1,7 +1,11 @@
+import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:flutter/material.dart';
@@ -11,20 +15,14 @@ import 'package:google_fonts/google_fonts.dart';
 class SelectTeamPlayer extends ConsumerStatefulWidget {
   const SelectTeamPlayer({
     super.key,
-    required this.controller,
-    required this.players,
-    required this.selectedPlayers,
-    required this.teamId,
-    required this.teamName,
-    required this.refreshData,
+    required this.team,
+    required this.teamNo,
+    required this.refreshTeamsData,
   });
+  final int teamNo;
+  final Team team;
+  final Future<void> Function() refreshTeamsData;
 
-  final String teamName;
-  final List<Players> players;
-  final TextEditingController controller;
-  final List<int> selectedPlayers;
-  final Future<void> Function() refreshData;
-  final int teamId;
   @override
   ConsumerState<SelectTeamPlayer> createState() => _SelectTeamPlayerState();
 }
@@ -86,11 +84,13 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                     child: Custombutton(
                       onTap: () {
                         if (nameController.text.isEmpty) {
-                          Toaster.onError(message: "Please Enter a valid name");
+                          Toaster.onError(
+                            message: "Please Enter a valid name",
+                          );
                           return;
                         }
                         createNewUserAndAddInTeam(
-                          teamId: widget.teamId,
+                          teamId: widget.team.teamId,
                           name: nameController.text,
                           mobile: mobileController.text,
                         );
@@ -98,10 +98,10 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                       title: "Add",
                       width: 0,
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       );
@@ -113,7 +113,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Team :  ${widget.teamName}",
+            "Team :  ${widget.team.name}",
             style: GoogleFonts.golosText(
               color: Colors.white.withOpacity(0.9),
               fontSize: 24,
@@ -158,7 +158,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
               Custombutton(
                 onTap: () async {
                   await addNewPlayer(
-                    teamId: widget.teamId,
+                    teamId: widget.team.teamId,
                     mobile: mobileController.text,
                   );
                 },
@@ -168,6 +168,15 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                 icon: Icons.add,
               ),
             ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            "Players Selected : ${widget.team.selectedPlayers.length}",
+            style: GoogleFonts.golosText(
+              fontSize: 18,
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -189,9 +198,9 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
             ),
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.players.length,
+            itemCount: widget.team.players.length,
             itemBuilder: (builder, index) {
-              Players player = widget.players[index];
+              Players player = widget.team.players[index];
               return AnimatedContainer(
                 duration: const Duration(
                   microseconds: 1000,
@@ -201,13 +210,13 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: widget.selectedPlayers.contains(player.id)
+                  color: widget.team.selectedPlayers.contains(player.id)
                       ? Colors.blue
                       : Colors.white.withOpacity(
                           0.1,
                         ),
                   border: Border.all(
-                    color: widget.selectedPlayers.contains(player.id)
+                    color: widget.team.selectedPlayers.contains(player.id)
                         ? Colors.blue
                         : Colors.white.withOpacity(
                             0.1,
@@ -229,7 +238,9 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
                                 child: Image.network(
-                                  player.image ?? "",
+                                  player.image == "null"
+                                      ? Constants.dummyImage
+                                      : player.image ?? "",
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: double.infinity,
@@ -251,19 +262,19 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (widget.selectedPlayers.contains(player.id)) {
+                          if (widget.team.selectedPlayers.contains(player.id)) {
                             setState(() {
-                              widget.selectedPlayers.remove(player.id);
+                              widget.team.selectedPlayers.remove(player.id);
                             });
-                          } else if (widget.selectedPlayers.length <= 11) {
+                          } else if (widget.team.selectedPlayers.length <= 11) {
                             setState(() {
-                              widget.selectedPlayers.add(
+                              widget.team.selectedPlayers.add(
                                 player.id,
                               );
                             });
                           } else {
                             Toaster.onError(
-                              message: "11 Players are already selected",
+                              message: "Can't select more than 12 players",
                             );
                           }
                         },
@@ -276,6 +287,49 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                 ),
               );
             },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Custombutton(
+                    onTap: () {
+                      context.goNamed('/startMatch');
+                    },
+                    title: "Cancel",
+                    textColor: Colors.white,
+                    color: Colors.red,
+                    width: 100,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Custombutton(
+                    onTap: () {
+                      if (widget.teamNo == 1) {
+                        ref.watch(selectedTeamA.notifier).state = widget.team;
+                        // setState(() {});
+                      } else {
+                        ref.read(selectedTeamB.notifier).state = widget.team;
+                        // setState(() {});
+                      }
+                      context.pop();
+                      setState(() {});
+                    },
+                    textColor: Colors.white,
+                    title: "Done",
+                    color: Colors.green,
+                    width: 100,
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
@@ -293,8 +347,10 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
       setState(() {
         showCreateNewPlayer = true;
       });
+      return;
     }
-    widget.refreshData();
+    setState(() {});
+    widget.refreshTeamsData();
   }
 
   Future<void> createNewUserAndAddInTeam({
@@ -310,11 +366,16 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
           name: name,
         );
     if (res.success) {
-      Toaster.onSuccess(message: res.message ?? "");
+      Toaster.onSuccess(
+        message: res.message ?? "",
+        gravity: ToastGravity.BOTTOM,
+      );
       setState(() {
         showCreateNewPlayer = false;
       });
-      await widget.refreshData();
+      mobileController.text = "";
+      setState(() {});
+      widget.refreshTeamsData();
     }
   }
 }

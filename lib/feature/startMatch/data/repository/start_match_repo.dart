@@ -42,6 +42,7 @@ class StartMatchRepo extends StartMatchRepository {
             (json) => Team.fromJson(json),
           )
           .toList();
+
       return teams;
     } catch (e) {
       debugPrint("Error while fetching your teams");

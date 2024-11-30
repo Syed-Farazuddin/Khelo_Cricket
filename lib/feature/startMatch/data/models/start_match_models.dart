@@ -4,12 +4,15 @@ class Players {
   String? image;
   String? battingStyle;
   String? bowlingStyle;
+  bool selected;
+
   Players({
     required this.name,
     required this.id,
     this.image,
     this.battingStyle,
     this.bowlingStyle,
+    this.selected = false,
   });
 
   factory Players.fromJson(json) {
@@ -25,12 +28,15 @@ class Players {
 }
 
 class StartMatchExtras {
-  List<int> selectedPlayers;
   String teamName;
-
+  int teamNo;
+  final Future<void> Function() refreshData;
+  List<Team> yourTeams;
   StartMatchExtras({
-    required this.selectedPlayers,
+    required this.yourTeams,
     required this.teamName,
+    required this.refreshData,
+    required this.teamNo,
   });
 }
 
@@ -39,10 +45,15 @@ class Team {
   int teamId;
   String? image;
   List<Players> players;
+  int selectedAs;
+  List<int> selectedPlayers;
+
   Team({
     required this.name,
     required this.teamId,
     required this.players,
+    this.selectedAs = 3,
+    required this.selectedPlayers,
     this.image,
   });
 
@@ -60,6 +71,7 @@ class Team {
       teamId: json['id'],
       players: players,
       image: json['imageUrl'].toString(),
+      selectedPlayers: [],
     );
     return team;
   }

@@ -4,7 +4,7 @@ import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
-import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
+import 'package:crick_hub/feature/startMatch/presentation/pages/select_teams.dart';
 import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -65,10 +65,10 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/startMatch",
-      name: "/startMatch",
+      path: "/selectTeams",
+      name: "/selectTeams",
       builder: (context, state) {
-        return const StartMatch();
+        return const SelectTeams();
       },
     ),
     GoRoute(
@@ -79,7 +79,8 @@ final GoRouter _router = GoRouter(
 
         return SelectTeam(
           teamName: extra.teamName,
-          selectedPlayers: extra.selectedPlayers,
+          teamNo: extra.teamNo,
+          fetchYourTeams: extra.refreshData,
         );
       },
     ),

@@ -1,5 +1,5 @@
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
-import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/select_team_player.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_select_team.dart';
 import 'package:flutter/material.dart';
@@ -9,34 +9,37 @@ class SelectTeam extends ConsumerStatefulWidget {
   const SelectTeam({
     super.key,
     required this.teamName,
-    required this.selectedPlayers,
+    required this.fetchYourTeams,
+    required this.teamNo,
   });
+  final int teamNo;
   final String teamName;
-  final List selectedPlayers;
+  final Future<void> Function() fetchYourTeams;
+
   @override
   ConsumerState<SelectTeam> createState() => _SelectTeamState();
 }
 
 class _SelectTeamState extends ConsumerState<SelectTeam> {
   bool teamSelected = false;
-  late List<Team> yourTeams = [];
-
-  final TextEditingController _controller = TextEditingController();
   int selectedTeam = 0;
+  SelectedTeamIds teams = SelectedTeamIds();
 
   @override
   void initState() {
-    fetchYourTeams();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Team> yourTeams = ref.watch(teamDataProvider);
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: !teamSelected
             ? ShowSelectTeam(
+                teamIds: teams,
+                refreshTeamsData: widget.fetchYourTeams,
                 yourTeams: yourTeams,
                 selectedTeam: selectedTeam,
                 selectTeam: (val) {
@@ -49,24 +52,20 @@ class _SelectTeamState extends ConsumerState<SelectTeam> {
                 },
               )
             : SelectTeamPlayer(
-                controller: _controller,
-                players: yourTeams[selectedTeam].players,
-                teamId: yourTeams[selectedTeam].teamId,
-                teamName: teamSelected
-                    ? yourTeams[selectedTeam].name.toString()
-                    : "Team not Selected",
-                selectedPlayers: widget.selectedPlayers as List<int>,
-                refreshData: fetchYourTeams,
+                team: yourTeams[selectedTeam],
+                teamNo: widget.teamNo,
+                refreshTeamsData: widget.fetchYourTeams,
               ),
       ),
     );
   }
+}
 
-  Future<void> fetchYourTeams() async {
-    final res =
-        await ref.read(startMatchControllerProvider.notifier).fetchYourTeams();
-    setState(() {
-      yourTeams = res;
-    });
-  }
+class SelectedTeamIds {
+  int? teamA;
+  int? teamB;
+  SelectedTeamIds({
+    this.teamB,
+    this.teamA,
+  });
 }

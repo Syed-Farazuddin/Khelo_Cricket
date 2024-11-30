@@ -11,8 +11,12 @@ class Custombutton extends StatelessWidget {
     this.isCircle = false,
     this.showIcon = false,
     this.radius,
+    this.color = Colors.white,
+    this.textColor = Colors.black,
   });
   final double width;
+  final Color color;
+  final Color textColor;
   final Function() onTap;
   final String title;
   final IconData? icon;
@@ -25,9 +29,9 @@ class Custombutton extends StatelessWidget {
       width: width,
       decoration: BoxDecoration(
         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-        color: Colors.white,
+        color: color,
         border: Border.all(
-          color: Colors.blue,
+          color: color,
           width: 1,
         ),
         borderRadius: isCircle == false
@@ -46,7 +50,7 @@ class Custombutton extends StatelessWidget {
               Text(
                 title,
                 style: GoogleFonts.golosText(
-                  color: Colors.black,
+                  color: textColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -1,75 +1,18 @@
-import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class StartMatch extends StatefulWidget {
-  const StartMatch({super.key});
+class StartOrScheduleMatch extends ConsumerStatefulWidget {
+  const StartOrScheduleMatch({super.key, required this.startMatch});
+  final bool startMatch;
+
   @override
-  State<StartMatch> createState() => _StartMatchState();
+  ConsumerState<StartOrScheduleMatch> createState() =>
+      _StartOrScheduleMatchState();
 }
 
-class _StartMatchState extends State<StartMatch> {
-  List<int> selectedPlayers = [];
+class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Select Teams",
-            style: GoogleFonts.golosText(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              teamDisplay(
-                label: "Team A",
-              ),
-              teamDisplay(
-                label: "Team B",
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget teamDisplay({required String label}) {
-    return GestureDetector(
-      onTap: () {
-        context.pushNamed(
-          "/selectTeam",
-          extra: StartMatchExtras(
-            selectedPlayers: selectedPlayers,
-            teamName: label,
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: Colors.white,
-        ),
-        child: Text(
-          label,
-          style: GoogleFonts.golosText(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
+    return const Placeholder();
   }
 }
