@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Players {
   String? name;
   int id;
@@ -5,7 +7,8 @@ class Players {
   String? battingStyle;
   String? bowlingStyle;
   bool selected;
-
+  bool isCaptain;
+  bool isWicketKeepet;
   Players({
     required this.name,
     required this.id,
@@ -13,6 +16,8 @@ class Players {
     this.battingStyle,
     this.bowlingStyle,
     this.selected = false,
+    this.isCaptain = false,
+    this.isWicketKeepet = false,
   });
 
   factory Players.fromJson(json) {
@@ -38,6 +43,10 @@ class StartMatchExtras {
     required this.refreshData,
     required this.teamNo,
   });
+
+  Map<String, dynamic> toJson() {
+    return {};
+  }
 }
 
 class Team {
@@ -74,6 +83,50 @@ class Team {
       selectedPlayers: [],
     );
     return team;
+  }
+}
+
+class StartMatchRequestBody {
+  final int tossWonTeamId;
+  final bool chooseToBat;
+  final List<int> teams;
+  final String ballType;
+  final int bowlingLimit;
+  final int overs;
+  final String ground;
+  final String state;
+  final String date;
+  final List<int> teamAPlayers;
+  final List<int> teamBPlayers;
+
+  StartMatchRequestBody({
+    required this.date,
+    required this.ballType,
+    required this.tossWonTeamId,
+    required this.chooseToBat,
+    required this.teams,
+    required this.bowlingLimit,
+    required this.overs,
+    required this.ground,
+    required this.state,
+    required this.teamAPlayers,
+    required this.teamBPlayers,
+  });
+
+  Map<String, dynamic> toJson(StartMatchRequestBody request) {
+    return {
+      "date": request.date,
+      'ballType': request.ballType,
+      'tossWonTeamId': request.tossWonTeamId,
+      'chooseToBat': request.chooseToBat,
+      'teams': request.teams,
+      'bowlingLimit': request.bowlingLimit,
+      'overs': request.overs,
+      'ground': request.ground,
+      'state': request.state,
+      'teamAPlayers': request.teamAPlayers,
+      'teamBPlayers': request.teamBPlayers,
+    };
   }
 }
 

@@ -14,4 +14,5 @@ class Network {
       'auth/create_player_and_add_in_team';
   static String getPlayerProfile({required final String userId}) =>
       'user/$userId/profile';
+  static String startYourMatch() => "/matches/start_match";
 }

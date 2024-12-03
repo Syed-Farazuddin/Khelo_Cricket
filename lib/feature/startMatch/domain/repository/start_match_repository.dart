@@ -15,4 +15,6 @@ abstract class StartMatchRepository {
     required String mobile,
     required String name,
   });
+
+  Future<void> startYourMatch({required StartMatchRequestBody request});
 }

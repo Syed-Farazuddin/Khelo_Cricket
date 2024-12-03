@@ -17,8 +17,6 @@ dependencies:
   flutter_riverpod: ^2.5.3
   fluttertoast: ^8.2.8
   flutter_svg: ^2.0.10+1
-  flutter_native_splash: ^2.4.2
-  flutter_launcher_icons: ^0.14.1
   pinput: ^5.0.0
   smart_auth: ^2.0.0
   permission_handler: ^11.3.1
@@ -27,8 +25,19 @@ dependencies:
   dio: ^5.7.0
   flutter_secure_storage: ^9.2.2
   riverpod_annotation: ^2.6.1
+  intl: ^0.18.0
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.14.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  remove_alpha_ios: true
+  adaptive_icon_foreground: "lib/assets/images/cricket.jpg" # Path to your app icon image
+  ios: true
+  image_path: "lib/assets/images/cricket.jpg" # Path to your app icon image
+  adaptive_icon_background: "#FFFFFF" # Change to any color you'd like as the background
+
   flutter_test:
     sdk: flutter
 
@@ -42,15 +51,3 @@ flutter:
     - lib/assets/images/
     - lib/assets/svgs/
     - .env
-
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "lib/assets/images/resized.png" # Path to your app icon image
-  adaptive_icon_background: "#FFFFFF" # Change to any color you'd like as the background
-
-flutter_native_splash:
-  color: "#000000" # Background color (black, in your case)
-  image: lib/assets/images/cricket.jpg # Path to your splash screen image
-  android: true
-  ios: true

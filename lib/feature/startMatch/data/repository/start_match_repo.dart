@@ -139,4 +139,26 @@ class StartMatchRepo extends StartMatchRepository {
     }
     return res;
   }
+
+  @override
+  Future<void> startYourMatch({required StartMatchRequestBody request}) async {
+    try {
+      final response = await baseService.post(
+        Network.startYourMatch(),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+        body: request.toJson(
+          request,
+        ),
+      );
+      debugPrint(response.toString());
+    } catch (e) {
+      debugPrint("Error while starting match");
+    }
+  }
 }

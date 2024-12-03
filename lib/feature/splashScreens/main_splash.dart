@@ -40,19 +40,19 @@ class _MainSplashState extends ConsumerState<MainSplash> {
             borderRadius: BorderRadius.circular(
               50,
             ),
-            color: Colors.white,
+            color: Colors.black,
             border: Border.all(
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
           child: Center(
             child: Image(
               image: const AssetImage(
-                "lib/assets/images/cricket.jpg",
+                "lib/assets/images/crickbud.png",
               ),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
         ),

@@ -43,4 +43,10 @@ class StartMatchController extends _$StartMatchController {
           name: name,
         );
   }
+
+  Future<void> startYourMatch({required StartMatchRequestBody request}) async {
+    return await ref
+        .read(startMatchRepositoryProvider)
+        .startYourMatch(request: request);
+  }
 }

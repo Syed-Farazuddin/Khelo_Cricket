@@ -214,7 +214,7 @@ class _HomeState extends State<Home> {
                   Expanded(
                     child: Custombutton(
                       onTap: () {
-                        context.pushNamed("/startMatch");
+                        context.pushNamed("/selectTeams");
                       },
                       width: MediaQuery.of(context).size.width / 2,
                       title: "Start Match",

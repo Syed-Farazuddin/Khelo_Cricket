@@ -8,11 +8,13 @@ class CustomInputField extends StatelessWidget {
     this.label = "Enter Number of players",
     this.maxlength = 2,
     this.textAllowed = false,
+    this.onchanged,
   });
   final TextEditingController controller;
   final String label;
   final int maxlength;
   final bool textAllowed;
+  final Function(String value)? onchanged;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CustomInputField extends StatelessWidget {
           ),
         ),
         child: TextField(
+          onChanged: onchanged,
           controller: controller,
           // maxLength: 10,
           keyboardType: textAllowed ? null : TextInputType.number,

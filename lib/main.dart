@@ -5,6 +5,7 @@ import 'package:crick_hub/feature/splashScreens/main_splash.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_teams.dart';
+import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
 import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -69,6 +70,16 @@ final GoRouter _router = GoRouter(
       name: "/selectTeams",
       builder: (context, state) {
         return const SelectTeams();
+      },
+    ),
+    GoRoute(
+      path: "/startMatch",
+      name: "/startMatch",
+      builder: (context, state) {
+        final extras = state.extra;
+        return const StartOrScheduleMatch(
+          startMatch: true,
+        );
       },
     ),
     GoRoute(

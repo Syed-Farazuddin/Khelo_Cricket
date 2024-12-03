@@ -4,6 +4,7 @@ import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
+import 'package:crick_hub/feature/startMatch/presentation/widgets/team_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -67,16 +68,42 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        teamDisplay(
+                        TeamDisplay(
                           label: teamA.name.isEmpty ? "Team A" : teamA.name,
                           teamNo: 1,
+                          onTap: () {
+                            context.pushNamed(
+                              "/selectTeam",
+                              extra: StartMatchExtras(
+                                teamName:
+                                    teamA.name.isEmpty ? "Team A" : teamA.name,
+                                teamNo: 1,
+                                refreshData: fetchYourTeams,
+                                yourTeams: yourTeams,
+                              ),
+                            );
+                          },
+                          teams: yourTeams,
                         ),
                         const SizedBox(
                           width: 10,
                         ),
-                        teamDisplay(
+                        TeamDisplay(
+                          teamNo: 1,
+                          teams: yourTeams,
                           label: teamB.name.isEmpty ? "Team B" : teamB.name,
-                          teamNo: 2,
+                          onTap: () {
+                            context.pushNamed(
+                              "/selectTeam",
+                              extra: StartMatchExtras(
+                                teamName:
+                                    teamB.name.isEmpty ? "Team B" : teamB.name,
+                                teamNo: 2,
+                                refreshData: fetchYourTeams,
+                                yourTeams: yourTeams,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -138,7 +165,9 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                         children: [
                           Expanded(
                             child: Custombutton(
-                              onTap: () {},
+                              onTap: () {
+                                context.pushNamed("/startMatch");
+                              },
                               title: "Schedule Match",
                               width: 100,
                             ),
@@ -148,7 +177,9 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                           ),
                           Expanded(
                             child: Custombutton(
-                              onTap: () {},
+                              onTap: () {
+                                context.pushNamed("/startMatch");
+                              },
                               title: "Start Match",
                               width: 100,
                             ),
@@ -249,42 +280,6 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
         itemCount: team.players.length,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-      ),
-    );
-  }
-
-  Widget teamDisplay({
-    required String label,
-    required int teamNo,
-  }) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          context.pushNamed(
-            "/selectTeam",
-            extra: StartMatchExtras(
-              teamName: label,
-              teamNo: teamNo,
-              refreshData: fetchYourTeams,
-              yourTeams: yourTeams,
-            ),
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            color: Colors.white,
-          ),
-          child: Text(
-            label,
-            style: GoogleFonts.golosText(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
       ),
     );
   }
