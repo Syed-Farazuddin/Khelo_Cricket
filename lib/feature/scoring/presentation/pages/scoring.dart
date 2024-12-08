@@ -1,3 +1,5 @@
+import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
+import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +25,24 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       ScoringModel(name: '3', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '4', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '6', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: 'WD', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: 'NB', url: '/matches/${widget.data.id}/scoring/'),
+      ScoringModel(
+        name: 'Undo',
+        url: '/matches/${widget.data.id}/scoring/',
+        isUndo: true,
+      ),
+      ScoringModel(
+        name: 'WD',
+        url: '/matches/${widget.data.id}/scoring/',
+        isWide: true,
+      ),
+      ScoringModel(
+          name: 'NB',
+          url: '/matches/${widget.data.id}/scoring/',
+          isNoBall: true),
+      ScoringModel(
+          name: 'NB',
+          url: '/matches/${widget.data.id}/scoring/',
+          isNoBall: true),
     ];
     return Scaffold(
       appBar: AppBar(),
@@ -89,20 +107,27 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                     mainAxisSpacing: 12,
                   ),
                   itemBuilder: (builder, index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(
-                          0.2,
+                    return GestureDetector(
+                      onTap: () {
+                        updateScore(
+                            score: scoringData[index],
+                            inningsId: widget.data.inningsA);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(
+                            0.2,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        scoringData[index].name,
-                        style: GoogleFonts.golosText(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
+                        child: Text(
+                          scoringData[index].name,
+                          style: GoogleFonts.golosText(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     );
                   },
@@ -116,11 +141,34 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     );
   }
 
-  Future<void> updateScore() async {}
+  Future<void> updateScore({
+    required ScoringModel score,
+    required int? inningsId,
+  }) async {
+    final updateScoring = Updatescoring(
+      ball: 0,
+      bowlerId: 1,
+      isBye: score.isBye,
+      isNoBall: score.isNoBall ?? false,
+      isWide: score.isWide,
+      isRunOut: false,
+      isWicket: false,
+      overId: 1,
+      runs: 0,
+    );
+    ref
+        .watch(
+          scoringProviderProvider.notifier,
+        )
+        .updateScoring(
+          scoring: updateScoring,
+          inningsId: inningsId!,
+        );
+  }
 
   Future<void> fetchInningsData() async {}
 
-  Future<void> chooseBatsman() async {}
+  Future<void> chooseBatsmans() async {}
 
   Future<void> changeBowler() async {}
 }
@@ -128,8 +176,16 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 class ScoringModel {
   String? url;
   String name;
+  bool? isWide;
+  bool? isNoBall;
+  bool? isBye;
+  bool? isUndo;
   ScoringModel({
     required this.name,
+    this.isNoBall,
+    this.isWide,
+    this.isBye,
+    this.isUndo,
     required this.url,
   });
 }

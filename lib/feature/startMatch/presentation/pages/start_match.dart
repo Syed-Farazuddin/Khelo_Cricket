@@ -1,5 +1,6 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
@@ -383,7 +384,101 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
     data = await ref
         .watch(startMatchControllerProvider.notifier)
         .startYourMatch(request: request);
-    context.goNamed('/scoring', extra: data);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => selectBatsman(data: data),
+      ),
+    );
+  }
+
+  Widget selectBatsman({required MatchData data}) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                RoleDetails(
+                  role: "Striker",
+                  path: "lib/assets/svgs/coinSvg.svg",
+                  networkUrl: Network.selectBatmans(
+                    inningsId: data.inningsA ?? 0,
+                  ),
+                ),
+                RoleDetails(
+                  role: "Striker",
+                  path: "lib/assets/svgs/coinSvg.svg",
+                  networkUrl: Network.selectBatmans(
+                    inningsId: data.inningsA ?? 0,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Custombutton(
+                  onTap: () {
+                    context.pop();
+                  },
+                  title: "Back",
+                  width: 100,
+                ),
+                Custombutton(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => selectBowler(data: data),
+                      ),
+                    );
+                  },
+                  color: Colors.green,
+                  title: "Next",
+                  width: 100,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget selectBowler({required MatchData data}) {
+    return Container(
+      child: RoleDetails(
+        role: "Bowler",
+        path: "lib/assets/svgs/coinSvg.svg",
+        networkUrl: Network.selectBowler(
+          inningsId: data.inningsA ?? 0,
+        ),
+      ),
+    );
+  }
+
+  Widget RoleDetails({
+    required String role,
+    required String path,
+    required String networkUrl,
+  }) {
+    return Container(
+      child: Column(
+        children: [
+          Text(
+            role,
+          ),
+          Image.asset(path)
+        ],
+      ),
+    );
+  }
+
+  Container selectPlayer() {
+    // final Team teamA = ref.read(selectedTeamA);
+    // final Team teamB = ref.read(selectedTeamB);
+    return Container();
   }
 
   Future<void> onScheduleMatch() async {}

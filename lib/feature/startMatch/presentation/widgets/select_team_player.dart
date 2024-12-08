@@ -1,7 +1,7 @@
-import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/common/widgets/player_card.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -201,90 +201,37 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
             itemCount: widget.team.players.length,
             itemBuilder: (builder, index) {
               Players player = widget.team.players[index];
-              return AnimatedContainer(
-                duration: const Duration(
-                  microseconds: 1000,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: widget.team.selectedPlayers.contains(player.id)
-                      ? Colors.blue
-                      : Colors.white.withOpacity(
-                          0.1,
-                        ),
-                  border: Border.all(
-                    color: widget.team.selectedPlayers.contains(player.id)
-                        ? Colors.blue
-                        : Colors.white.withOpacity(
-                            0.1,
-                          ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4.0,
-                    vertical: 2,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            child: ClipOval(
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Image.network(
-                                  player.image == "null"
-                                      ? Constants.dummyImage
-                                      : player.image ?? "",
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            player.name ?? "",
-                            style: GoogleFonts.golosText(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
+              return PlayerCard(
+                player: player,
+                onTap: () {
+                  if (widget.team.selectedPlayers.contains(player.id)) {
+                    setState(() {
+                      widget.team.selectedPlayers.remove(player.id);
+                      player.selected = false;
+                    });
+                  } else if (widget.team.selectedPlayers.length <= 11) {
+                    setState(() {
+                      widget.team.selectedPlayers.add(
+                        player.id,
+                      );
+                      player.selected = true;
+                    });
+                  } else {
+                    Toaster.onError(
+                      message: "Can't select more than 12 players",
+                    );
+                  }
+                },
+                color: widget.team.selectedPlayers.contains(player.id)
+                    ? Colors.blue
+                    : Colors.white.withOpacity(
+                        0.1,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          if (widget.team.selectedPlayers.contains(player.id)) {
-                            setState(() {
-                              widget.team.selectedPlayers.remove(player.id);
-                            });
-                          } else if (widget.team.selectedPlayers.length <= 11) {
-                            setState(() {
-                              widget.team.selectedPlayers.add(
-                                player.id,
-                              );
-                            });
-                          } else {
-                            Toaster.onError(
-                              message: "Can't select more than 12 players",
-                            );
-                          }
-                        },
-                        child: const Text(
-                          "Select",
-                        ),
+                borderColor: widget.team.selectedPlayers.contains(player.id)
+                    ? Colors.blue
+                    : Colors.white.withOpacity(
+                        0.1,
                       ),
-                    ],
-                  ),
-                ),
               );
             },
           ),
