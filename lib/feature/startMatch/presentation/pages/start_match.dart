@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 
 class StartOrScheduleMatch extends ConsumerStatefulWidget {
   const StartOrScheduleMatch({super.key, required this.startMatch});
@@ -382,6 +383,7 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
     data = await ref
         .watch(startMatchControllerProvider.notifier)
         .startYourMatch(request: request);
+    context.goNamed('/scoring', extra: data);
   }
 
   Future<void> onScheduleMatch() async {}

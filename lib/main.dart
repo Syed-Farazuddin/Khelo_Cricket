@@ -1,6 +1,7 @@
 import 'package:crick_hub/feature/authentication/presentation/pages/authentication.dart';
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
@@ -94,6 +95,14 @@ final GoRouter _router = GoRouter(
           teamNo: extra.teamNo,
           fetchYourTeams: extra.refreshData,
         );
+      },
+    ),
+    GoRoute(
+      path: "/scoring",
+      name: "/scoring",
+      builder: (context, state) {
+        final MatchData extra = state.extra as MatchData;
+        return ScoringPage(data: extra);
       },
     ),
     GoRoute(
