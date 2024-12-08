@@ -77,6 +77,7 @@ final GoRouter _router = GoRouter(
       name: "/startMatch",
       builder: (context, state) {
         final extras = state.extra;
+        debugPrint(extras.toString());
         return const StartOrScheduleMatch(
           startMatch: true,
         );

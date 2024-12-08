@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class Players {
   String? name;
   int id;
@@ -147,5 +145,55 @@ class AddTeamResponse {
       message: json['message'],
     );
     return res;
+  }
+}
+
+class MatchData {
+  int? id;
+  String? state;
+  String? ground;
+  String? date;
+  String? ballType;
+  int? tossWonTeamId;
+  bool? chooseToBat;
+  bool? chooseToBall;
+  int? bowlingLimit;
+  int? overs;
+  String? createdBy;
+  int? inningsA;
+  int? inningsB;
+
+  MatchData({
+    this.ballType,
+    this.bowlingLimit,
+    this.chooseToBall,
+    this.chooseToBat,
+    this.createdBy,
+    this.date,
+    this.ground,
+    this.id,
+    this.inningsA,
+    this.inningsB,
+    this.overs,
+    this.state,
+    this.tossWonTeamId,
+  });
+
+  factory MatchData.fromJson(Map<String, dynamic> json) {
+    return MatchData(
+      ballType: json['ballType'],
+      bowlingLimit: json['bowlingLimit'],
+      chooseToBall: json['chooseToBall'],
+      chooseToBat: json['chooseToBat'],
+      createdBy: json['createdBy'],
+      date: json['date'],
+      ground: json['ground'],
+      id: json['id'],
+      inningsA: json['inningsA'],
+      inningsB: json['inningsB'],
+      overs: json['overs'],
+      state: json['state'],
+      tossWonTeamId: json['tossWonTeamId'],
+    );
   }
 }

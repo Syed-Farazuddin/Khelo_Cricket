@@ -141,7 +141,10 @@ class StartMatchRepo extends StartMatchRepository {
   }
 
   @override
-  Future<void> startYourMatch({required StartMatchRequestBody request}) async {
+  Future<MatchData> startYourMatch({
+    required StartMatchRequestBody request,
+  }) async {
+    MatchData data = MatchData();
     try {
       final response = await baseService.post(
         Network.startYourMatch(),
@@ -157,8 +160,10 @@ class StartMatchRepo extends StartMatchRepository {
         ),
       );
       debugPrint(response.toString());
+      data = MatchData.fromJson(response);
     } catch (e) {
       debugPrint("Error while starting match");
     }
+    return data;
   }
 }

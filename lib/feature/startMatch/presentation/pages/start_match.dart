@@ -21,6 +21,7 @@ class StartOrScheduleMatch extends ConsumerStatefulWidget {
 class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
   int tossWonTeam = 0;
   bool choseToBat = true;
+  late MatchData data;
   late final TextEditingController state;
   late final TextEditingController overs;
   late final TextEditingController ground;
@@ -378,7 +379,7 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
       teamAPlayers: teamAPlayers,
       teamBPlayers: teamBPlayers,
     );
-    await ref
+    data = await ref
         .watch(startMatchControllerProvider.notifier)
         .startYourMatch(request: request);
   }
