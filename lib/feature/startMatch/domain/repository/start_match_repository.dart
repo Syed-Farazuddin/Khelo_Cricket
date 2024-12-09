@@ -16,5 +16,13 @@ abstract class StartMatchRepository {
     required String name,
   });
 
-  Future<void> startYourMatch({required StartMatchRequestBody request});
+  Future<void> startYourMatch({
+    required StartMatchRequestBody request,
+  });
+
+  Future<void> selectBatsmans({
+    required Players striker,
+    required Players nonStriker,
+    required int inningsId,
+  });
 }

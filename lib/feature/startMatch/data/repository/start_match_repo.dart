@@ -166,4 +166,59 @@ class StartMatchRepo extends StartMatchRepository {
     }
     return data;
   }
+
+  @override
+  Future<void> selectBatsmans({
+    required Players striker,
+    required Players nonStriker,
+    required int inningsId,
+  }) async {
+    try {
+      final body = {
+        "strikerId": striker.id,
+        "nonStrikerId": nonStriker.id,
+      };
+      final response = await baseService.post(
+        Network.selectBatmans(inningsId: inningsId),
+        body: body,
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+      debugPrint(response.toString());
+    } catch (e) {
+      debugPrint("Error while selecting striker and non Striker $e");
+    }
+  }
+
+  Future<void> selectBowler({
+    required Players bowler,
+    required int inningsId,
+    required int order,
+  }) async {
+    try {
+      final body = {
+        'bowlerId': bowler.id,
+        "order": order,
+      };
+      final response = await baseService.post(
+        Network.selectBowler(inningsId: inningsId),
+        body: body,
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+      debugPrint(response.toString());
+    } catch (e) {
+      debugPrint("Error while selecting striker and non Striker $e");
+    }
+  }
 }

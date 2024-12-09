@@ -1,9 +1,15 @@
+import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/common/widgets/player_card.dart';
 import 'package:crick_hub/core/network/network.dart';
+import 'package:crick_hub/core/toaster/toaster.dart';
+import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
+import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/team_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,14 +36,21 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
   late final TextEditingController overLimit;
   late final TextEditingController location;
 
+  get itemCount => null;
+
   @override
   void initState() {
     super.initState();
-    state = new TextEditingController();
-    overLimit = new TextEditingController();
-    ground = new TextEditingController();
-    overs = new TextEditingController();
-    location = new TextEditingController();
+    state = TextEditingController();
+    overLimit = TextEditingController();
+    ground = TextEditingController();
+    overs = TextEditingController();
+    location = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
@@ -117,7 +130,10 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                 ],
               ),
               startOrScheduleButton(
-                  isStartMatch: widget.startMatch, teamA: teamA, teamB: teamB),
+                isStartMatch: widget.startMatch,
+                teamA: teamA,
+                teamB: teamB,
+              ),
             ],
           ),
         ),
@@ -393,30 +409,68 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
   }
 
   Widget selectBatsman({required MatchData data}) {
+    final strikerProvider = ref.watch(striker);
+    final nonStrikerProvider = ref.watch(nonStriker);
+
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(
+      appBar: AppBar(
+        title: Text(
+          "Select Bowler",
+          style: GoogleFonts.golosText(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                RoleDetails(
-                  role: "Striker",
-                  path: "lib/assets/svgs/coinSvg.svg",
+                roleDetails(
+                  role: strikerProvider.id != 0
+                      ? strikerProvider.name ?? ""
+                      : "Striker",
+                  path: strikerProvider.id != 0
+                      ? strikerProvider.image ?? Constants.dummyImage
+                      : "lib/assets/images/striker.png",
                   networkUrl: Network.selectBatmans(
                     inningsId: data.inningsA ?? 0,
                   ),
+                  isStriker: true,
+                  isBowler: false,
+                  isNonStriker: false,
+                  player: strikerProvider,
                 ),
-                RoleDetails(
-                  role: "Striker",
-                  path: "lib/assets/svgs/coinSvg.svg",
+                const SizedBox(
+                  width: 20,
+                ),
+                roleDetails(
+                  isStriker: false,
+                  isBowler: false,
+                  isNonStriker: true,
+                  role: nonStrikerProvider.id != 0
+                      ? nonStrikerProvider.name ?? ""
+                      : "Striker",
+                  path: nonStrikerProvider.id != 0
+                      ? nonStrikerProvider.image ?? Constants.dummyImage
+                      : "lib/assets/images/non_striker.png",
                   networkUrl: Network.selectBatmans(
                     inningsId: data.inningsA ?? 0,
                   ),
+                  player: nonStrikerProvider,
                 ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Custombutton(
                   onTap: () {
@@ -426,7 +480,27 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                   width: 100,
                 ),
                 Custombutton(
-                  onTap: () {
+                  onTap: () async {
+                    if (strikerProvider.id == 0) {
+                      Toaster.onError(
+                        message: "Make sure you select Striker",
+                      );
+                      return;
+                    }
+
+                    if (nonStrikerProvider.id == 0) {
+                      Toaster.onError(
+                        message: "Make sure you select Non Striker",
+                      );
+                      return;
+                    }
+                    await ref
+                        .watch(startMatchControllerProvider.notifier)
+                        .selectBatsmans(
+                          striker: strikerProvider,
+                          nonStriker: nonStrikerProvider,
+                          inningsId: data.inningsA ?? 0,
+                        );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -447,38 +521,215 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
   }
 
   Widget selectBowler({required MatchData data}) {
-    return Container(
-      child: RoleDetails(
-        role: "Bowler",
-        path: "lib/assets/svgs/coinSvg.svg",
-        networkUrl: Network.selectBowler(
-          inningsId: data.inningsA ?? 0,
+    final bowlerProvider = ref.watch(bowler);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Select Bowler",
+          style: GoogleFonts.golosText(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: bowlerProvider.id != 0
+                  ? roleDetails(
+                      role: "${bowlerProvider.name} (BOWLER)",
+                      path: bowlerProvider.image ?? Constants.dummyImage,
+                      networkUrl: "",
+                      isStriker: false,
+                      isBowler: true,
+                      isNonStriker: false,
+                      player: bowlerProvider,
+                    )
+                  : roleDetails(
+                      role: "Bowler",
+                      path: "lib/assets/images/bowler.png",
+                      networkUrl: Network.selectBowler(
+                        inningsId: data.inningsA ?? 0,
+                      ),
+                      isBowler: true,
+                      isNonStriker: false,
+                      isStriker: false,
+                      player: bowlerProvider,
+                    ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Custombutton(
+                  onTap: () {
+                    context.pop();
+                  },
+                  title: "Back",
+                  width: 100,
+                ),
+                Custombutton(
+                  onTap: () async {
+                    if (bowlerProvider.id == 0) {
+                      Toaster.onError(message: "Make sure you select a Bowler");
+                      return;
+                    }
+                    await ref
+                        .watch(startMatchControllerProvider.notifier)
+                        .selectBowler(
+                          bowler: bowlerProvider,
+                          order: 0,
+                          inningsId: data.inningsA ?? 0,
+                        );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => ScoringPage(
+                          data: data,
+                        ),
+                      ),
+                    );
+                  },
+                  color: Colors.green,
+                  title: "Next",
+                  width: 100,
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
   }
 
-  Widget RoleDetails({
+  Widget roleDetails({
     required String role,
     required String path,
     required String networkUrl,
+    required bool isStriker,
+    required bool isNonStriker,
+    required bool isBowler,
+    required Players player,
   }) {
-    return Container(
-      child: Column(
-        children: [
-          Text(
-            role,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => DisplayPlayers(
+              data: data,
+              selectBatman: isStriker || isNonStriker,
+              onTap: (newPlayer) {
+                setState(() {
+                  if (isStriker) {
+                    ref.read(striker.notifier).state = newPlayer;
+                  } else if (isNonStriker) {
+                    ref.read(nonStriker.notifier).state = newPlayer;
+                  } else {
+                    ref.read(bowler.notifier).state = newPlayer;
+                  }
+                });
+                context.pop();
+              },
+            ),
           ),
-          Image.asset(path)
-        ],
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Text(
+              role,
+              style: GoogleFonts.golosText(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            path.startsWith("http")
+                ? Image.network(
+                    path,
+                    fit: BoxFit.contain,
+                    height: 200,
+                    width: 150,
+                  )
+                : Image.asset(
+                    path,
+                    fit: BoxFit.contain,
+                    width: 150,
+                    height: 150,
+                  ),
+          ],
+        ),
       ),
     );
   }
 
-  Container selectPlayer() {
-    // final Team teamA = ref.read(selectedTeamA);
-    // final Team teamB = ref.read(selectedTeamB);
-    return Container();
+  Widget selectPlayer({
+    required MatchData data,
+    required bool selectBatman,
+    required Players player,
+  }) {
+    final Team teamA = ref.read(selectedTeamA);
+    final Team teamB = ref.read(selectedTeamB);
+    final Team team;
+    if (data.tossWonTeamId == teamA.teamId) {
+      if (selectBatman && data.chooseToBat!) {
+        team = teamA;
+      } else {
+        team = teamB;
+      }
+    } else {
+      if (selectBatman && data.chooseToBat!) {
+        team = teamB;
+      } else {
+        team = teamA;
+      }
+    }
+    return Scaffold(
+      appBar: AppBar(
+        title: selectBatman
+            ? const Text("Select Batsman")
+            : const Text("Select Bowler"),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(12),
+        child: ListView.separated(
+          itemBuilder: (builder, index) {
+            final Players currPlayer = team.players[index];
+            if (team.selectedPlayers.contains(currPlayer.id)) {
+              return PlayerCard(
+                player: currPlayer,
+                onTap: () {
+                  setState(() {
+                    player = currPlayer;
+                  });
+                  context.pop();
+                },
+                color: const Color.fromARGB(54, 255, 255, 255),
+                borderColor: Colors.white.withOpacity(0.2),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+          separatorBuilder: (builder, index) =>
+              team.selectedPlayers.contains(team.players[index].id)
+                  ? const SizedBox(
+                      height: 10,
+                    )
+                  : const SizedBox.shrink(),
+          itemCount: teamB.players.length,
+        ),
+      ),
+    );
   }
 
   Future<void> onScheduleMatch() async {}

@@ -50,4 +50,28 @@ class StartMatchController extends _$StartMatchController {
         .read(startMatchRepositoryProvider)
         .startYourMatch(request: request);
   }
+
+  Future<void> selectBatsmans({
+    required Players striker,
+    required Players nonStriker,
+    required int inningsId,
+  }) async {
+    return await ref.read(startMatchRepositoryProvider).selectBatsmans(
+          striker: striker,
+          nonStriker: nonStriker,
+          inningsId: inningsId,
+        );
+  }
+
+  Future<void> selectBowler({
+    required Players bowler,
+    required int inningsId,
+    required int order,
+  }) async {
+    return await ref.read(startMatchRepositoryProvider).selectBowler(
+          bowler: bowler,
+          inningsId: inningsId,
+          order: order,
+        );
+  }
 }
