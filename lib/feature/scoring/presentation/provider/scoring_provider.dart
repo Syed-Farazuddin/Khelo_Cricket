@@ -15,7 +15,7 @@ class ScoringProvider extends _$ScoringProvider {
     required Updatescoring scoring,
     required int inningsId,
   }) async {
-    ref
+    await ref
         .read(scoringRepositoryProvider)
         .updateScore(scoring: scoring, inningsId: inningsId);
   }

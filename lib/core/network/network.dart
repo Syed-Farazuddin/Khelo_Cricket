@@ -16,7 +16,7 @@ class Network {
       'user/$userId/profile';
   static String startYourMatch() => "/matches/start_match";
   static String updateScore({required int inningsId}) =>
-      '/matches/$inningsId/scoring/';
+      '/matches/$inningsId/scoring';
   static String selectBatmans({required int inningsId}) =>
       '/matches/$inningsId/scoring/select_batsman';
   static String selectBowler({required int inningsId}) =>

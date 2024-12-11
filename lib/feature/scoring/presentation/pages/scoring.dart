@@ -48,7 +48,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       appBar: AppBar(),
       // Top body should contains the match details score bowler and strikers
       body: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 12,
           horizontal: 16,
         ),
@@ -56,7 +56,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           children: [
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
                 child: Column(
@@ -91,17 +91,18 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             ),
             // The bottom should contain the scoring card where we can manually enter score and all.
             Expanded(
+              flex: 2,
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 12,
                   horizontal: 16,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.black,
                 ),
                 child: GridView.builder(
                   itemCount: scoringData.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 14,
                     mainAxisSpacing: 12,
@@ -133,7 +134,6 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   },
                 ),
               ),
-              flex: 2,
             )
           ],
         ),
@@ -156,7 +156,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       overId: 1,
       runs: 0,
     );
-    ref
+    await ref
         .watch(
           scoringProviderProvider.notifier,
         )
