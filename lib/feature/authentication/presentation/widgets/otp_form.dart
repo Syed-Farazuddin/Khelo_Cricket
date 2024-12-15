@@ -8,9 +8,13 @@ import 'package:pinput/pinput.dart';
 import 'package:smart_auth/smart_auth.dart';
 
 class OtpFormWidget extends ConsumerStatefulWidget {
-  const OtpFormWidget({super.key, required this.mobile});
+  const OtpFormWidget({
+    super.key,
+    required this.mobile,
+    required this.isNewPlayer,
+  });
   final String mobile;
-
+  final bool isNewPlayer;
   @override
   ConsumerState<OtpFormWidget> createState() => _OtpFormWidgetState();
 }
@@ -119,6 +123,7 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
               bool res = await verifyOtp(
                 mobile: widget.mobile,
                 otp: otp.text,
+                isNewplayer: widget.isNewPlayer,
               );
               if (res) {
                 context.goNamed('/home');
@@ -135,10 +140,11 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
   Future<bool> verifyOtp({
     required String mobile,
     required String otp,
+    required bool isNewplayer,
   }) async {
     bool result = await ref
         .read(authProviderProvider.notifier)
-        .verifyOtp(mobile: mobile, otp: otp);
+        .verifyOtp(mobile: mobile, otp: otp, isNewPlayer: isNewplayer);
     return result;
   }
 }

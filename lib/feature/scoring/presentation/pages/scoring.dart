@@ -67,7 +67,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Faraz 11 VS Mighty Marvericks",
+                            "${widget.data.state}",
                             style: GoogleFonts.golosText(
                               color: Colors.black,
                               fontSize: 16,
@@ -75,7 +75,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                             ),
                           ),
                           Text(
-                            "24 May,2024",
+                            "${widget.data.ground}",
                             style: GoogleFonts.golosText(
                               color: Colors.black,
                               fontSize: 14,
@@ -85,13 +85,21 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         ],
                       ),
                     ),
+                    Text(
+                      "${widget.data}",
+                      style: GoogleFonts.golosText(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
             // The bottom should contain the scoring card where we can manually enter score and all.
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
@@ -150,11 +158,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       bowlerId: 1,
       isBye: score.isBye,
       isNoBall: score.isNoBall ?? false,
-      isWide: score.isWide,
+      isWide: score.isWide ?? false,
       isRunOut: false,
       isWicket: false,
       overId: 1,
-      runs: 0,
+      runs: int.parse(score.name),
     );
     await ref
         .watch(

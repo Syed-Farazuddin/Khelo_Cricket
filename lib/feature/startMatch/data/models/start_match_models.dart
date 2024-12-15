@@ -196,4 +196,21 @@ class MatchData {
       tossWonTeamId: json['tossWonTeamId'],
     );
   }
+
+  @override
+  String toString() {
+    return '''Match Data ( 
+    BallType : $ballType , 
+    Bowling Limit : $bowlingLimit ,
+    ChooseToBat: $chooseToBat ,
+    ChooseToball : $chooseToBall ,
+    createdBy : $createdBy,
+    date : $date,
+    ground : $ground , 
+    id : $id,
+    inningsA : $inningsA,
+    inningsB : $inningsB,
+    state : $state
+    )''';
+  }
 }

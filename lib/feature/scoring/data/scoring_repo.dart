@@ -39,10 +39,12 @@ class ScoringRepo extends ScoringRepository {
     required int inningsId,
   }) async {
     try {
+      final score = scoring.toJson(scoring);
       final result = await baseService.post(
         Network.updateScore(
           inningsId: inningsId,
         ),
+        body: score,
         options: Options(
           headers: {
             "Authorization": await storage.read(

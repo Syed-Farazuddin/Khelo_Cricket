@@ -1,7 +1,13 @@
-abstract class AuthenticationRepository {
-  Future<bool> sendOtp({required String mobile});
+import 'package:crick_hub/feature/authentication/domain/auth_models.dart';
 
-  Future<bool> verifyOtp({required String mobile, required String otp});
+abstract class AuthenticationRepository {
+  Future<CustomResponse> sendOtp({required String mobile});
+
+  Future<bool> verifyOtp({
+    required String mobile,
+    required String otp,
+    required bool isNewPlayer,
+  });
 
   Future<void> updateFirebaseToken();
 }

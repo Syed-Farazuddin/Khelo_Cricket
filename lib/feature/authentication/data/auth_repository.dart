@@ -2,6 +2,7 @@ import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
+import 'package:crick_hub/feature/authentication/domain/auth_models.dart';
 import 'package:crick_hub/feature/authentication/domain/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,14 +28,22 @@ class AuthRepository extends AuthenticationRepository {
   final Storage storage;
 
   @override
-  Future<bool> sendOtp({required String mobile}) async {
-    bool result = false;
+  Future<CustomResponse> sendOtp({required String mobile}) async {
+    CustomResponse result = CustomResponse(
+      field: null,
+      message: null,
+      status: null,
+    );
     try {
       final response = await baseService.post(
         Network.sendOtp(),
         body: {
           'mobile': mobile,
         },
+      );
+      result = CustomResponse.fromJson(
+        json: response,
+        field: response['newUser'],
       );
       // final res = jsonDecode(response.toString());
       debugPrint(response.toString());
@@ -50,10 +59,15 @@ class AuthRepository extends AuthenticationRepository {
   }
 
   @override
-  Future<bool> verifyOtp({required String mobile, required String otp}) async {
+  Future<bool> verifyOtp({
+    required String mobile,
+    required String otp,
+    required bool isNewPlayer,
+  }) async {
     final body = {
       'mobile': mobile,
       'otp': otp,
+      'isNewPlayer': isNewPlayer,
     };
     bool result = false;
     try {

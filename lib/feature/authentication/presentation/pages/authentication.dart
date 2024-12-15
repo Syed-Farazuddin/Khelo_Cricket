@@ -15,6 +15,8 @@ class AuthenticationPage extends ConsumerStatefulWidget {
 class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
   final TextEditingController controller = TextEditingController();
   bool showOtp = false;
+  bool isNewPlayer = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +35,7 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
           showOtp
               ? OtpFormWidget(
                   mobile: controller.text,
+                  isNewPlayer: isNewPlayer,
                 )
               : const SizedBox.shrink(),
           !showOtp
@@ -50,11 +53,17 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
   }
 
   Future<void> sendOtp({required String mobile}) async {
-    final result =
-        await ref.read(authProviderProvider.notifier).sendOtp(mobile: mobile);
+    final result = await ref
+        .read(
+          authProviderProvider.notifier,
+        )
+        .sendOtp(
+          mobile: mobile,
+        );
     debugPrint(result.toString());
     setState(() {
-      showOtp = result;
+      showOtp = result.status ?? false;
+      isNewPlayer = result.field ?? false;
     });
   }
 }

@@ -21,7 +21,7 @@ class Updatescoring {
     required this.overId,
   });
 
-  static Map<String, dynamic> toJson(Updatescoring score) {
+  Map<String, dynamic> toJson(Updatescoring score) {
     return {
       'ball': score.ball,
       'runs': score.runs,
