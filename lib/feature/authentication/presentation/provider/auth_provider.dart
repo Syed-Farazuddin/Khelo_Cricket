@@ -22,8 +22,10 @@ class AuthProvider extends _$AuthProvider {
     required String otp,
     required bool isNewPlayer,
   }) async {
-    return await ref
-        .read(authRepositoryProvider)
-        .verifyOtp(mobile: mobile, otp: otp, isNewPlayer: isNewPlayer);
+    return await ref.read(authRepositoryProvider).verifyOtp(
+          mobile: mobile,
+          otp: otp,
+          isNewPlayer: isNewPlayer,
+        );
   }
 }

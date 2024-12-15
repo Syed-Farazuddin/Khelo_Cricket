@@ -26,6 +26,10 @@ class BowlerDetails {
     this.overLeft = 0,
     this.oversBowled = 0,
   });
+
+  factory BowlerDetails.fromJson(Map<String, dynamic> json) {
+    return BowlerDetails();
+  }
 }
 
 class OverDetails {
@@ -42,6 +46,10 @@ class OverDetails {
   factory OverDetails.fromJson(
     Map<String, dynamic> json,
   ) {
-    return OverDetails();
+    return OverDetails(
+      id: json['id'],
+      bowlerId: json['bowlerId'],
+      order: json['order'],
+    );
   }
 }

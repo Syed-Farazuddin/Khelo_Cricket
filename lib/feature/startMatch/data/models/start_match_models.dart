@@ -1,3 +1,5 @@
+import 'package:crick_hub/common/models/scoring_models.dart';
+
 class Players {
   String? name;
   int id;
@@ -213,4 +215,14 @@ class MatchData {
     state : $state
     )''';
   }
+}
+
+class SelectBowlerReponse {
+  BowlerDetails bowler;
+  OverDetails over;
+
+  SelectBowlerReponse({
+    required this.bowler,
+    required this.over,
+  });
 }

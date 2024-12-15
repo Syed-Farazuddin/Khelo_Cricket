@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
@@ -195,11 +196,15 @@ class StartMatchRepo extends StartMatchRepository {
     }
   }
 
-  Future<void> selectBowler({
+  Future<SelectBowlerReponse> selectBowler({
     required Players bowler,
     required int inningsId,
     required int order,
   }) async {
+    SelectBowlerReponse result = SelectBowlerReponse(
+      bowler: BowlerDetails(),
+      over: OverDetails(),
+    );
     try {
       final body = {
         'bowlerId': bowler.id,
@@ -217,8 +222,15 @@ class StartMatchRepo extends StartMatchRepository {
         ),
       );
       debugPrint(response.toString());
+      final bowerDetailas = response['bowler'];
+      final overDetails = response['over'];
+      BowlerDetails bowlerDetails = BowlerDetails.fromJson(bowerDetailas);
+      OverDetails over = OverDetails.fromJson(overDetails);
+      result.bowler = bowlerDetails;
+      result.over = over;
     } catch (e) {
       debugPrint("Error while selecting striker and non Striker $e");
     }
+    return result;
   }
 }

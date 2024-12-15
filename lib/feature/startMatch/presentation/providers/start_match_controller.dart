@@ -63,7 +63,7 @@ class StartMatchController extends _$StartMatchController {
         );
   }
 
-  Future<void> selectBowler({
+  Future<SelectBowlerReponse> selectBowler({
     required Players bowler,
     required int inningsId,
     required int order,
