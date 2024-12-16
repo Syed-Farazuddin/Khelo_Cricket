@@ -3,6 +3,7 @@ import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/scoring/domain/scoring_repository.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,8 +27,6 @@ class ScoringRepo extends ScoringRepository {
   final BaseService baseService;
   final Storage storage;
   @override
-  Future<void> fetchInningsData() async {}
-
   Future<void> fetchMatchData() async {}
 
   @override
@@ -74,7 +73,47 @@ class ScoringRepo extends ScoringRepository {
   }
 
   @override
-  Future<void> selectStrikers() async {
-    // TODO: implement selectStrikers
+  Future<void> selectStrikers() async {}
+
+  @override
+  Future<InningsModel> fetchInningsData({required int inningsId}) async {
+    InningsModel result = InningsModel(
+      byes: 0,
+      extras: 0,
+      inningsid: 0,
+      isCompleted: false,
+      nonStrikerId: 0,
+      oversPlayed: 0,
+      strikerId: 0,
+      totalNoBalls: 0,
+      totalRuns: 0,
+      totalWides: 0,
+      striker: Players(
+        name: '',
+        id: 0,
+      ),
+      nonStriker: Players(
+        name: '',
+        id: 0,
+      ),
+    );
+    try {
+      final response = await baseService.get(
+        Network.getInningsData(
+          inningsid: inningsId,
+        ),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+      result = InningsModel.fromJson(response);
+    } catch (e) {
+      debugPrint('Error while fetching innings Data');
+    }
+    return result;
   }
 }

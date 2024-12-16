@@ -57,7 +57,7 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
                   ? "${bowlerProvider.name} (BOWLER)"
                   : "Bowler",
               data: data,
-              path: bowlerProvider.id != 0
+              path: bowlerProvider.id != 0 && bowlerProvider.image != 'null'
                   ? bowlerProvider.image ?? Constants.dummyImage
                   : "lib/assets/images/bowler.png",
               networkUrl: "",

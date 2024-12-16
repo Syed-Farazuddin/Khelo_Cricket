@@ -1,3 +1,5 @@
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+
 class Updatescoring {
   int? ball;
   int? runs;
@@ -33,5 +35,64 @@ class Updatescoring {
       'bowlerId': score.bowlerId,
       'overId': score.overId
     };
+  }
+}
+
+class InningsModel {
+  int? inningsid;
+  int? totalRuns;
+  int? extras;
+  int? totalWides;
+  int? totalNoBalls;
+  int? byes;
+  int? oversPlayed;
+  bool? isCompleted;
+  int? nonStrikerId;
+  int? strikerId;
+  Players? striker;
+  Players? nonStriker;
+
+  InningsModel({
+    required this.byes,
+    required this.extras,
+    required this.inningsid,
+    required this.isCompleted,
+    required this.nonStrikerId,
+    required this.oversPlayed,
+    required this.strikerId,
+    required this.totalNoBalls,
+    required this.totalRuns,
+    required this.totalWides,
+    required this.nonStriker,
+    required this.striker,
+  });
+
+  factory InningsModel.fromJson(Map<String, dynamic> json) {
+    final strikerData = json['striker'];
+    final striker = Players(
+      name: strikerData['user']['name'],
+      image: strikerData['user']['player']['imageUrl'],
+      id: strikerData['user']['player']['id'],
+    );
+    final nonStrikerData = json['nonStriker'];
+    final nonStriker = Players(
+      name: nonStrikerData['user']['name'],
+      image: nonStrikerData['user']['player']['imageUrl'],
+      id: nonStrikerData['user']['player']['id'],
+    );
+    return InningsModel(
+      byes: json['bytes'],
+      extras: json['extras'],
+      inningsid: json['id'],
+      isCompleted: json['isCompleted'],
+      nonStrikerId: json['nonStrikerId'],
+      oversPlayed: json['oversPlayed'],
+      strikerId: json['strikerId'],
+      totalNoBalls: json['totalNoBalls'],
+      totalRuns: json['totalRuns'],
+      totalWides: json['totalWides'],
+      striker: striker,
+      nonStriker: nonStriker,
+    );
   }
 }

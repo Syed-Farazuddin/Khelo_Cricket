@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
@@ -17,6 +18,14 @@ class ScoringPage extends ConsumerStatefulWidget {
 }
 
 class _ScoringPageState extends ConsumerState<ScoringPage> {
+  late InningsModel inningsData;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchInningsData();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ScoringModel> scoringData = [
@@ -47,102 +56,183 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     return Scaffold(
       appBar: AppBar(),
       // Top body should contains the match details score bowler and strikers
-      body: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 16,
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "${widget.data.state}",
-                            style: GoogleFonts.golosText(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Text(
-                            "${widget.data.ground}",
-                            style: GoogleFonts.golosText(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "${widget.data}",
-                      style: GoogleFonts.golosText(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 16,
               ),
-            ),
-            // The bottom should contain the scoring card where we can manually enter score and all.
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 16,
-                ),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                ),
-                child: GridView.builder(
-                  itemCount: scoringData.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 14,
-                    mainAxisSpacing: 12,
-                  ),
-                  itemBuilder: (builder, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        updateScore(
-                            score: scoringData[index],
-                            inningsId: widget.data.inningsA);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(
-                            0.2,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${widget.data.state}",
+                          style: GoogleFonts.golosText(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        child: Text(
-                          scoringData[index].name,
+                        Text(
+                          "${widget.data.ground}",
                           style: GoogleFonts.golosText(
-                            fontSize: 24,
+                            color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
-                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "${inningsData.totalRuns} Runs",
+                        style: GoogleFonts.golosText(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
                         ),
                       ),
-                    );
-                  },
+                      Text(
+                        "${inningsData.oversPlayed} Overs",
+                        style: GoogleFonts.golosText(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  showBatsmans(
+                    striker: inningsData.striker!,
+                    nonStriker: inningsData.nonStriker!,
+                  )
+                ],
+              ),
+            ),
+          ),
+          // The bottom should contain the scoring card where we can manually enter score and all.
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 16,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.black,
+              ),
+              child: GridView.builder(
+                itemCount: scoringData.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 12,
+                ),
+                itemBuilder: (builder, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      updateScore(
+                          score: scoringData[index],
+                          inningsId: widget.data.inningsA);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(
+                          0.2,
+                        ),
+                      ),
+                      child: Text(
+                        scoringData[index].name,
+                        style: GoogleFonts.golosText(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget showBatsmans({required Players striker, required Players nonStriker}) {
+    return Row(
+      children: [
+        player(
+          player: striker,
+          isStriker: true,
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        player(
+          player: nonStriker,
+        ),
+      ],
+    );
+  }
+
+  Widget player({required Players player, bool isStriker = false}) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(
+            0.2,
+          ),
+          borderRadius: BorderRadius.circular(
+            12,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 12,
+        ),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  12,
                 ),
               ),
-            )
+              height: 40,
+              width: 40,
+              child: Image.network(
+                player.image ?? Constants.dummyImage,
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              "${player.name} ${isStriker ? "*" : ""}",
+              style: GoogleFonts.golosText(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),
@@ -172,9 +262,21 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           scoring: updateScoring,
           inningsId: inningsId!,
         );
+    fetchInningsData();
   }
 
-  Future<void> fetchInningsData() async {}
+  Future<void> fetchInningsData() async {
+    final currentInningsId = widget.data.firstInnings?.isCompleted ?? false
+        ? widget.data.secondInnings?.inningsid ?? 0
+        : widget.data.firstInnings?.inningsid ?? 0;
+    final data =
+        await ref.read(scoringProviderProvider.notifier).getInningsData(
+              inningsId: currentInningsId,
+            );
+    setState(() {
+      inningsData = data;
+    });
+  }
 
   Future<void> chooseBatsmans() async {}
 

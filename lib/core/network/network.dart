@@ -21,4 +21,6 @@ class Network {
       '/matches/$inningsId/scoring/select_batsman';
   static String selectBowler({required int inningsId}) =>
       '/matches/$inningsId/scoring/select_bowler';
+  static String getInningsData({required int inningsid}) =>
+      '/matches/innings/$inningsid';
 }

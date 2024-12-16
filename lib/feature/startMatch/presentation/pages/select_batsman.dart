@@ -58,9 +58,10 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   role: strikerProvider.id != 0
                       ? strikerProvider.name ?? ""
                       : "Striker",
-                  path: strikerProvider.id != 0
-                      ? strikerProvider.image ?? Constants.dummyImage
-                      : "lib/assets/images/striker.png",
+                  path:
+                      strikerProvider.id != 0 && strikerProvider.image != 'null'
+                          ? strikerProvider.image ?? Constants.dummyImage
+                          : "lib/assets/images/striker.png",
                   networkUrl: Network.selectBatmans(
                     inningsId: data.inningsA ?? 0,
                   ),
@@ -85,7 +86,8 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   role: nonStrikerProvider.id != 0
                       ? nonStrikerProvider.name ?? ""
                       : "Striker",
-                  path: nonStrikerProvider.id != 0
+                  path: nonStrikerProvider.id != 0 &&
+                          nonStrikerProvider.image != 'null'
                       ? nonStrikerProvider.image ?? Constants.dummyImage
                       : "lib/assets/images/non_striker.png",
                   networkUrl: Network.selectBatmans(

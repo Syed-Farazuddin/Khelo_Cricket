@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/models/scoring_models.dart';
+import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 
 class Players {
   String? name;
@@ -164,7 +165,8 @@ class MatchData {
   String? createdBy;
   int? inningsA;
   int? inningsB;
-
+  InningsModel? firstInnings;
+  InningsModel? secondInnings;
   MatchData({
     this.ballType,
     this.bowlingLimit,
@@ -179,9 +181,15 @@ class MatchData {
     this.overs,
     this.state,
     this.tossWonTeamId,
+    this.firstInnings,
+    this.secondInnings,
   });
 
   factory MatchData.fromJson(Map<String, dynamic> json) {
+    final inningsA = json['firstInnings'];
+    final InningsModel firstInnings = InningsModel.fromJson(inningsA);
+    final inningsB = json['secondInnings'];
+    final InningsModel secondInnings = InningsModel.fromJson(inningsB);
     return MatchData(
       ballType: json['ballType'],
       bowlingLimit: json['bowlingLimit'],
@@ -196,6 +204,8 @@ class MatchData {
       overs: json['overs'],
       state: json['state'],
       tossWonTeamId: json['tossWonTeamId'],
+      firstInnings: firstInnings,
+      secondInnings: secondInnings,
     );
   }
 
@@ -213,6 +223,8 @@ class MatchData {
     inningsA : $inningsA,
     inningsB : $inningsB,
     state : $state
+    firstInnings: $firstInnings,
+    secondInnings: $secondInnings,
     )''';
   }
 }

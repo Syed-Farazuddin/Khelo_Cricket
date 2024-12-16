@@ -1,10 +1,14 @@
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 
 abstract class ScoringRepository {
-  Future<void> fetchInningsData();
+  Future<void> fetchInningsData({
+    required int inningsId,
+  });
 
-  Future<void> updateScore(
-      {required Updatescoring scoring, required int inningsId});
+  Future<void> updateScore({
+    required Updatescoring scoring,
+    required int inningsId,
+  });
 
   Future<void> undoScore();
 
