@@ -28,7 +28,15 @@ class BowlerDetails {
   });
 
   factory BowlerDetails.fromJson(Map<String, dynamic> json) {
-    return BowlerDetails();
+    return BowlerDetails(
+      bowlingTeamId: json['bowlingTeamId'] ?? 0,
+      id: json['id'],
+      inningsId: json['inningsId'],
+      isCompleted: json['isCompleted'],
+      order: json['order'],
+      overLeft: json['overLeft'],
+      oversBowled: json['oversBowled'],
+    );
   }
 }
 

@@ -49,8 +49,8 @@ class InningsModel {
   bool? isCompleted;
   int? nonStrikerId;
   int? strikerId;
-  Players? striker;
-  Players? nonStriker;
+  PlayerScoreModel? striker;
+  PlayerScoreModel? nonStriker;
 
   InningsModel({
     required this.byes,
@@ -68,18 +68,41 @@ class InningsModel {
   });
 
   factory InningsModel.fromJson(Map<String, dynamic> json) {
-    final strikerData = json['striker'];
-    final striker = Players(
-      name: strikerData['user']['name'],
-      image: strikerData['user']['player']['imageUrl'],
-      id: strikerData['user']['player']['id'],
+    PlayerScoreModel striker = PlayerScoreModel(
+      player: Players(name: '', id: 0),
+      score: ScoreModel(),
     );
-    final nonStrikerData = json['nonStriker'];
-    final nonStriker = Players(
-      name: nonStrikerData['user']['name'],
-      image: nonStrikerData['user']['player']['imageUrl'],
-      id: nonStrikerData['user']['player']['id'],
+    if (json['strikerId'] != null) {
+      final strikerData = json['striker'];
+      final scoreData = strikerData['score'];
+      final ScoreModel score = ScoreModel.fromJson(scoreData);
+      striker = PlayerScoreModel(
+        player: Players(
+          name: strikerData['user']['name'],
+          image: strikerData['user']['player']['imageUrl'],
+          id: strikerData['user']['player']['id'],
+        ),
+        score: score,
+      );
+    }
+    PlayerScoreModel nonStriker = PlayerScoreModel(
+      player: Players(name: '', id: 0),
+      score: ScoreModel(),
     );
+
+    if (json['nonStrikerId'] != null) {
+      final nonStrikerData = json['nonStriker'];
+      final scoreData = nonStrikerData['score'];
+      final ScoreModel score = ScoreModel.fromJson(scoreData);
+      nonStriker = PlayerScoreModel(
+        player: Players(
+          name: nonStrikerData['user']['name'],
+          image: nonStrikerData['user']['player']['imageUrl'],
+          id: nonStrikerData['user']['player']['id'],
+        ),
+        score: score,
+      );
+    }
     return InningsModel(
       byes: json['bytes'],
       extras: json['extras'],
@@ -93,6 +116,74 @@ class InningsModel {
       totalWides: json['totalWides'],
       striker: striker,
       nonStriker: nonStriker,
+    );
+  }
+}
+
+class PlayerScoreModel {
+  Players? player;
+  ScoreModel? score;
+
+  PlayerScoreModel({
+    required this.player,
+    required this.score,
+  });
+
+  factory PlayerScoreModel.fromJson(Map<String, dynamic> json) {
+    final Players player = Players.fromJson(
+      json['user'],
+    );
+    return PlayerScoreModel(
+      player: player,
+      score: json['score'],
+    );
+  }
+}
+
+class ScoreModel {
+  int? id;
+  String? playerName;
+  int? totalRuns;
+  List<dynamic>? runsScores;
+  int? inningsId;
+  int? playerId;
+  int? fours;
+  int? sixes;
+  bool? isOut;
+  int? battingTeamId;
+  String? caughtByName;
+  String? bowlerName;
+
+  ScoreModel({
+    this.battingTeamId,
+    this.bowlerName,
+    this.caughtByName,
+    this.fours,
+    this.id,
+    this.inningsId,
+    this.isOut,
+    this.playerId,
+    this.playerName,
+    this.runsScores,
+    this.sixes,
+    this.totalRuns,
+  });
+
+  factory ScoreModel.fromJson(Map<String, dynamic> json) {
+    List scores = json['runsScores'];
+    return ScoreModel(
+      battingTeamId: json['battingTeamId'],
+      bowlerName: json['bowlerName'],
+      caughtByName: json['caughtByName'],
+      fours: json['fours'],
+      id: json['id'],
+      inningsId: json['inningsid'],
+      isOut: json['isOut'],
+      playerId: json['playerId'],
+      playerName: json['playerName'],
+      runsScores: scores,
+      sixes: json['sixes'],
+      totalRuns: json['totalRuns'],
     );
   }
 }

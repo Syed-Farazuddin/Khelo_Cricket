@@ -88,13 +88,19 @@ class ScoringRepo extends ScoringRepository {
       totalNoBalls: 0,
       totalRuns: 0,
       totalWides: 0,
-      striker: Players(
-        name: '',
-        id: 0,
+      striker: PlayerScoreModel(
+        player: Players(
+          name: '',
+          id: 0,
+        ),
+        score: ScoreModel(),
       ),
-      nonStriker: Players(
-        name: '',
-        id: 0,
+      nonStriker: PlayerScoreModel(
+        player: Players(
+          name: '',
+          id: 0,
+        ),
+        score: ScoreModel(),
       ),
     );
     try {
