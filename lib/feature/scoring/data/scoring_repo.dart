@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 final scoringRepositoryProvider = Provider((ref) {
   final baseService = ref.read(baseServiceProvider);
@@ -33,10 +34,15 @@ class ScoringRepo extends ScoringRepository {
   Future<void> undoScore() async {}
 
   @override
-  Future<void> updateScore({
+  Future<UpdateScoringResponse> updateScore({
     required Updatescoring scoring,
     required int inningsId,
   }) async {
+    UpdateScoringResponse res = UpdateScoringResponse(
+      message: '',
+      selectNewBowler: false,
+      status: false,
+    );
     try {
       final score = scoring.toJson(scoring);
       final result = await baseService.post(
@@ -52,14 +58,16 @@ class ScoringRepo extends ScoringRepository {
           },
         ),
       );
-      if (result['success']) {
-        Toaster.onSuccess(
-          message: "Synced",
-        );
+      res = UpdateScoringResponse.fromJson(result);
+      if (res.status ?? false) {
+        Toaster.onSuccess(message: res.message ?? '');
+      } else {
+        Toaster.onError(message: res.message ?? '');
       }
     } catch (e) {
       debugPrint("Error while updating score $e");
     }
+    return res;
   }
 
   @override
@@ -88,6 +96,11 @@ class ScoringRepo extends ScoringRepository {
       totalNoBalls: 0,
       totalRuns: 0,
       totalWides: 0,
+      bowlerId: 0,
+      bowler: PlayerBowlerScoreModel(
+        player: Players(name: '', id: 0),
+        score: BowlingScoreModel(),
+      ),
       striker: PlayerScoreModel(
         player: Players(
           name: '',

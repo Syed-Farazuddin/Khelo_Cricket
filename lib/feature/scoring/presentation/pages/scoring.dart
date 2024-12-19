@@ -22,6 +22,8 @@ class ScoringPage extends ConsumerStatefulWidget {
 class _ScoringPageState extends ConsumerState<ScoringPage> {
   late InningsModel inningsData;
   bool loading = false;
+  bool selectNewBowler = false;
+
   @override
   void initState() {
     super.initState();
@@ -66,33 +68,32 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
-                      horizontal: 16,
+                      horizontal: 20,
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${widget.data.state}",
-                                style: GoogleFonts.golosText(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${widget.data.state}",
+                              style: GoogleFonts.golosText(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
                               ),
-                              Text(
-                                "${widget.data.ground}",
-                                style: GoogleFonts.golosText(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                            ),
+                            Text(
+                              "${widget.data.ground}",
+                              style: GoogleFonts.golosText(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 20,
@@ -108,14 +109,6 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                                 fontSize: 24,
                               ),
                             ),
-                            Text(
-                              "${inningsData.oversPlayed} Overs",
-                              style: GoogleFonts.golosText(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                              ),
-                            ),
                           ],
                         ),
                         const SizedBox(
@@ -124,7 +117,15 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         showBatsmans(
                           striker: inningsData.striker!,
                           nonStriker: inningsData.nonStriker!,
-                        )
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        showBowler(bowler: inningsData.bowler!),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        overDetails(bowler: inningsData.bowler!),
                       ],
                     ),
                   ),
@@ -178,26 +179,101 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     );
   }
 
-  Widget showBatsmans(
-      {required PlayerScoreModel striker,
-      required PlayerScoreModel nonStriker}) {
+  Widget showBatsmans({
+    required PlayerScoreModel striker,
+    required PlayerScoreModel nonStriker,
+  }) {
     return Row(
       children: [
-        player(
+        batsman(
           player: striker,
           isStriker: true,
         ),
         const SizedBox(
           width: 8,
         ),
-        player(
+        batsman(
           player: nonStriker,
         ),
       ],
     );
   }
 
-  Widget player({required PlayerScoreModel player, bool isStriker = false}) {
+  Widget overDetails({required PlayerBowlerScoreModel bowler}) {
+    int oversBowled = bowler.score!.over.length;
+    List<BallModel> over = bowler.score!.over[oversBowled - 1];
+    return SizedBox(
+      height: 30,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        separatorBuilder: (builder, index) => const SizedBox(
+          width: 5,
+        ),
+        itemBuilder: (builder, idx) {
+          int runs = over[idx].runs ?? 0;
+          return Container(
+            height: 30,
+            width: 30,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: runs <= 3 ? Colors.white.withOpacity(0.54) : Colors.blue,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              runs.toString(),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.golosText(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        },
+        itemCount: over.length,
+      ),
+    );
+  }
+
+  Widget showBowler({required PlayerBowlerScoreModel bowler}) {
+    return Row(
+      children: [
+        ClipOval(
+          child: Image.network(
+            fit: BoxFit.cover,
+            bowler.player?.image ?? Constants.dummyImage,
+            height: 40,
+            width: 40,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                'lib/assets/images/bowler.png',
+                height: 40,
+                width: 40,
+              ); // Your fallback image
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 12,
+        ),
+        Text(
+          bowler.player?.name ?? "",
+          style: GoogleFonts.golosText(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget batsman({required PlayerScoreModel player, bool isStriker = false}) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -208,10 +284,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             12,
           ),
         ),
-        padding: const EdgeInsets.symmetric(
-          vertical: 8,
-          horizontal: 12,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
         child: Row(
           children: [
             Container(
@@ -220,18 +293,32 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   50,
                 ),
               ),
+              padding: const EdgeInsets.all(6),
               height: 60,
               width: 50,
               child: ClipOval(
                 child: Image.network(
-                  player.player!.image ?? Constants.dummyImage,
+                  player.player?.image ?? Constants.dummyImage,
                   fit: BoxFit.contain,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'lib/assets/images/cricket.jpg',
+                      height: 40,
+                      width: 40,
+                    ); // Your fallback image
+                  },
                 ),
               ),
             ),
-            const SizedBox(
-              width: 15,
-            ),
+            // const SizedBox(
+            //   width: 15,
+            // ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +327,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   "${player.player!.name} ${isStriker ? "*" : ""}",
                   style: GoogleFonts.golosText(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(
@@ -251,6 +338,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   style: GoogleFonts.golosText(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
               ],
@@ -278,7 +366,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       overId: currentOver.id,
       runs: int.parse(score.name),
     );
-    await ref
+    final res = await ref
         .watch(
           scoringProviderProvider.notifier,
         )
@@ -286,6 +374,9 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           scoring: updateScoring,
           inningsId: inningsId!,
         );
+    setState(() {
+      selectNewBowler = res.selectNewBowler ?? false;
+    });
     fetchInningsData();
   }
 

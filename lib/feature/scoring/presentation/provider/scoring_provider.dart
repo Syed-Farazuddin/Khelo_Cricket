@@ -11,11 +11,11 @@ class ScoringProvider extends _$ScoringProvider {
     return;
   }
 
-  Future<void> updateScoring({
+  Future<UpdateScoringResponse> updateScoring({
     required Updatescoring scoring,
     required int inningsId,
   }) async {
-    await ref
+    return await ref
         .read(scoringRepositoryProvider)
         .updateScore(scoring: scoring, inningsId: inningsId);
   }

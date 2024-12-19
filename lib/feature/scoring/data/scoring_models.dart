@@ -49,9 +49,10 @@ class InningsModel {
   bool? isCompleted;
   int? nonStrikerId;
   int? strikerId;
+  int? bowlerId;
   PlayerScoreModel? striker;
   PlayerScoreModel? nonStriker;
-
+  PlayerBowlerScoreModel? bowler;
   InningsModel({
     required this.byes,
     required this.extras,
@@ -65,6 +66,8 @@ class InningsModel {
     required this.totalWides,
     required this.nonStriker,
     required this.striker,
+    required this.bowlerId,
+    required this.bowler,
   });
 
   factory InningsModel.fromJson(Map<String, dynamic> json) {
@@ -103,6 +106,23 @@ class InningsModel {
         score: score,
       );
     }
+    PlayerBowlerScoreModel bowler = PlayerBowlerScoreModel(
+      player: Players(name: '', id: 0),
+      score: BowlingScoreModel(),
+    );
+    if (json['bowlerId'] != null) {
+      final bowlerData = json['bowler'];
+      final scoreData = bowlerData['score'];
+      final BowlingScoreModel score = BowlingScoreModel.fromJson(scoreData);
+      bowler = PlayerBowlerScoreModel(
+        player: Players(
+          name: bowlerData['user']['name'],
+          image: bowlerData['user']['player']['imageUrl'],
+          id: bowlerData['user']['player']['id'],
+        ),
+        score: score,
+      );
+    }
     return InningsModel(
       byes: json['bytes'],
       extras: json['extras'],
@@ -116,6 +136,8 @@ class InningsModel {
       totalWides: json['totalWides'],
       striker: striker,
       nonStriker: nonStriker,
+      bowlerId: json['bowlerId'],
+      bowler: bowler,
     );
   }
 }
@@ -134,6 +156,26 @@ class PlayerScoreModel {
       json['user'],
     );
     return PlayerScoreModel(
+      player: player,
+      score: json['score'],
+    );
+  }
+}
+
+class PlayerBowlerScoreModel {
+  Players? player;
+  BowlingScoreModel? score;
+
+  PlayerBowlerScoreModel({
+    required this.player,
+    required this.score,
+  });
+
+  factory PlayerBowlerScoreModel.fromJson(Map<String, dynamic> json) {
+    final Players player = Players.fromJson(
+      json['user'],
+    );
+    return PlayerBowlerScoreModel(
       player: player,
       score: json['score'],
     );
@@ -184,6 +226,97 @@ class ScoreModel {
       runsScores: scores,
       sixes: json['sixes'],
       totalRuns: json['totalRuns'],
+    );
+  }
+}
+
+class BowlingScoreModel {
+  bool? isCompleted;
+  int? order;
+  int? playerId;
+  List<List<BallModel>> over;
+
+  BowlingScoreModel({
+    this.over = const [],
+    this.isCompleted,
+    this.order,
+    this.playerId,
+  });
+
+  factory BowlingScoreModel.fromJson(Map<String, dynamic> json) {
+    final List<List<BallModel>> overs = [];
+    final List over = json['over'];
+    for (int i = 0; i < over.length; i++) {
+      final List balls = over[i]['balls'];
+      List<BallModel> ball = balls.map((b) => BallModel.fromJson(b)).toList();
+      overs.add(ball);
+    }
+    return BowlingScoreModel(
+      isCompleted: json['isCompleted'],
+      order: json['order'],
+      over: overs,
+      playerId: json['playerid'],
+    );
+  }
+}
+
+class BallModel {
+  int? id;
+  bool? isWide;
+  bool? isNoBall;
+  bool? isBye;
+  bool? isWicket;
+  bool? isRunOut;
+  int? runs;
+  int? playedById;
+  int? order;
+  int? overId;
+
+  BallModel({
+    this.id,
+    this.isBye,
+    this.isNoBall,
+    this.isRunOut,
+    this.isWicket,
+    this.isWide,
+    this.order,
+    this.overId,
+    this.playedById,
+    this.runs,
+  });
+
+  factory BallModel.fromJson(Map<String, dynamic> json) {
+    return BallModel(
+      id: json['id'],
+      isBye: json['isBye'],
+      isNoBall: json['isNoBall'],
+      isRunOut: json['isRunOut'],
+      isWicket: json['isWicket'],
+      isWide: json['isWide'],
+      order: json['order'],
+      overId: json['overId'],
+      playedById: json['playedById'],
+      runs: json['runs'],
+    );
+  }
+}
+
+class UpdateScoringResponse {
+  String? message;
+  bool? status;
+  bool? selectNewBowler;
+
+  UpdateScoringResponse({
+    this.message,
+    this.selectNewBowler,
+    this.status,
+  });
+
+  factory UpdateScoringResponse.fromJson(Map<String, dynamic> json) {
+    return UpdateScoringResponse(
+      message: json['message'],
+      selectNewBowler: json['selectNewBowler'],
+      status: json['status'],
     );
   }
 }
