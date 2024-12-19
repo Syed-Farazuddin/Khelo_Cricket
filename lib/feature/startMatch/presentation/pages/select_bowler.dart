@@ -16,8 +16,10 @@ class SelectBowler extends ConsumerStatefulWidget {
   const SelectBowler({
     super.key,
     required this.data,
+    this.previousBowlerId = 0,
   });
   final MatchData data;
+  final int previousBowlerId;
   @override
   ConsumerState<SelectBowler> createState() => _SelectBowlerState();
 }

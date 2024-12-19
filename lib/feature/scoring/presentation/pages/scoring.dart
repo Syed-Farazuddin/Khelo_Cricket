@@ -1,8 +1,10 @@
 import 'package:crick_hub/common/constants/constants.dart';
+import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/pages/select_bowler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,6 +34,18 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentBowler = ref.read(currentBowlerProvider);
+    if (selectNewBowler) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => SelectBowler(
+            data: widget.data,
+            previousBowlerId: currentBowler.id ?? 0,
+          ),
+        ),
+      );
+    }
     List<ScoringModel> scoringData = [
       ScoringModel(name: '1', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '2', url: '/matches/${widget.data.id}/scoring/'),
@@ -150,8 +164,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         return GestureDetector(
                           onTap: () {
                             updateScore(
-                                score: scoringData[index],
-                                inningsId: widget.data.inningsA);
+                              score: scoringData[index],
+                              inningsId: widget.data.inningsA,
+                              currentBowler: currentBowler,
+                            );
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -352,8 +368,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   Future<void> updateScore({
     required ScoringModel score,
     required int? inningsId,
+    required BowlerDetails currentBowler,
   }) async {
-    final currentBowler = ref.read(currentBowlerProvider);
     final currentOver = ref.read(currentOverProvider);
     final updateScoring = Updatescoring(
       ball: 0,
