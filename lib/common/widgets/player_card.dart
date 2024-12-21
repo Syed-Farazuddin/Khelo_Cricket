@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/constants/constants.dart';
+import 'package:crick_hub/common/widgets/image.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,20 +50,10 @@ class _PlayerCardState extends State<PlayerCard> {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    child: ClipOval(
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Image.network(
-                          widget.player.image == "null"
-                              ? Constants.dummyImage
-                              : widget.player.image ?? "",
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                      ),
-                    ),
+                  CustomImage(
+                    image: widget.player.image == "null"
+                        ? Constants.dummyImage
+                        : widget.player.image ?? "",
                   ),
                   const SizedBox(
                     width: 15,

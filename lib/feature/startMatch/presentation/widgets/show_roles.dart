@@ -1,4 +1,5 @@
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,12 +69,37 @@ class _ShowRolesState extends ConsumerState<ShowRoles> {
                     fit: BoxFit.contain,
                     height: 200,
                     width: 150,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        widget.isStriker
+                            ? "lib/assets/images/striker.png"
+                            : widget.isBowler
+                                ? "lib/assets/images/bowler.png"
+                                : "lib/assets/images/cricket.jpg",
+                      );
+                    },
                   )
                 : Image.asset(
-                    'lib/assets/images/cricket.jpg',
+                    widget.path,
                     fit: BoxFit.contain,
                     width: 150,
                     height: 150,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        widget.isStriker
+                            ? "lib/assets/images/striker.png"
+                            : widget.isBowler
+                                ? "lib/assets/images/bowler.png"
+                                : "lib/assets/images/cricket.jpg",
+                        width: 150,
+                        height: 150,
+                      );
+                    },
                   ),
           ],
         ),

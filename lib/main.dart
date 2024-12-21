@@ -1,3 +1,4 @@
+import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/authentication/presentation/pages/authentication.dart';
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
@@ -37,7 +38,14 @@ class _MyAppState extends ConsumerState<MyApp> {
         theme: ThemeData(
           brightness: Brightness.dark,
         ),
-        darkTheme: ThemeData.dark(),
+        darkTheme: ThemeData.dark().copyWith(
+          colorScheme: ThemeData.dark().colorScheme.copyWith(
+                primary: AppColors
+                    .background, // Custom primary color in color scheme
+                secondary: AppColors.background, // Custom secondary color
+                surface: AppColors.background, // Custom surface color
+              ),
+        ),
         routerConfig: _router,
       ),
     );

@@ -2,12 +2,12 @@ import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
-import 'package:crick_hub/feature/authentication/presentation/widgets/otp_form.dart';
+import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
+import 'package:crick_hub/feature/scoring/presentation/pages/choose_player.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
-import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +41,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     final currentBowler = ref.read(currentBowlerProvider);
 
     List<ScoringModel> scoringData = [
+      ScoringModel(name: '0', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '1', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '2', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '3', url: '/matches/${widget.data.id}/scoring/'),
@@ -69,7 +70,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       appBar: AppBar(),
       // Top body should contains the match details score bowler and strikers
       body: loading
-          ? LoadingAnimationWidget.bouncingBall(color: Colors.white, size: 30)
+          ? LoadingAnimationWidget.bouncingBall(
+              color: Colors.white,
+              size: 30,
+            )
           : Column(
               children: [
                 Expanded(
@@ -110,7 +114,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "${inningsData.totalRuns} / 0",
+                              "${inningsData.totalRuns} / ${inningsData.totalNoBalls}",
                               style: CustomTextStyles.largeText,
                             ),
                             const SizedBox(
@@ -137,6 +141,13 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           height: 15,
                         ),
                         overDetails(bowler: inningsData.bowler!),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Overs Remaining : ${(widget.data.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
+                          style: CustomTextStyles.mediumText,
+                        )
                       ],
                     ),
                   ),
@@ -215,6 +226,15 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   Widget overDetails({required PlayerBowlerScoreModel bowler}) {
     int oversBowled = bowler.score!.over.length;
     List<BallModel> over = bowler.score!.over[oversBowled - 1];
+    if (over.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Text(
+          "Yet to Bowl",
+          style: CustomTextStyles.large,
+        ),
+      );
+    }
     return SizedBox(
       height: 30,
       child: ListView.separated(
@@ -226,19 +246,23 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         itemBuilder: (builder, idx) {
           int runs = over[idx].runs ?? 0;
           return Container(
-            height: 30,
-            width: 30,
+            height: 40,
+            width: 40,
+            // padding: EdgeInsets.symmetric(vertical: 6, horizontal: ),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: runs <= 3 ? Colors.white.withOpacity(0.54) : Colors.blue,
+              color: runs <= 3
+                  ? AppColors.dark.withOpacity(0.8)
+                  : const Color.fromARGB(255, 38, 109, 40),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               runs.toString(),
               textAlign: TextAlign.center,
               style: GoogleFonts.golosText(
-                color: runs <= 3 ? Colors.black.withOpacity(0.8) : Colors.white,
+                color: runs <= 3 ? Colors.white.withOpacity(0.8) : Colors.white,
                 fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
             ),
           );
@@ -250,49 +274,52 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   Widget showBowler({required PlayerBowlerScoreModel bowler}) {
     final over = bowler.score!.over;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            ClipOval(
-              child: Image.network(
-                fit: BoxFit.cover,
-                bowler.player?.image ?? Constants.dummyImage,
-                height: 40,
-                width: 40,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'lib/assets/images/bowler.png',
-                    height: 40,
-                    width: 40,
-                  ); // Your fallback image
-                },
+    return Container(
+      decoration: const BoxDecoration(color: AppColors.whitish),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              ClipOval(
+                child: Image.network(
+                  fit: BoxFit.cover,
+                  bowler.player?.image ?? Constants.dummyImage,
+                  height: 40,
+                  width: 40,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'lib/assets/images/bowler.png',
+                      height: 40,
+                      width: 40,
+                    ); // Your fallback image
+                  },
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Text(
-              bowler.player?.name ?? "",
-              style: GoogleFonts.golosText(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+              const SizedBox(
+                width: 12,
               ),
-            ),
-          ],
-        ),
-        Text(
-          '${over.length}.${over[over.length - 1].length}',
-          style: CustomTextStyles.mediumText,
-        )
-      ],
+              Text(
+                bowler.player?.name ?? "",
+                style: GoogleFonts.golosText(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            '${over.length - 1}.${over[over.length - 1].length}',
+            style: CustomTextStyles.large,
+          )
+        ],
+      ),
     );
   }
 
@@ -398,20 +425,14 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           inningsId: inningsId!,
         );
     if (res.selectNewBowler ?? false) {
-      context.push(
-        '/selectPlayer',
-        extra: DisplayPlayerData(
-          data: widget.data,
-          showAllPlayers: true,
-          selectbatsman: false,
-          previousPlayerId: currentBowler.id ?? 0,
-          onTap: (player) {
-            changeBowler(
-              bowler: player,
-              currentBowler: currentBowler,
-            );
-            context.pop();
-          },
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => ChoosePlayer(
+            selectBatman: false,
+            previousPlayerId: currentBowler.id ?? 0,
+            data: widget.data,
+          ),
         ),
       );
     }

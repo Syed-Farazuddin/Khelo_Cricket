@@ -1,5 +1,4 @@
 import 'package:crick_hub/common/widgets/player_card.dart';
-import 'package:crick_hub/feature/authentication/presentation/widgets/otp_form.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +52,7 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
         child: ListView.separated(
           itemBuilder: (builder, index) {
             final Players currPlayer = team.players[index];
-            if (!(widget.showTeamAllPlayers)) {
+            if ((widget.showTeamAllPlayers)) {
               (team.selectedPlayers.contains(currPlayer.id))
                   ? PlayerCard(
                       player: currPlayer,
@@ -70,7 +69,7 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
                 ? PlayerCard(
                     player: currPlayer,
                     onTap: () => widget.onTap(currPlayer),
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.2),
                     borderColor: Colors.white,
                   )
                 : const SizedBox.shrink();
