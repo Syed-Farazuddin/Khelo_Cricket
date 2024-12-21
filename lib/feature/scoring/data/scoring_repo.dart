@@ -8,7 +8,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 final scoringRepositoryProvider = Provider((ref) {
   final baseService = ref.read(baseServiceProvider);
@@ -59,7 +58,7 @@ class ScoringRepo extends ScoringRepository {
         ),
       );
       res = UpdateScoringResponse.fromJson(result);
-      if (res.status ?? false) {
+      if (result['success'] ?? false) {
         Toaster.onSuccess(message: res.message ?? '');
       } else {
         Toaster.onError(message: res.message ?? '');

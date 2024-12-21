@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/widgets/player_card.dart';
+import 'package:crick_hub/feature/authentication/presentation/widgets/otp_form.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,14 @@ class DisplayPlayers extends ConsumerStatefulWidget {
     required this.data,
     required this.selectBatman,
     required this.onTap,
+    this.previousBowlerId = 0,
+    this.showTeamAllPlayers = false,
   });
   final MatchData data;
   final bool selectBatman;
   final Function(Players) onTap;
+  final int? previousBowlerId;
+  final bool showTeamAllPlayers;
   @override
   ConsumerState<DisplayPlayers> createState() => _DisplayPlayersState();
 }
@@ -48,15 +53,27 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
         child: ListView.separated(
           itemBuilder: (builder, index) {
             final Players currPlayer = team.players[index];
-            if (team.selectedPlayers.contains(currPlayer.id)) {
-              return PlayerCard(
-                player: currPlayer,
-                onTap: () => widget.onTap(currPlayer),
-                color: Colors.white.withOpacity(0.2),
-                borderColor: Colors.white,
-              );
+            if (!(widget.showTeamAllPlayers)) {
+              (team.selectedPlayers.contains(currPlayer.id))
+                  ? PlayerCard(
+                      player: currPlayer,
+                      onTap: () {
+                        widget.onTap(currPlayer);
+                      },
+                      color: Colors.white.withOpacity(0.2),
+                      borderColor: Colors.white,
+                    )
+                  : const SizedBox.shrink();
             }
-            return const SizedBox.shrink();
+
+            return currPlayer.id != widget.previousBowlerId
+                ? PlayerCard(
+                    player: currPlayer,
+                    onTap: () => widget.onTap(currPlayer),
+                    color: Colors.white,
+                    borderColor: Colors.white,
+                  )
+                : const SizedBox.shrink();
           },
           separatorBuilder: (builder, index) =>
               team.selectedPlayers.contains(team.players[index].id)

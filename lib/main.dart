@@ -1,12 +1,14 @@
 import 'package:crick_hub/feature/authentication/presentation/pages/authentication.dart';
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_teams.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
+import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
 import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -57,6 +59,20 @@ final GoRouter _router = GoRouter(
       name: "/authentication",
       builder: (context, state) {
         return const AuthenticationPage();
+      },
+    ),
+    GoRoute(
+      path: "/selectPlayer",
+      name: "/selectPlayer",
+      builder: (context, state) {
+        final extra = state.extra as DisplayPlayerData;
+        return DisplayPlayers(
+          data: extra.data,
+          selectBatman: extra.selectbatsman,
+          showTeamAllPlayers: extra.showAllPlayers,
+          onTap: extra.onTap,
+          previousBowlerId: extra.previousPlayerId,
+        );
       },
     ),
     GoRoute(

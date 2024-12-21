@@ -320,3 +320,18 @@ class UpdateScoringResponse {
     );
   }
 }
+
+class DisplayPlayerData {
+  MatchData data;
+  bool selectbatsman;
+  int previousPlayerId;
+  Function(Players player) onTap;
+  bool showAllPlayers;
+  DisplayPlayerData({
+    required this.data,
+    this.showAllPlayers = false,
+    required this.selectbatsman,
+    required this.previousPlayerId,
+    required this.onTap,
+  });
+}

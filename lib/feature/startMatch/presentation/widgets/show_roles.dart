@@ -70,7 +70,7 @@ class _ShowRolesState extends ConsumerState<ShowRoles> {
                     width: 150,
                   )
                 : Image.asset(
-                    widget.path,
+                    'lib/assets/images/cricket.jpg',
                     fit: BoxFit.contain,
                     width: 150,
                     height: 150,

@@ -1,12 +1,16 @@
 import 'package:crick_hub/common/constants/constants.dart';
+import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
+import 'package:crick_hub/feature/authentication/presentation/widgets/otp_form.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
-import 'package:crick_hub/feature/startMatch/presentation/pages/select_bowler.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
+import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -35,17 +39,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   @override
   Widget build(BuildContext context) {
     final currentBowler = ref.read(currentBowlerProvider);
-    if (selectNewBowler) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (builder) => SelectBowler(
-            data: widget.data,
-            previousBowlerId: currentBowler.id ?? 0,
-          ),
-        ),
-      );
-    }
+
     List<ScoringModel> scoringData = [
       ScoringModel(name: '1', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '2', url: '/matches/${widget.data.id}/scoring/'),
@@ -113,15 +107,18 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           height: 20,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "${inningsData.totalRuns} Runs",
-                              style: GoogleFonts.golosText(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
+                              "${inningsData.totalRuns} / 0",
+                              style: CustomTextStyles.largeText,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "( ${inningsData.oversPlayed} .${inningsData.bowler!.score!.over[inningsData.bowler!.score!.over.length - 1].length} )",
+                              style: CustomTextStyles.largeText,
                             ),
                           ],
                         ),
@@ -137,7 +134,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         ),
                         showBowler(bowler: inningsData.bowler!),
                         const SizedBox(
-                          height: 6,
+                          height: 15,
                         ),
                         overDetails(bowler: inningsData.bowler!),
                       ],
@@ -240,7 +237,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
               runs.toString(),
               textAlign: TextAlign.center,
               style: GoogleFonts.golosText(
-                color: Colors.black,
+                color: runs <= 3 ? Colors.black.withOpacity(0.8) : Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -252,39 +249,49 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   }
 
   Widget showBowler({required PlayerBowlerScoreModel bowler}) {
+    final over = bowler.score!.over;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ClipOval(
-          child: Image.network(
-            fit: BoxFit.cover,
-            bowler.player?.image ?? Constants.dummyImage,
-            height: 40,
-            width: 40,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                'lib/assets/images/bowler.png',
+        Row(
+          children: [
+            ClipOval(
+              child: Image.network(
+                fit: BoxFit.cover,
+                bowler.player?.image ?? Constants.dummyImage,
                 height: 40,
                 width: 40,
-              ); // Your fallback image
-            },
-          ),
-        ),
-        const SizedBox(
-          width: 12,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'lib/assets/images/bowler.png',
+                    height: 40,
+                    width: 40,
+                  ); // Your fallback image
+                },
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Text(
+              bowler.player?.name ?? "",
+              style: GoogleFonts.golosText(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ],
         ),
         Text(
-          bowler.player?.name ?? "",
-          style: GoogleFonts.golosText(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
+          '${over.length}.${over[over.length - 1].length}',
+          style: CustomTextStyles.mediumText,
+        )
       ],
     );
   }
@@ -390,9 +397,24 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           scoring: updateScoring,
           inningsId: inningsId!,
         );
-    setState(() {
-      selectNewBowler = res.selectNewBowler ?? false;
-    });
+    if (res.selectNewBowler ?? false) {
+      context.push(
+        '/selectPlayer',
+        extra: DisplayPlayerData(
+          data: widget.data,
+          showAllPlayers: true,
+          selectbatsman: false,
+          previousPlayerId: currentBowler.id ?? 0,
+          onTap: (player) {
+            changeBowler(
+              bowler: player,
+              currentBowler: currentBowler,
+            );
+            context.pop();
+          },
+        ),
+      );
+    }
     fetchInningsData();
   }
 
@@ -413,7 +435,20 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   Future<void> chooseBatsmans() async {}
 
-  Future<void> changeBowler() async {}
+  Future<void> changeBowler({
+    required Players bowler,
+    required BowlerDetails currentBowler,
+  }) async {
+    final result =
+        await ref.watch(startMatchControllerProvider.notifier).selectBowler(
+              bowler: bowler,
+              inningsId: inningsData.inningsid ?? 0,
+              order: currentBowler.order ?? 0 + 1,
+            );
+    ref.watch(currentBowlerProvider.notifier).state = result.bowler;
+    ref.watch(currentOverProvider.notifier).state = result.over;
+    fetchInningsData();
+  }
 }
 
 class ScoringModel {
