@@ -11,10 +11,13 @@ class ChoosePlayer extends ConsumerStatefulWidget {
     required this.previousPlayerId,
     required this.selectBatman,
     required this.data,
+    required this.onTap,
   });
   final int previousPlayerId;
   final bool selectBatman;
   final MatchData data;
+  final Function(Players) onTap;
+
   @override
   ConsumerState<ChoosePlayer> createState() => _ChoosePlayerState();
 }
@@ -51,7 +54,13 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
             final player = team.players[index];
             if (!(widget.selectBatman)) {
               return team.selectedPlayers.contains(player.id)
-                  ? BowlerCard(bowler: player)
+                  ? GestureDetector(
+                      onTap: widget.onTap(player),
+                      child: BowlerCard(
+                        bowler: player,
+                        onTap: widget.onTap,
+                      ),
+                    )
                   : const SizedBox.shrink();
             }
             return const BatmanCard();

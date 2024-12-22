@@ -10,7 +10,6 @@ import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -295,7 +294,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   },
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'lib/assets/images/bowler.png',
+                      Constants.bowler,
                       height: 40,
                       width: 40,
                     ); // Your fallback image
@@ -432,6 +431,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             selectBatman: false,
             previousPlayerId: currentBowler.id ?? 0,
             data: widget.data,
+            onTap: (player) => changeBowler(
+              bowler: player,
+              currentBowler: currentBowler,
+            ),
           ),
         ),
       );

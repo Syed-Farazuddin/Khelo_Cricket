@@ -8,39 +8,45 @@ class BowlerCard extends StatelessWidget {
   const BowlerCard({
     super.key,
     required this.bowler,
+    required this.onTap,
   });
   final Players bowler;
+  final Function(Players) onTap;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(
-          14,
+    return GestureDetector(
+      onTap: onTap(bowler),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(
+            14,
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Row(
-              children: [
-                CustomImage(
-                  image: bowler.image != null || bowler.image!.isNotEmpty
-                      ? bowler.image ?? Constants.dummyImage
-                      : Constants.dummyImage,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  bowler.name ?? "",
-                  style: CustomTextStyles.mediumText,
-                ),
-              ],
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Row(
+                children: [
+                  CustomImage(
+                    image: bowler.image != null || bowler.image!.isNotEmpty
+                        ? bowler.image ?? Constants.dummyImage
+                        : Constants.dummyImage,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    bowler.name ?? "",
+                    style: CustomTextStyles.mediumText,
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -27,6 +27,7 @@ class _CustomImageState extends State<CustomImage> {
                 size: 30,
               ),
             ),
+            errorBuilder: (context, error, stackTrace) => Image.asset(''),
           ),
         ),
       ),
