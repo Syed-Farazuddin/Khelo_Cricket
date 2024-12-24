@@ -126,6 +126,10 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
                 isNewplayer: widget.isNewPlayer,
               );
               if (res) {
+                if (widget.isNewPlayer) {
+                  context.goNamed('/playerDetails');
+                  return;
+                }
                 context.goNamed('/home');
               }
             },
@@ -136,6 +140,13 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
       ),
     );
   }
+
+  // Future<void> fetchUserDetails() async {
+  //   String mobile = widget.mobile;
+  //   final user = await ref
+  //       .read(authProviderProvider.notifier)
+  //       .verifyOtp(mobile: mobile, otp: '', isNewPlayer: true);
+  // }
 
   Future<bool> verifyOtp({
     required String mobile,

@@ -9,5 +9,7 @@ abstract class AuthenticationRepository {
     required bool isNewPlayer,
   });
 
+  Future<User> fetchuserDetails();
+
   Future<void> updateFirebaseToken();
 }

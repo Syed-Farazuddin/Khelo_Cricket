@@ -95,15 +95,18 @@ class AuthRepository extends AuthenticationRepository {
   }) {
     Storage storage = Storage();
     String token = response['token'];
-    // String refreshToken = response['refreshToken'];
-    // String userId = response['id'];
-    // String? name = response['name'];
-    // String? mobile = response['mobile'];
+    String userId = response['id'];
+    String? name = response['name'];
+    String? mobile = response['mobile'];
 
     storage.addItem(key: 'token', value: token);
-    // storage.addItem(key: 'refreshToken', value: refreshToken);
-    // storage.addItem(key: 'id', value: userId);
-    // storage.addItem(key: 'name', value: name ?? "");
-    // storage.addItem(key: 'mobile', value: mobile ?? "");
+    storage.addItem(key: 'id', value: userId);
+    storage.addItem(key: 'name', value: name ?? "");
+    storage.addItem(key: 'mobile', value: mobile ?? "");
+  }
+
+  @override
+  Future<User> fetchuserDetails() {
+    throw UnimplementedError();
   }
 }

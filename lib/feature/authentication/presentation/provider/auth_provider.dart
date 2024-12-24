@@ -17,6 +17,10 @@ class AuthProvider extends _$AuthProvider {
     return await ref.read(authRepositoryProvider).sendOtp(mobile: mobile);
   }
 
+  // Future<User> fetchUserDetails({}) async{
+  //   return await ref.read(authRepositoryProvider).fetchuserDetails(mobile: mobile);
+  // }
+
   Future<bool> verifyOtp({
     required String mobile,
     required String otp,
