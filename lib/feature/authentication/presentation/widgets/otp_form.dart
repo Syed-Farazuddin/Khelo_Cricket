@@ -98,19 +98,24 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
               focusedPinTheme: defaultPinTheme.copyWith(
                 decoration: defaultPinTheme.decoration!.copyWith(
                   borderRadius: BorderRadius.circular(8),
-                  border:
-                      Border.all(color: const Color.fromARGB(255, 255, 0, 0)),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 255, 0, 0),
+                  ),
                 ),
               ),
               submittedPinTheme: defaultPinTheme.copyWith(
                 decoration: defaultPinTheme.decoration!.copyWith(
                   color: const Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.circular(19),
-                  border: Border.all(color: focusedBorderColor),
+                  border: Border.all(
+                    color: focusedBorderColor,
+                  ),
                 ),
               ),
               errorPinTheme: defaultPinTheme.copyBorderWith(
-                border: Border.all(color: Colors.redAccent),
+                border: Border.all(
+                  color: Colors.redAccent,
+                ),
               ),
             ),
           ),

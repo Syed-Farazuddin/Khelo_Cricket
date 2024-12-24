@@ -95,14 +95,18 @@ class AuthRepository extends AuthenticationRepository {
   }) {
     Storage storage = Storage();
     String token = response['token'];
-    String userId = response['id'];
+    int userId = response['id'];
     String? name = response['name'];
     String? mobile = response['mobile'];
 
     storage.addItem(key: 'token', value: token);
-    storage.addItem(key: 'id', value: userId);
+    storage.addItem(key: 'userId', value: userId.toString());
     storage.addItem(key: 'name', value: name ?? "");
     storage.addItem(key: 'mobile', value: mobile ?? "");
+
+    final store = storage.readAll();
+
+    debugPrint("Store is $store");
   }
 
   @override

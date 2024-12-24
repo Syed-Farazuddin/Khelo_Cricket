@@ -25,9 +25,12 @@ class PlayerRepository extends PlayerRepo {
     required UserDetails details,
   }) async {
     try {
+      final id = await storage.read(
+        key: 'userId',
+      );
       final response = await baseService.post(
           Network.updateProfile(
-            id: details.id,
+            id: int.parse(id ?? '0'),
           ),
           body: {
             'name': details.name,
@@ -40,6 +43,5 @@ class PlayerRepository extends PlayerRepo {
     } catch (e) {
       debugPrint("Error while Updating user details");
     }
-    throw UnimplementedError();
   }
 }
