@@ -6,6 +6,7 @@ class Network {
   static String sendOtp() => 'auth/sendOtp';
   static String verifyOtp() => 'auth/verifyotp';
   static String profile() => 'profile';
+  static String updateProfile({required int id}) => '/profile/$id/update';
   static String fetchTeams() => 'team/get_your_teams';
   static String createNewTeam() => 'team/create_team';
   static String addNewPlayer({required int teamId}) =>

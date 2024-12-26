@@ -17,3 +17,17 @@ class CustomResponse {
     );
   }
 }
+
+class User {
+  int? id;
+  String? name;
+  String? image;
+  int? age;
+
+  User({
+    required this.age,
+    required this.id,
+    required this.image,
+    required this.name,
+  });
+}
