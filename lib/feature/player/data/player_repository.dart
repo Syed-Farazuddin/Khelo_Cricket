@@ -1,6 +1,7 @@
 import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
+import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/player/domain/player_models.dart';
 import 'package:crick_hub/feature/player/domain/player_repo.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class PlayerRepository extends PlayerRepo {
   });
 
   @override
-  Future<void> saveUserDetails({
+  Future<bool> saveUserDetails({
     required UserDetails details,
   }) async {
     try {
@@ -39,9 +40,13 @@ class PlayerRepository extends PlayerRepo {
             'age': details.age,
             'imageUrl': details.imageUrl,
           });
-      debugPrint(response.data);
+      if (response['success']) {
+        Toaster.onSuccess(message: response['message']);
+        return true;
+      }
     } catch (e) {
       debugPrint("Error while Updating user details");
     }
+    return false;
   }
 }
