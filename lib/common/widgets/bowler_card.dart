@@ -3,6 +3,7 @@ import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/image.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BowlerCard extends StatelessWidget {
   const BowlerCard({
@@ -16,7 +17,10 @@ class BowlerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap(bowler),
+      onTap: () {
+        onTap(bowler);
+        context.pop();
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         decoration: BoxDecoration(

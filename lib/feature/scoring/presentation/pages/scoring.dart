@@ -73,15 +73,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
               color: Colors.white,
               size: 30,
             )
-          : Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 20,
-                    ),
-                    child: Column(
+          : SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -135,13 +131,22 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         const SizedBox(
                           height: 15,
                         ),
-                        showBowler(bowler: inningsData.bowler!),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        overDetails(bowler: inningsData.bowler!),
-                        const SizedBox(
-                          height: 20,
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration:
+                              const BoxDecoration(color: AppColors.whitish),
+                          child: Column(
+                            children: [
+                              showBowler(bowler: inningsData.bowler!),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              overDetails(bowler: inningsData.bowler!),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
                         ),
                         Text(
                           "Overs Remaining : ${(widget.data.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
@@ -149,55 +154,54 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         )
                       ],
                     ),
-                  ),
-                ),
-                // The bottom should contain the scoring card where we can manually enter score and all.
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 16,
-                    ),
-                    child: GridView.builder(
-                      itemCount: scoringData.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 14,
-                        mainAxisSpacing: 12,
+                    // The bottom should contain the scoring card where we can manually enter score and all.
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
                       ),
-                      itemBuilder: (builder, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            updateScore(
-                              score: scoringData[index],
-                              inningsId: widget.data.inningsA,
-                              currentBowler: currentBowler,
-                            );
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(
-                                0.07,
+                      child: GridView.builder(
+                        itemCount: scoringData.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 6,
+                          mainAxisSpacing: 6,
+                        ),
+                        itemBuilder: (builder, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              updateScore(
+                                score: scoringData[index],
+                                inningsId: widget.data.inningsA,
+                                currentBowler: currentBowler,
+                              );
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(
+                                  0.07,
+                                ),
+                              ),
+                              child: Text(
+                                scoringData[index].name,
+                                style: GoogleFonts.golosText(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
-                            child: Text(
-                              scoringData[index].name,
-                              style: GoogleFonts.golosText(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                )
-              ],
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
     );
   }
@@ -273,52 +277,49 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   Widget showBowler({required PlayerBowlerScoreModel bowler}) {
     final over = bowler.score!.over;
-    return Container(
-      decoration: const BoxDecoration(color: AppColors.whitish),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              ClipOval(
-                child: Image.network(
-                  fit: BoxFit.cover,
-                  bowler.player?.image ?? Constants.dummyImage,
-                  height: 40,
-                  width: 40,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      Constants.bowler,
-                      height: 40,
-                      width: 40,
-                    ); // Your fallback image
-                  },
-                ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            ClipOval(
+              child: Image.network(
+                fit: BoxFit.cover,
+                bowler.player?.image ?? Constants.dummyImage,
+                height: 40,
+                width: 40,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    Constants.bowler,
+                    height: 40,
+                    width: 40,
+                  ); // Your fallback image
+                },
               ),
-              const SizedBox(
-                width: 12,
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Text(
+              bowler.player?.name ?? "",
+              style: GoogleFonts.golosText(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
-              Text(
-                bowler.player?.name ?? "",
-                style: GoogleFonts.golosText(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            '${over.length - 1}.${over[over.length - 1].length}',
-            style: CustomTextStyles.large,
-          )
-        ],
-      ),
+            ),
+          ],
+        ),
+        Text(
+          '${over.length - 1}.${over[over.length - 1].length}',
+          style: CustomTextStyles.large,
+        )
+      ],
     );
   }
 

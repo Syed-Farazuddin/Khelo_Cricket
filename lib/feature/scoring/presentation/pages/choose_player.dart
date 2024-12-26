@@ -55,7 +55,9 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
             if (!(widget.selectBatman)) {
               return team.selectedPlayers.contains(player.id)
                   ? GestureDetector(
-                      onTap: widget.onTap(player),
+                      onTap: () {
+                        widget.onTap(player);
+                      },
                       child: BowlerCard(
                         bowler: player,
                         onTap: widget.onTap,

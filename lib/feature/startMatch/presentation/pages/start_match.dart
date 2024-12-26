@@ -326,33 +326,36 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (builder, index) {
-            return Container(
-              padding: const EdgeInsets.all(
-                12,
-              ),
-              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.12)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        players[index].name.toString(),
-                        style: GoogleFonts.golosText(
-                          fontSize: 16,
+            return players[index].selected
+                ? Container(
+                    padding: const EdgeInsets.all(
+                      12,
+                    ),
+                    decoration:
+                        BoxDecoration(color: Colors.grey.withOpacity(0.12)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              players[index].name.toString(),
+                              style: GoogleFonts.golosText(
+                                fontSize: 16,
+                              ),
+                            ),
+                            if (players[index].isCaptain) const Text("(C)")
+                          ],
                         ),
-                      ),
-                      if (players[index].isCaptain) const Text("(C)")
-                    ],
-                  ),
-                  const Icon(
-                    Icons.arrow_right,
-                    size: 28,
+                        const Icon(
+                          Icons.arrow_right,
+                          size: 28,
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            );
+                : const SizedBox.shrink();
           },
           separatorBuilder: (builder, index) => const SizedBox(
             height: 10,
