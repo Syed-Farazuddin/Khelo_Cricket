@@ -1,6 +1,7 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/player/data/player_repository.dart';
 import 'package:crick_hub/feature/player/domain/player_models.dart';
 import 'package:flutter/material.dart';
@@ -72,15 +73,22 @@ class PlayerDetails extends ConsumerWidget {
             ),
             Custombutton(
               onTap: () async {
-                await ref.read(playerRepositoryProvider).saveUserDetails(
-                      details: UserDetails(
-                        id: 1,
-                        imageUrl: "",
-                        name: controller.text,
-                        age: 20,
-                        dob: '',
-                      ),
-                    );
+                final res =
+                    await ref.read(playerRepositoryProvider).saveUserDetails(
+                          details: UserDetails(
+                            id: 1,
+                            imageUrl: "",
+                            name: controller.text,
+                            age: 20,
+                            dob: '',
+                          ),
+                        );
+                if (res) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => const DashboardPage()));
+                }
               },
               title: "Save",
               color: Colors.blue,

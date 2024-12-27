@@ -36,8 +36,12 @@ class BowlerCard extends StatelessWidget {
               Row(
                 children: [
                   CustomImage(
-                    image: bowler.image != null || bowler.image!.isNotEmpty
-                        ? bowler.image ?? Constants.dummyImage
+                    image: bowler.image != null ||
+                            bowler.image!.isNotEmpty ||
+                            bowler.image == ""
+                        ? bowler.image != ""
+                            ? bowler.image!
+                            : Constants.dummyImage
                         : Constants.dummyImage,
                   ),
                   const SizedBox(

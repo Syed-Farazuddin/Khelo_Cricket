@@ -387,7 +387,7 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
       ballType: "Tennis",
       tossWonTeamId: tossWonTeam,
       chooseToBat: choseToBat,
-      teams: [teamA.teamId, teamA.teamId],
+      teams: [teamA.teamId, teamB.teamId],
       bowlingLimit: int.parse(overLimit.text),
       overs: int.parse(overs.text),
       ground: ground.text,

@@ -2,6 +2,7 @@ import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
+import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/choose_player.dart';
@@ -28,6 +29,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   late InningsModel inningsData;
   bool loading = false;
   bool selectNewBowler = false;
+  bool endInnings = false;
 
   @override
   void initState() {
@@ -38,7 +40,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   @override
   Widget build(BuildContext context) {
     final currentBowler = ref.read(currentBowlerProvider);
-
+    int oversBowled = inningsData.bowler!.score!.over.length - 1;
     List<ScoringModel> scoringData = [
       ScoringModel(name: '0', url: '/matches/${widget.data.id}/scoring/'),
       ScoringModel(name: '1', url: '/matches/${widget.data.id}/scoring/'),
@@ -109,16 +111,16 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "${inningsData.totalRuns} / ${inningsData.totalNoBalls}",
+                              "${inningsData.totalRuns} / ${inningsData.oversPlayed}",
                               style: CustomTextStyles.largeText,
                             ),
                             const SizedBox(
                               width: 10,
                             ),
                             Text(
-                              "( ${inningsData.oversPlayed} .${inningsData.bowler!.score!.over[inningsData.bowler!.score!.over.length - 1].length} )",
+                              "( ${inningsData.oversPlayed} .${inningsData.bowler!.score!.over[oversBowled - 1 < 0 ? 0 : oversBowled - 1].length} )",
                               style: CustomTextStyles.largeText,
-                            ),
+                            )
                           ],
                         ),
                         const SizedBox(
@@ -228,10 +230,15 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   Widget overDetails({required PlayerBowlerScoreModel bowler}) {
     int oversBowled = bowler.score!.over.length;
-    List<BallModel> over = bowler.score!.over[oversBowled - 1];
+    List<BallModel> over = [];
+    if (oversBowled > 0) {
+      over = bowler.score!.over[oversBowled - 1];
+    }
     if (over.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4.0,
+        ),
         child: Text(
           "Yet to Bowl",
           style: CustomTextStyles.large,
@@ -255,7 +262,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: runs <= 3
-                  ? AppColors.dark.withOpacity(0.8)
+                  ? AppColors.dark.withOpacity(0.2)
                   : const Color.fromARGB(255, 38, 109, 40),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -264,8 +271,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
               textAlign: TextAlign.center,
               style: GoogleFonts.golosText(
                 color: runs <= 3 ? Colors.white.withOpacity(0.8) : Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+                // fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
           );
@@ -315,10 +322,12 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             ),
           ],
         ),
-        Text(
-          '${over.length - 1}.${over[over.length - 1].length}',
-          style: CustomTextStyles.large,
-        )
+        over.isNotEmpty
+            ? Text(
+                '${over.length - 1}.${over[over.length - 1].length}',
+                style: CustomTextStyles.large,
+              )
+            : const Text(''),
       ],
     );
   }
@@ -440,11 +449,73 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         ),
       );
     }
+    if (res.endInnings ?? false) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width *
+                  0.8, // 80% of screen width
+              height: 200, // Fixed height, adjust as needed
+              padding: const EdgeInsets.all(20), // Add some padding
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "End Inning",
+                    style: CustomTextStyles.heading,
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Custombutton(
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        title: "Back",
+                        width: 100,
+                      ),
+                      const SizedBox(width: 10),
+                      Custombutton(
+                        onTap: () {
+                          // Add your "End Innings" logic here
+                          Navigator.of(context)
+                              .pop(); // Optionally close the dialog
+                        },
+                        title: "End Inning",
+                        width: 100,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
     fetchInningsData();
   }
 
+  Future<void> endCurrentInnings() async {
+    final currentInningsId = widget.data.firstInnings?.isCompleted ?? false
+        ? widget.data.secondInnings?.inningsid ?? 0
+        : widget.data.firstInnings?.inningsid ?? 0;
+    final res = await ref
+        .read(scoringProviderProvider.notifier)
+        .endInnings(inningsId: currentInningsId);
+    setState(() {
+      inningsData = res;
+    });
+  }
+
   Future<void> fetchInningsData() async {
-    loading = true;
+    // setState(() {
+    //   loading = true;
+    // })
     final currentInningsId = widget.data.firstInnings?.isCompleted ?? false
         ? widget.data.secondInnings?.inningsid ?? 0
         : widget.data.firstInnings?.inningsid ?? 0;

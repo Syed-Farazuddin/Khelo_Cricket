@@ -305,11 +305,13 @@ class UpdateScoringResponse {
   String? message;
   bool? status;
   bool? selectNewBowler;
+  bool? endInnings;
 
   UpdateScoringResponse({
     this.message,
     this.selectNewBowler,
     this.status,
+    this.endInnings,
   });
 
   factory UpdateScoringResponse.fromJson(Map<String, dynamic> json) {
@@ -317,6 +319,7 @@ class UpdateScoringResponse {
       message: json['message'],
       selectNewBowler: json['selectNewBowler'],
       status: json['status'],
+      endInnings: json['endInnings'],
     );
   }
 }

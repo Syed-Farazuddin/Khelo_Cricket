@@ -26,6 +26,12 @@ class ScoringProvider extends _$ScoringProvider {
         .fetchInningsData(inningsId: inningsId);
   }
 
+  Future<InningsModel> endInnings({required int inningsId}) async {
+    return await ref
+        .read(scoringRepositoryProvider)
+        .endInnings(inningsId: inningsId);
+  }
+
   Future<void> selectBatsman() async {}
 
   Future<void> selectBowler() async {}

@@ -16,6 +16,7 @@ class Network {
   static String getPlayerProfile({required final String userId}) =>
       'user/$userId/profile';
   static String startYourMatch() => "/matches/start_match";
+  static String getYourMatches() => "/matches/your_matches";
   static String updateScore({required int inningsId}) =>
       '/matches/$inningsId/scoring';
   static String selectBatmans({required int inningsId}) =>

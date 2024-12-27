@@ -10,6 +10,10 @@ abstract class ScoringRepository {
     required int inningsId,
   });
 
+  Future<InningsModel> endInnings({
+    required int inningsId,
+  });
+
   Future<void> undoScore();
 
   Future<void> batsmenOut();

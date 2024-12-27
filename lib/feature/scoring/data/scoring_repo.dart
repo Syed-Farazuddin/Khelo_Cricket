@@ -134,4 +134,57 @@ class ScoringRepo extends ScoringRepository {
     }
     return result;
   }
+
+  @override
+  Future<InningsModel> endInnings({required int inningsId}) async {
+    InningsModel result = InningsModel(
+      byes: 0,
+      extras: 0,
+      inningsid: 0,
+      isCompleted: false,
+      nonStrikerId: 0,
+      oversPlayed: 0,
+      strikerId: 0,
+      totalNoBalls: 0,
+      totalRuns: 0,
+      totalWides: 0,
+      bowlerId: 0,
+      bowler: PlayerBowlerScoreModel(
+        player: Players(name: '', id: 0),
+        score: BowlingScoreModel(),
+      ),
+      striker: PlayerScoreModel(
+        player: Players(
+          name: '',
+          id: 0,
+        ),
+        score: ScoreModel(),
+      ),
+      nonStriker: PlayerScoreModel(
+        player: Players(
+          name: '',
+          id: 0,
+        ),
+        score: ScoreModel(),
+      ),
+    );
+    try {
+      final response = await baseService.get(
+        Network.getInningsData(
+          inningsid: inningsId,
+        ),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+      result = InningsModel.fromJson(response);
+    } catch (e) {
+      debugPrint('Error while fetching innings Data');
+    }
+    return result;
+  }
 }

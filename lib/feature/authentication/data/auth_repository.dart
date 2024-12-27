@@ -71,14 +71,19 @@ class AuthRepository extends AuthenticationRepository {
     };
     bool result = false;
     try {
-      final response = await baseService.post(Network.verifyOtp(), body: body);
+      final response = await baseService.post(
+        Network.verifyOtp(),
+        body: body,
+      );
       debugPrint(response.toString());
       Toaster.onSuccess(
         message: response['message'],
         gravity: ToastGravity.BOTTOM,
       );
-      result = response['success'];
-      if (result == true) {
+      // result = response['success'];
+      final status = response['success'];
+      if (status == true) {
+        result = true;
         saveUserCredentials(response: response);
       }
     } catch (e) {

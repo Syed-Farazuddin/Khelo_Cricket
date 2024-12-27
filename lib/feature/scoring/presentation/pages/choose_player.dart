@@ -53,7 +53,8 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
           itemBuilder: (builder, index) {
             final player = team.players[index];
             if (!(widget.selectBatman)) {
-              return team.selectedPlayers.contains(player.id)
+              return team.selectedPlayers.contains(player.id) &&
+                      widget.previousPlayerId != player.id
                   ? GestureDetector(
                       onTap: () {
                         widget.onTap(player);
