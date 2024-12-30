@@ -185,7 +185,6 @@ class StartMatchRepo extends StartMatchRepository {
         ),
         body: {
           'inningsId': request.inningsId,
-          'newInningsId': request.newInningsId,
         },
       );
       debugPrint(response.toString());
