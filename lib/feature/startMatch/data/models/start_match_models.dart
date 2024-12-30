@@ -185,6 +185,7 @@ class MatchData {
   int? inningsB;
   InningsModel? firstInnings;
   InningsModel? secondInnings;
+  String? status;
   MatchData({
     this.ballType,
     this.bowlingLimit,
@@ -201,6 +202,7 @@ class MatchData {
     this.tossWonTeamId,
     this.firstInnings,
     this.secondInnings,
+    this.status,
   });
 
   factory MatchData.fromJson(
@@ -226,6 +228,7 @@ class MatchData {
       tossWonTeamId: json['tossWonTeamId'],
       firstInnings: firstInnings,
       secondInnings: secondInnings,
+      status: json['status'],
     );
   }
 

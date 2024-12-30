@@ -1,8 +1,8 @@
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
-import 'package:crick_hub/feature/Home/domain/models.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
+import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -116,72 +116,84 @@ class _HomeState extends ConsumerState<Home> {
                     itemCount: matches.length,
                     itemBuilder: (context, index) {
                       final match = matches[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              12,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ScoringPage(
+                                data: match,
+                              ),
                             ),
-                            color: Colors.grey.withOpacity(0.17),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 12,
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                12,
+                              ),
+                              color: Colors.grey.withOpacity(0.17),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 12,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          match.ground.toString(),
+                                        ),
+                                        Text(
+                                          match.state.toString(),
+                                        ),
+                                        // Text(match.state)
+                                      ],
+                                    ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        match.ground.toString(),
-                                      ),
-                                      Text(
-                                        match.date.toString(),
-                                      ),
-                                      // Text(match.state)
-                                    ],
+                                  const Divider(
+                                    color: Colors.white,
+                                    height: 1,
+                                    thickness: 0.2,
                                   ),
-                                ),
-                                const Divider(
-                                  color: Colors.white,
-                                  height: 1,
-                                  thickness: 0.2,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                showTeam(
-                                  details: match.firstInnings!,
-                                ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                showTeam(
-                                  details: match.secondInnings!,
-                                ),
-                                // const Divider(
-                                //   color: Colors.white,
-                                //   height: 1,
-                                //   thickness: 0.2,
-                                // ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 12,
+                                  const SizedBox(
+                                    height: 8,
                                   ),
-                                  child: Text(match.state.toString()),
-                                )
-                              ],
+                                  showTeam(
+                                    details: match.firstInnings!,
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  showTeam(
+                                    details: match.secondInnings!,
+                                  ),
+                                  // const Divider(
+                                  //   color: Colors.white,
+                                  //   height: 1,
+                                  //   thickness: 0.2,
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 12,
+                                    ),
+                                    child: Text(match.status.toString()),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
