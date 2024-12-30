@@ -87,6 +87,14 @@ class Team {
   }
 }
 
+class StartNewInnings {
+  final int inningsId;
+
+  StartNewInnings({
+    required this.inningsId,
+  });
+}
+
 class StartMatchRequestBody {
   final int tossWonTeamId;
   final bool chooseToBat;
@@ -151,6 +159,16 @@ class AddTeamResponse {
   }
 }
 
+class TeamData {
+  String name;
+  int id;
+
+  TeamData({
+    required this.name,
+    required this.id,
+  });
+}
+
 class MatchData {
   int? id;
   String? state;
@@ -185,7 +203,9 @@ class MatchData {
     this.secondInnings,
   });
 
-  factory MatchData.fromJson(Map<String, dynamic> json) {
+  factory MatchData.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final inningsA = json['firstInnings'];
     final InningsModel firstInnings = InningsModel.fromJson(inningsA);
     final inningsB = json['secondInnings'];

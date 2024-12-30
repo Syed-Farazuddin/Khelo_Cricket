@@ -169,6 +169,34 @@ class StartMatchRepo extends StartMatchRepository {
   }
 
   @override
+  Future<MatchData> startNewInnings({
+    required StartNewInnings request,
+  }) async {
+    MatchData data = MatchData();
+    try {
+      final response = await baseService.post(
+        Network.startNewInnings(),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+        body: {
+          'inningsId': request.inningsId,
+          'newInningsId': request.newInningsId,
+        },
+      );
+      debugPrint(response.toString());
+      data = MatchData.fromJson(response);
+    } catch (e) {
+      debugPrint("Error while starting match");
+    }
+    return data;
+  }
+
+  @override
   Future<void> selectBatsmans({
     required Players striker,
     required Players nonStriker,

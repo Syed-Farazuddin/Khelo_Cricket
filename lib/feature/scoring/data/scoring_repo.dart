@@ -96,6 +96,14 @@ class ScoringRepo extends ScoringRepository {
       totalRuns: 0,
       totalWides: 0,
       bowlerId: 0,
+      batting: TeamData(
+        name: '',
+        id: 0,
+      ),
+      bowling: TeamData(
+        name: '',
+        id: 0,
+      ),
       bowler: PlayerBowlerScoreModel(
         player: Players(name: '', id: 0),
         score: BowlingScoreModel(),
@@ -149,6 +157,14 @@ class ScoringRepo extends ScoringRepository {
       totalRuns: 0,
       totalWides: 0,
       bowlerId: 0,
+      bowling: TeamData(
+        name: '',
+        id: 0,
+      ),
+      batting: TeamData(
+        name: '',
+        id: 0,
+      ),
       bowler: PlayerBowlerScoreModel(
         player: Players(name: '', id: 0),
         score: BowlingScoreModel(),
@@ -170,9 +186,7 @@ class ScoringRepo extends ScoringRepository {
     );
     try {
       final response = await baseService.get(
-        Network.getInningsData(
-          inningsid: inningsId,
-        ),
+        Network.startNewInnings(),
         options: Options(
           headers: {
             "Authorization": await storage.read(

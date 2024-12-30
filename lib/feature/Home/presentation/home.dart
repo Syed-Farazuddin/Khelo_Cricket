@@ -1,19 +1,36 @@
 import 'package:crick_hub/common/widgets/button_list.dart';
+import 'package:crick_hub/feature/Home/data/home_repository.dart';
+import 'package:crick_hub/feature/Home/domain/models.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   int active = 0;
   List<String> items = ["Completed", "Upcoming"];
+  List<MatchData> matches = [];
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() {
+    ref.read(homeRepositoryProvider).getYourMatches().then(
+          (onValue) => matches = onValue,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final previousMatches = [
@@ -398,52 +415,4 @@ enum Status {
       orElse: () => Status.upcoming, // Default if no match is found
     );
   }
-}
-
-class Match {
-  String? startedAt;
-  String? tossStatus;
-  String? matchStatus;
-  String? overs;
-  String? scheduledAt;
-  int status;
-  String state;
-  TeamDetails teamA;
-  TeamDetails teamB;
-
-  Match({
-    required this.state,
-    required this.startedAt,
-    required this.status,
-    required this.matchStatus,
-    required this.scheduledAt,
-    required this.overs,
-    this.tossStatus,
-    required this.teamA,
-    required this.teamB,
-  });
-}
-
-class TeamDetails {
-  String name;
-  String score;
-  String overs;
-  String dots;
-  String fours;
-  String sixes;
-  String wickets;
-  String status;
-  bool won;
-
-  TeamDetails({
-    required this.name,
-    required this.dots,
-    required this.fours,
-    required this.overs,
-    required this.score,
-    required this.sixes,
-    required this.status,
-    required this.wickets,
-    required this.won,
-  });
 }

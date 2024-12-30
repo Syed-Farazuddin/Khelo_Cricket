@@ -50,6 +50,9 @@ class InningsModel {
   int? nonStrikerId;
   int? strikerId;
   int? bowlerId;
+  TeamData? batting;
+  TeamData? bowling;
+
   PlayerScoreModel? striker;
   PlayerScoreModel? nonStriker;
   PlayerBowlerScoreModel? bowler;
@@ -66,11 +69,25 @@ class InningsModel {
     required this.totalWides,
     required this.nonStriker,
     required this.striker,
+    required this.batting,
+    required this.bowling,
     required this.bowlerId,
     required this.bowler,
   });
 
   factory InningsModel.fromJson(Map<String, dynamic> json) {
+    final battingTeam = json['batting'] as List;
+    final bowlingTeam = json['bowling'] as List;
+    TeamData batting = TeamData(name: '', id: 0);
+    TeamData bowling = TeamData(name: '', id: 0);
+    if (battingTeam.isNotEmpty) {
+      batting.id = battingTeam[0]['team']['id'];
+      batting.name = battingTeam[0]['team']['name'];
+    }
+    if (bowlingTeam.isNotEmpty) {
+      bowling.id = bowlingTeam[0]['team']['id'];
+      bowling.name = bowlingTeam[0]['team']['name'];
+    }
     PlayerScoreModel striker = PlayerScoreModel(
       player: Players(name: '', id: 0),
       score: ScoreModel(),
@@ -138,6 +155,8 @@ class InningsModel {
       nonStriker: nonStriker,
       bowlerId: json['bowlerId'],
       bowler: bowler,
+      batting: batting,
+      bowling: bowling,
     );
   }
 }

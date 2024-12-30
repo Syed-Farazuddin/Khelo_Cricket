@@ -6,6 +6,7 @@ import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_bowler.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_roles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,26 +16,24 @@ import 'package:google_fonts/google_fonts.dart';
 class SelectBatsman extends ConsumerStatefulWidget {
   const SelectBatsman({
     super.key,
-    required this.data,
   });
-  final MatchData data;
   @override
   ConsumerState<SelectBatsman> createState() => _SelectBatsmanState();
 }
 
 class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
-  late final MatchData data;
+  // late final MatchData data;
   @override
   void initState() {
     super.initState();
-    data = widget.data;
+    // data = widget.data;
   }
 
   @override
   Widget build(BuildContext context) {
+    final MatchData data = ref.watch(currentMatchProvider);
     final strikerProvider = ref.watch(striker);
     final nonStrikerProvider = ref.watch(nonStriker);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -63,7 +62,9 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                           ? strikerProvider.image ?? Constants.dummyImage
                           : "lib/assets/images/striker.png",
                   networkUrl: Network.selectBatmans(
-                    inningsId: data.inningsA ?? 0,
+                    inningsId: data.firstInnings?.isCompleted ?? false
+                        ? data.inningsB ?? 0
+                        : data.inningsA ?? 0,
                   ),
                   isStriker: true,
                   isBowler: false,
@@ -91,7 +92,9 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                       ? nonStrikerProvider.image ?? Constants.dummyImage
                       : "lib/assets/images/non_striker.png",
                   networkUrl: Network.selectBatmans(
-                    inningsId: data.inningsA ?? 0,
+                    inningsId: data.firstInnings?.isCompleted ?? false
+                        ? data.inningsB ?? 0
+                        : data.inningsA ?? 0,
                   ),
                   player: nonStrikerProvider,
                   ontap: (player) {
@@ -134,12 +137,14 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                         .selectBatsmans(
                           striker: strikerProvider,
                           nonStriker: nonStrikerProvider,
-                          inningsId: data.inningsA ?? 0,
+                          inningsId: data.firstInnings?.isCompleted ?? false
+                              ? data.inningsB ?? 0
+                              : data.inningsA ?? 0,
                         );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (builder) => SelectBowler(data: data),
+                        builder: (builder) => const SelectBowler(),
                       ),
                     );
                   },

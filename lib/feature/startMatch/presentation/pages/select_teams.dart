@@ -17,7 +17,7 @@ class SelectTeams extends ConsumerStatefulWidget {
 }
 
 class _SelectTeamsState extends ConsumerState<SelectTeams> {
-  bool viewSquads = false;
+  bool viewSquads = true;
   bool loading = false;
   late List<Team> yourTeams = [];
 

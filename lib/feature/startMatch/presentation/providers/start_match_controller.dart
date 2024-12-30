@@ -16,7 +16,9 @@ class StartMatchController extends _$StartMatchController {
     return teams;
   }
 
-  Future<void> addNewTeam({required String name}) async {
+  Future<void> addNewTeam({
+    required String name,
+  }) async {
     await ref.read(startMatchRepositoryProvider).addNewTeam(name: name);
   }
 
@@ -44,11 +46,20 @@ class StartMatchController extends _$StartMatchController {
         );
   }
 
-  Future<MatchData> startYourMatch(
-      {required StartMatchRequestBody request}) async {
+  Future<MatchData> startYourMatch({
+    required StartMatchRequestBody request,
+  }) async {
     return await ref
         .read(startMatchRepositoryProvider)
         .startYourMatch(request: request);
+  }
+
+  Future<MatchData> startNewInnings({
+    required StartNewInnings request,
+  }) async {
+    return await ref
+        .read(startMatchRepositoryProvider)
+        .startNewInnings(request: request);
   }
 
   Future<void> selectBatsmans({

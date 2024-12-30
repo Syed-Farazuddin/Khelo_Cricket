@@ -22,3 +22,7 @@ final selectedTeamB = StateProvider<Team>((ref) {
     selectedPlayers: [],
   );
 });
+
+final currentMatchProvider = StateProvider<MatchData>((ref) {
+  return MatchData();
+});

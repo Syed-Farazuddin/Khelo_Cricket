@@ -8,7 +8,9 @@ import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/choose_player.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/startMatch/presentation/pages/select_batsman.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,38 +36,35 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   @override
   void initState() {
     super.initState();
-    fetchInningsData();
+    fetchInningsData(matchData: widget.data);
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentBowler = ref.read(currentBowlerProvider);
+    final currentBowler = ref.watch(currentBowlerProvider);
+    final matchData = ref.watch(currentMatchProvider);
     int oversBowled = inningsData.bowler!.score!.over.length - 1;
     List<ScoringModel> scoringData = [
-      ScoringModel(name: '0', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: '1', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: '2', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: '3', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: '4', url: '/matches/${widget.data.id}/scoring/'),
-      ScoringModel(name: '6', url: '/matches/${widget.data.id}/scoring/'),
+      ScoringModel(name: '0', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(name: '1', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(name: '2', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(name: '3', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(name: '4', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(name: '6', url: '/matches/${matchData.id}/scoring/'),
       ScoringModel(
         name: 'Undo',
-        url: '/matches/${widget.data.id}/scoring/',
+        url: '/matches/${matchData.id}/scoring/',
         isUndo: true,
       ),
       ScoringModel(
         name: 'WD',
-        url: '/matches/${widget.data.id}/scoring/',
+        url: '/matches/${matchData.id}/scoring/',
         isWide: true,
       ),
       ScoringModel(
-          name: 'NB',
-          url: '/matches/${widget.data.id}/scoring/',
-          isNoBall: true),
+          name: 'NB', url: '/matches/${matchData.id}/scoring/', isNoBall: true),
       ScoringModel(
-          name: 'NB',
-          url: '/matches/${widget.data.id}/scoring/',
-          isNoBall: true),
+          name: 'NB', url: '/matches/${matchData.id}/scoring/', isNoBall: true),
     ];
     return Scaffold(
       appBar: AppBar(),
@@ -87,7 +86,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "${widget.data.state}",
+                              "${matchData.state}",
                               style: GoogleFonts.golosText(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -95,7 +94,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                               ),
                             ),
                             Text(
-                              "${widget.data.ground}",
+                              "${matchData.ground}",
                               style: GoogleFonts.golosText(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -117,10 +116,12 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                             const SizedBox(
                               width: 10,
                             ),
-                            Text(
-                              "( ${inningsData.oversPlayed} .${inningsData.bowler!.score!.over[oversBowled - 1 < 0 ? 0 : oversBowled - 1].length} )",
-                              style: CustomTextStyles.largeText,
-                            )
+                            oversBowled > 0
+                                ? Text(
+                                    "( ${inningsData.oversPlayed} .${inningsData.bowler!.score!.over[oversBowled - 1 < 0 ? 0 : oversBowled - 1].length} )",
+                                    style: CustomTextStyles.largeText,
+                                  )
+                                : const SizedBox.shrink(),
                           ],
                         ),
                         const SizedBox(
@@ -151,7 +152,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           ),
                         ),
                         Text(
-                          "Overs Remaining : ${(widget.data.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
+                          "Overs Remaining : ${(matchData.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
                           style: CustomTextStyles.mediumText,
                         )
                       ],
@@ -177,7 +178,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                             onTap: () {
                               updateScore(
                                 score: scoringData[index],
-                                inningsId: widget.data.inningsA,
+                                inningsId:
+                                    matchData.firstInnings?.isCompleted ?? false
+                                        ? matchData.inningsB
+                                        : matchData.inningsA,
+                                matchData: matchData,
                                 currentBowler: currentBowler,
                               );
                             },
@@ -332,7 +337,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     );
   }
 
-  Widget batsman({required PlayerScoreModel player, bool isStriker = false}) {
+  Widget batsman({
+    required PlayerScoreModel player,
+    bool isStriker = false,
+  }) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -393,7 +401,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                   height: 4,
                 ),
                 Text(
-                  "${player.score!.totalRuns} (${player.score!.runsScores!.length})",
+                  "${player.score!.totalRuns} (${player.score!.runsScores!.isNotEmpty ? player.score!.runsScores!.length : 0})",
                   style: GoogleFonts.golosText(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -411,6 +419,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   Future<void> updateScore({
     required ScoringModel score,
     required int? inningsId,
+    required MatchData matchData,
     required BowlerDetails currentBowler,
   }) async {
     final currentOver = ref.read(currentOverProvider);
@@ -440,9 +449,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           builder: (builder) => ChoosePlayer(
             selectBatman: false,
             previousPlayerId: currentBowler.id ?? 0,
-            data: widget.data,
+            data: matchData,
             onTap: (player) => changeBowler(
               bowler: player,
+              matchData: matchData,
               currentBowler: currentBowler,
             ),
           ),
@@ -481,9 +491,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                       const SizedBox(width: 10),
                       Custombutton(
                         onTap: () {
-                          // Add your "End Innings" logic here
-                          Navigator.of(context)
-                              .pop(); // Optionally close the dialog
+                          endMyInnings(matchData: matchData);
                         },
                         title: "End Inning",
                         width: 100,
@@ -497,28 +505,31 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         },
       );
     }
-    fetchInningsData();
+    fetchInningsData(matchData: matchData);
   }
 
-  Future<void> endCurrentInnings() async {
-    final currentInningsId = widget.data.firstInnings?.isCompleted ?? false
-        ? widget.data.secondInnings?.inningsid ?? 0
-        : widget.data.firstInnings?.inningsid ?? 0;
-    final res = await ref
-        .read(scoringProviderProvider.notifier)
-        .endInnings(inningsId: currentInningsId);
-    setState(() {
-      inningsData = res;
-    });
-  }
+  // Future<void> endCurrentInnings({
+  //   required MatchData matchData,
+  // }) async {
+  //   final currentInningsId = matchData.firstInnings?.isCompleted ?? false
+  //       ? matchData.secondInnings?.inningsid ?? 0
+  //       : matchData.firstInnings?.inningsid ?? 0;
+  //   final res = await ref
+  //       .read(scoringProviderProvider.notifier)
+  //       .endInnings(inningsId: currentInningsId);
+  //   // ref.read()
+  //   setState(() {
+  //     inningsData = res;
+  //   });
+  // }
 
-  Future<void> fetchInningsData() async {
+  Future<void> fetchInningsData({required MatchData matchData}) async {
     // setState(() {
     //   loading = true;
-    // })
-    final currentInningsId = widget.data.firstInnings?.isCompleted ?? false
-        ? widget.data.secondInnings?.inningsid ?? 0
-        : widget.data.firstInnings?.inningsid ?? 0;
+    // });
+    final currentInningsId = matchData.firstInnings?.isCompleted ?? false
+        ? matchData.secondInnings?.inningsid ?? 0
+        : matchData.firstInnings?.inningsid ?? 0;
     final data =
         await ref.read(scoringProviderProvider.notifier).getInningsData(
               inningsId: currentInningsId,
@@ -531,10 +542,32 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   Future<void> chooseBatsmans() async {}
 
-  Future<void> changeBowler({
-    required Players bowler,
-    required BowlerDetails currentBowler,
+  Future<void> endMyInnings({
+    required MatchData matchData,
   }) async {
+    final result =
+        await ref.watch(startMatchControllerProvider.notifier).startNewInnings(
+              request: StartNewInnings(
+                inningsId: inningsData.inningsid ?? 0,
+              ),
+            );
+    debugPrint(result.toString());
+
+    ref.read(currentMatchProvider.notifier).state = result;
+    Navigator.of(context).pop();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (builder) => const SelectBatsman(),
+      ),
+    );
+    // Refresh the data of the match
+  }
+
+  Future<void> changeBowler(
+      {required Players bowler,
+      required BowlerDetails currentBowler,
+      required MatchData matchData}) async {
     final result =
         await ref.watch(startMatchControllerProvider.notifier).selectBowler(
               bowler: bowler,
@@ -543,7 +576,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             );
     ref.watch(currentBowlerProvider.notifier).state = result.bowler;
     ref.watch(currentOverProvider.notifier).state = result.over;
-    fetchInningsData();
+    fetchInningsData(matchData: matchData);
   }
 }
 

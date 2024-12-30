@@ -35,7 +35,9 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
         team = teamB;
       }
     } else {
-      if (widget.selectBatman && widget.data.chooseToBat!) {
+      if (widget.selectBatman &&
+          widget.data.chooseToBat != null &&
+          widget.data.chooseToBat!) {
         team = teamB;
       } else {
         team = teamA;

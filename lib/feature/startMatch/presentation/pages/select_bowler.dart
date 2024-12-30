@@ -6,6 +6,7 @@ import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
+import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_roles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,10 +16,10 @@ import 'package:google_fonts/google_fonts.dart';
 class SelectBowler extends ConsumerStatefulWidget {
   const SelectBowler({
     super.key,
-    required this.data,
+    // required this.data,
     this.previousBowlerId = 0,
   });
-  final MatchData data;
+  // final MatchData data;
   final int previousBowlerId;
   @override
   ConsumerState<SelectBowler> createState() => _SelectBowlerState();
@@ -30,11 +31,12 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
   @override
   void initState() {
     super.initState();
-    data = widget.data;
+    // data = widget.data;
   }
 
   @override
   Widget build(BuildContext context) {
+    final MatchData data = ref.watch(currentMatchProvider);
     final bowlerProvider = ref.watch(bowler);
     return Scaffold(
       appBar: AppBar(
@@ -92,7 +94,9 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
                         .selectBowler(
                           bowler: bowlerProvider,
                           order: 0,
-                          inningsId: data.inningsA ?? 0,
+                          inningsId: data.firstInnings?.isCompleted ?? false
+                              ? data.inningsB ?? 0
+                              : data.inningsA ?? 0,
                         );
                     ref.read(currentBowlerProvider.notifier).state =
                         response.bowler;

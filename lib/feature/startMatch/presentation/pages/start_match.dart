@@ -104,20 +104,14 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                     child: CustomInputField(
                       controller: overs,
                       onchanged: (value) {
-                        if (value.isNotEmpty) {
-                          setState(() {
-                            double number = int.parse(value) / 5;
-                            overLimit.text = number.floor().toString();
-                          });
-                          debugPrint(overLimit.text);
-                        }
+                        if (value.isNotEmpty) {}
                       },
                       label: "Overs",
                     ),
                   ),
                   Expanded(
                     child: CustomInputField(
-                      controller: TextEditingController(),
+                      controller: overLimit,
                       onchanged: (value) => debugPrint(value),
                       label: "Over Limit",
                     ),
@@ -398,10 +392,11 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
     data = await ref
         .watch(startMatchControllerProvider.notifier)
         .startYourMatch(request: request);
+    ref.read(currentMatchProvider.notifier).state = data;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SelectBatsman(data: data),
+        builder: (context) => const SelectBatsman(),
       ),
     );
   }

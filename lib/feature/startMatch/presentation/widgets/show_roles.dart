@@ -1,5 +1,4 @@
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
-import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
