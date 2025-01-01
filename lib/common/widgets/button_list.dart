@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ButtonList extends StatelessWidget {
-  final List<String> list;
+  final List list;
   final int active;
   final void Function(int value) onTap;
   const ButtonList({
@@ -48,7 +48,7 @@ class ButtonList extends StatelessWidget {
                 ),
               ),
               child: Text(
-                list[index],
+                list[index].toString(),
                 style: GoogleFonts.golosText(
                   color: Colors.white,
                   fontSize: 14,

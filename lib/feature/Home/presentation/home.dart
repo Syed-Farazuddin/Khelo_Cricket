@@ -1,8 +1,8 @@
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
+import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
-import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -121,8 +121,8 @@ class _HomeState extends ConsumerState<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ScoringPage(
-                                data: match,
+                              builder: (context) => MatchDetails(
+                                match: match,
                               ),
                             ),
                           );

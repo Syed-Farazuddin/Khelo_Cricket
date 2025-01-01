@@ -1,5 +1,6 @@
 import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
+import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
@@ -14,7 +15,6 @@ import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ScoringPage extends ConsumerStatefulWidget {
   const ScoringPage({
@@ -36,14 +36,27 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init() {
+    setState(() {
+      loading = true;
+    });
     fetchInningsData(matchData: widget.data);
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final currentBowler = ref.watch(currentBowlerProvider);
     final matchData = ref.watch(currentMatchProvider);
-    int oversBowled = inningsData.bowler!.score!.over.length - 1;
+    int oversBowled = 0;
+    if (!loading) {
+      oversBowled = inningsData.bowler!.score!.over.length - 1;
+    }
     List<ScoringModel> scoringData = [
       ScoringModel(name: '0', url: '/matches/${matchData.id}/scoring/'),
       ScoringModel(name: '1', url: '/matches/${matchData.id}/scoring/'),
@@ -68,12 +81,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     ];
     return Scaffold(
       appBar: AppBar(),
-      // Top body should contains the match details score bowler and strikers
       body: loading
-          ? LoadingAnimationWidget.bouncingBall(
-              color: Colors.white,
-              size: 30,
-            )
+          ? const Loader()
           : SingleChildScrollView(
               child: SafeArea(
                 child: Column(
@@ -508,25 +517,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     fetchInningsData(matchData: matchData);
   }
 
-  // Future<void> endCurrentInnings({
-  //   required MatchData matchData,
-  // }) async {
-  //   final currentInningsId = matchData.firstInnings?.isCompleted ?? false
-  //       ? matchData.secondInnings?.inningsid ?? 0
-  //       : matchData.firstInnings?.inningsid ?? 0;
-  //   final res = await ref
-  //       .read(scoringProviderProvider.notifier)
-  //       .endInnings(inningsId: currentInningsId);
-  //   // ref.read()
-  //   setState(() {
-  //     inningsData = res;
-  //   });
-  // }
-
   Future<void> fetchInningsData({required MatchData matchData}) async {
-    // setState(() {
-    //   loading = true;
-    // });
     final currentInningsId = matchData.firstInnings?.isCompleted ?? false
         ? matchData.secondInnings?.inningsid ?? 0
         : matchData.firstInnings?.inningsid ?? 0;
@@ -534,9 +525,17 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         await ref.read(scoringProviderProvider.notifier).getInningsData(
               inningsId: currentInningsId,
             );
+    if (data.strikerId == 0) {
+      ref.read(currentMatchProvider.notifier).state = matchData;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => const SelectBatsman(),
+        ),
+      );
+    }
     setState(() {
       inningsData = data;
-      loading = false;
     });
   }
 
