@@ -357,3 +357,106 @@ class DisplayPlayerData {
     required this.onTap,
   });
 }
+
+class MatchOverview {}
+
+class MatchScorecard {}
+
+class MyInnings {
+  int id;
+  int totalRuns;
+  int extras;
+  int totalWides;
+  int totalNoBalls;
+  int bytes;
+  int oversPlayed;
+  bool isCompleted;
+  int nonStrikerId;
+  int strikerId;
+  int bowlerId;
+  BattingTeam batting;
+  BowlingTeam bowling;
+
+  MyInnings({
+    required this.bowlerId,
+    required this.bytes,
+    required this.extras,
+    required this.id,
+    required this.isCompleted,
+    required this.nonStrikerId,
+    required this.oversPlayed,
+    required this.strikerId,
+    required this.totalNoBalls,
+    required this.totalRuns,
+    required this.batting,
+    required this.bowling,
+    required this.totalWides,
+  });
+}
+
+class BattingTeam {
+  int id;
+  int teamId;
+  int inningsId;
+  Team team;
+  List batsmen;
+  BattingTeam({
+    required this.id,
+    required this.inningsId,
+    required this.team,
+    required this.batsmen,
+    required this.teamId,
+  });
+}
+
+class BowlingTeam {
+  int id;
+  int teamId;
+  int inningsId;
+  Team team;
+  List bowlers;
+  BowlingTeam({
+    required this.id,
+    required this.inningsId,
+    required this.team,
+    required this.bowlers,
+    required this.teamId,
+  });
+}
+
+class BattingScore {
+  int? id;
+  String? playerName;
+  int? playerId;
+  int? inningsId;
+  List<int>? runsScores;
+  int? totalRuns;
+  int? fours;
+  int? sixes;
+  bool? isOut;
+  String? bowlerName;
+  BattingScore({
+    required this.bowlerName,
+    required this.fours,
+    required this.id,
+    required this.inningsId,
+    required this.isOut,
+    required this.playerId,
+    required this.playerName,
+    required this.runsScores,
+    required this.sixes,
+    required this.totalRuns,
+  });
+}
+
+class WicketData {
+  String? name;
+  Function()? onclick;
+  String? asset;
+
+  WicketData({
+    required this.asset,
+    required this.name,
+    required this.onclick,
+  });
+}

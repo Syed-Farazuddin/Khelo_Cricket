@@ -182,6 +182,7 @@ class MatchData {
   int? overs;
   String? createdBy;
   int? inningsA;
+  int? scorerId;
   int? inningsB;
   InningsModel? firstInnings;
   InningsModel? secondInnings;
@@ -199,6 +200,7 @@ class MatchData {
     this.inningsB,
     this.overs,
     this.state,
+    this.scorerId,
     this.tossWonTeamId,
     this.firstInnings,
     this.secondInnings,
@@ -222,6 +224,7 @@ class MatchData {
       ground: json['ground'],
       id: json['id'],
       inningsA: json['inningsA'],
+      scorerId: json['scorerId'],
       inningsB: json['inningsB'],
       overs: json['overs'],
       state: json['state'],

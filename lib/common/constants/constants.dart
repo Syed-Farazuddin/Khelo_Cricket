@@ -6,4 +6,5 @@ class Constants {
   static String striker = "";
   static String nonStriker = "";
   static String assetImagepath = 'lib/assets/images/';
+  static String assetSvgpath = 'lib/assets/svgs/';
 }

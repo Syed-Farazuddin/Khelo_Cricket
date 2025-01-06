@@ -3,6 +3,7 @@ import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
 import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
+import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -118,6 +119,9 @@ class _HomeState extends ConsumerState<Home> {
                       final match = matches[index];
                       return GestureDetector(
                         onTap: () {
+                          // if (match.scorerId == 1) {
+                          //   return;
+                          // }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -240,6 +244,49 @@ Widget showTeam({required InningsModel details}) {
           ],
         ),
       ],
+    ),
+  );
+}
+
+showDialogBox({required BuildContext context, required MatchData match}) {
+  return showDialog(
+    context: context,
+    builder: (builder) => Dialog(
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Custombutton(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MatchDetails(
+                      match: match,
+                    ),
+                  ),
+                );
+              },
+              title: "View Match Details",
+              width: 200,
+            ),
+            Custombutton(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ScoringPage(
+                      data: match,
+                    ),
+                  ),
+                );
+              },
+              title: "Continue Scoring",
+              width: 200,
+            )
+          ],
+        ),
+      ),
     ),
   );
 }

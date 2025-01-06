@@ -1,8 +1,8 @@
 import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
+import 'package:crick_hub/feature/match/domain/match_models.dart';
 import 'package:crick_hub/feature/match/domain/match_repo.dart';
-import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,8 +25,10 @@ class MatchRepository extends MatchRepo {
   });
 
   @override
-  Future<MatchData> fetchMatchOverview({required int matchId}) async {
-    final MatchData data = MatchData();
+  Future<MatchOverviewModel> fetchMatchOverview({
+    required int matchId,
+  }) async {
+    MatchOverviewModel data = MatchOverviewModel();
     try {
       final result = await baseService.get(
         Network.getMatchOverview(
@@ -41,6 +43,7 @@ class MatchRepository extends MatchRepo {
         ),
       );
       debugPrint(result.toString());
+      data = MatchOverviewModel.fromJson(result);
     } catch (e) {
       debugPrint("Error while fetching the match overview");
     }

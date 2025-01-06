@@ -14,6 +14,7 @@ import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ScoringPage extends ConsumerStatefulWidget {
@@ -38,6 +39,15 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     super.initState();
     init();
   }
+
+  List<WicketData> wicketList = [
+    WicketData(
+        asset: '${Constants.assetSvgpath}/bowled.svg',
+        name: 'Bowled',
+        onclick: () {
+          debugPrint("It's run out");
+        })
+  ];
 
   void init() {
     setState(() {
@@ -64,6 +74,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       ScoringModel(name: '3', url: '/matches/${matchData.id}/scoring/'),
       ScoringModel(name: '4', url: '/matches/${matchData.id}/scoring/'),
       ScoringModel(name: '6', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(name: 'W', url: '/matches/${matchData.id}/scoring/'),
       ScoringModel(
         name: 'Undo',
         url: '/matches/${matchData.id}/scoring/',
@@ -185,15 +196,44 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         itemBuilder: (builder, index) {
                           return GestureDetector(
                             onTap: () {
-                              updateScore(
-                                score: scoringData[index],
-                                inningsId:
-                                    matchData.firstInnings?.isCompleted ?? false
-                                        ? matchData.inningsB
-                                        : matchData.inningsA,
-                                matchData: matchData,
-                                currentBowler: currentBowler,
-                              );
+                              if (scoringData[index].name == "W") {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (builder) => Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 300,
+                                    padding: const EdgeInsets.all(8),
+                                    child: GridView.builder(
+                                      itemBuilder: (context, index) => Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            wicketList[index].asset ?? '',
+                                          ),
+                                          Text(
+                                            wicketList[index].name ?? '',
+                                          ),
+                                        ],
+                                      ),
+                                      itemCount: wicketList.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                updateScore(
+                                  score: scoringData[index],
+                                  inningsId:
+                                      matchData.firstInnings?.isCompleted ??
+                                              false
+                                          ? matchData.inningsB
+                                          : matchData.inningsA,
+                                  matchData: matchData,
+                                  currentBowler: currentBowler,
+                                );
+                              }
                             },
                             child: Container(
                               alignment: Alignment.center,

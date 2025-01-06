@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/feature/match/presentation/providers/match_detail_controller.dart';
 import 'package:crick_hub/feature/match/presentation/widgets/match_overview.dart';
@@ -21,11 +22,7 @@ class MatchDetails extends ConsumerStatefulWidget {
 class _MatchDetailsState extends ConsumerState<MatchDetails> {
   late List items = [];
   late List pages = [];
-  List<Widget> widgets = const [
-    MatchOverview(),
-    MatchScorecard(),
-    MatchSquads(),
-  ];
+
   int active = 0;
   @override
   void initState() {
@@ -40,10 +37,22 @@ class _MatchDetailsState extends ConsumerState<MatchDetails> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widgets = [
+      MatchOverview(
+        matchId: widget.match.id ?? 0,
+      ),
+      MatchScorecard(
+        matchId: widget.match.id ?? 0,
+      ),
+      MatchSquads(
+        matchId: widget.match.id ?? 0,
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(
           '${widget.match.firstInnings!.batting!.name} vs ${widget.match.firstInnings!.bowling!.name}',
+          style: CustomTextStyles.large,
         ),
       ),
       body: SingleChildScrollView(
@@ -52,6 +61,8 @@ class _MatchDetailsState extends ConsumerState<MatchDetails> {
           child: Container(
             padding: const EdgeInsets.all(8),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
                   height: 20,
@@ -64,6 +75,9 @@ class _MatchDetailsState extends ConsumerState<MatchDetails> {
                     });
                   },
                   active: active,
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 widgets[active],
               ],

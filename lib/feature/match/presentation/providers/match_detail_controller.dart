@@ -1,6 +1,5 @@
 import 'package:crick_hub/feature/match/data/match_repository.dart';
-import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
-import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/match/domain/match_models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'match_detail_controller.g.dart';
@@ -12,7 +11,7 @@ class MatchDetailController extends _$MatchDetailController {
     return;
   }
 
-  Future<MatchData> fetchMatchOverview({
+  Future<MatchOverviewModel> fetchMatchOverview({
     required int matchId,
   }) async {
     return ref
