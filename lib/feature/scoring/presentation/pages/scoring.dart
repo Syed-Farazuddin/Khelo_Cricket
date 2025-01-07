@@ -40,15 +40,6 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     init();
   }
 
-  List<WicketData> wicketList = [
-    WicketData(
-        asset: '${Constants.assetSvgpath}/bowled.svg',
-        name: 'Bowled',
-        onclick: () {
-          debugPrint("It's run out");
-        })
-  ];
-
   void init() {
     setState(() {
       loading = true;
@@ -67,6 +58,67 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     if (!loading) {
       oversBowled = inningsData.bowler!.score!.over.length - 1;
     }
+    List<WicketData> wicketList = [
+      WicketData(
+        asset: '${Constants.assetSvgpath}bowled.svg',
+        name: 'Bowled',
+        onclick: () {
+          debugPrint("Bowled !!!! ");
+          isWicket(
+            isBowled: true,
+            bowlerId: currentBowler.id ?? 0,
+          );
+        },
+      ),
+      WicketData(
+        asset: '${Constants.assetSvgpath}catchout.svg',
+        name: 'Catch out',
+        onclick: () {
+          debugPrint("It's Catch out ");
+          isWicket(
+            isCatchOut: true,
+            fielderId: 1,
+            bowlerId: currentBowler.id ?? 0,
+          );
+        },
+      ),
+      WicketData(
+        asset: '${Constants.assetSvgpath}runout.svg',
+        name: 'Run Out',
+        onclick: () {
+          debugPrint("Run Out .....");
+          isWicket(
+            isRunOut: true,
+            fielderId: 1,
+            fielder1Id: 2,
+            bowlerId: currentBowler.id ?? 0,
+          );
+        },
+      ),
+      WicketData(
+        asset: '${Constants.assetSvgpath}caughtAndBowled.svg',
+        name: 'Catch and bowl',
+        onclick: () {
+          debugPrint("It's Catch and bowl  ");
+          isWicket(
+            isCatchAndBowl: true,
+            bowlerId: currentBowler.id ?? 0,
+          );
+        },
+      ),
+      WicketData(
+        asset: '${Constants.assetSvgpath}keepercatch.svg',
+        name: 'Keeper Catch',
+        onclick: () {
+          debugPrint("keeper Catch");
+          isWicket(
+            isKeeperCatch: true,
+            keeperId: 1,
+            bowlerId: currentBowler.id ?? 0,
+          );
+        },
+      )
+    ];
     List<ScoringModel> scoringData = [
       ScoringModel(name: '0', url: '/matches/${matchData.id}/scoring/'),
       ScoringModel(name: '1', url: '/matches/${matchData.id}/scoring/'),
@@ -201,23 +253,45 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                                   context: context,
                                   builder: (builder) => Container(
                                     width: MediaQuery.of(context).size.width,
-                                    height: 300,
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    // color: Colors.grey[400],
                                     padding: const EdgeInsets.all(8),
                                     child: GridView.builder(
-                                      itemBuilder: (context, index) => Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            wicketList[index].asset ?? '',
-                                          ),
-                                          Text(
-                                            wicketList[index].name ?? '',
-                                          ),
-                                        ],
+                                      itemBuilder: (context, index) =>
+                                          GestureDetector(
+                                        onTap: wicketList[index].onclick,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: SvgPicture.asset(
+                                                wicketList[index].asset ?? '',
+                                                height: 100,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  Colors.white, // Desired color
+                                                  BlendMode
+                                                      .srcIn, // Blend mode for applying the color
+                                                ),
+                                                width: 50,
+                                              ),
+                                            ),
+                                            Text(
+                                              wicketList[index].name ?? '',
+                                              style:
+                                                  CustomTextStyles.mediumText,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       itemCount: wicketList.length,
                                       gridDelegate:
                                           const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4,
+                                        crossAxisCount: 3,
+                                        mainAxisSpacing: 10,
+                                        crossAxisSpacing: 10,
                                       ),
                                     ),
                                   ),
@@ -484,7 +558,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       runs: int.parse(score.name),
     );
     final res = await ref
-        .watch(
+        .read(
           scoringProviderProvider.notifier,
         )
         .updateScoring(
@@ -581,6 +655,38 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   Future<void> chooseBatsmans() async {}
 
+  Future<void> isWicket({
+    bool isRunOut = false,
+    bool isBowled = false,
+    int fielderId = 0,
+    int fielder1Id = 0,
+    int bowlerId = 0,
+    int keeperId = 0,
+    int wicketkeeperId = 0,
+    bool isCatchOut = false,
+    bool catchAndBowl = false,
+    bool isCatchAndBowl = false,
+    bool isKeeperCatch = false,
+  }) async {
+    await ref
+        .read(
+          scoringProviderProvider.notifier,
+        )
+        .isWicket(
+          IsWicketRequest(
+            bowlerId: bowlerId,
+            fielder2Id: fielder1Id,
+            fielderId: fielderId,
+            isBowled: isBowled,
+            isCatchAndBowl: isCatchAndBowl,
+            isCatchOut: isCatchOut,
+            isKeeperCatch: isKeeperCatch,
+            isRunOut: isRunOut,
+            keeperId: keeperId,
+          ),
+        );
+  }
+
   Future<void> endMyInnings({
     required MatchData matchData,
   }) async {
@@ -603,10 +709,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     // Refresh the data of the match
   }
 
-  Future<void> changeBowler(
-      {required Players bowler,
-      required BowlerDetails currentBowler,
-      required MatchData matchData}) async {
+  Future<void> changeBowler({
+    required Players bowler,
+    required BowlerDetails currentBowler,
+    required MatchData matchData,
+  }) async {
     final result =
         await ref.watch(startMatchControllerProvider.notifier).selectBowler(
               bowler: bowler,

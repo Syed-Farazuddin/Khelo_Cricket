@@ -10,13 +10,13 @@ abstract class ScoringRepository {
     required int inningsId,
   });
 
+  Future<void> isWicket(IsWicketRequest request);
+
   Future<InningsModel> endInnings({
     required int inningsId,
   });
 
   Future<void> undoScore();
-
-  Future<void> batsmenOut();
 
   Future<void> selectStrikers();
 

@@ -29,4 +29,5 @@ class Network {
   static String getMatchOverview({required int matchId}) =>
       '/matches/$matchId/match_overview';
   static String getMatchDetailItems() => '/matches/items';
+  static String isWicket() => '';
 }

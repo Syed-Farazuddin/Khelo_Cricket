@@ -125,8 +125,8 @@ class _HomeState extends ConsumerState<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MatchDetails(
-                                match: match,
+                              builder: (context) => ScoringPage(
+                                data: match,
                               ),
                             ),
                           );
@@ -261,11 +261,19 @@ showDialogBox({required BuildContext context, required MatchData match}) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MatchDetails(
-                      match: match,
+                    builder: (context) => ScoringPage(
+                      data: match,
                     ),
                   ),
                 );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => MatchDetails(
+                //       match: match,
+                //     ),
+                //   ),
+                // );
               },
               title: "View Match Details",
               width: 200,

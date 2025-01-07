@@ -460,3 +460,27 @@ class WicketData {
     required this.onclick,
   });
 }
+
+class IsWicketRequest {
+  bool? isRunOut;
+  bool? isBowled;
+  bool? isCatchOut;
+  bool? isCatchAndBowl;
+  bool? isKeeperCatch;
+  int bowlerId;
+  int? keeperId;
+  int? fielderId;
+  int? fielder2Id;
+
+  IsWicketRequest({
+    required this.bowlerId,
+    required this.fielder2Id,
+    required this.fielderId,
+    required this.isBowled,
+    required this.isCatchAndBowl,
+    required this.isCatchOut,
+    required this.isKeeperCatch,
+    required this.isRunOut,
+    required this.keeperId,
+  });
+}

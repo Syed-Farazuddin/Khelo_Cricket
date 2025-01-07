@@ -20,6 +20,10 @@ class ScoringProvider extends _$ScoringProvider {
         .updateScore(scoring: scoring, inningsId: inningsId);
   }
 
+  Future<void> isWicket(IsWicketRequest request) async {
+    await ref.read(scoringRepositoryProvider).isWicket(request);
+  }
+
   Future<InningsModel> getInningsData({required int inningsId}) async {
     return await ref
         .read(scoringRepositoryProvider)

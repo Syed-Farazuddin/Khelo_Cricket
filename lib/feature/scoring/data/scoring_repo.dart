@@ -70,14 +70,15 @@ class ScoringRepo extends ScoringRepository {
   }
 
   @override
-  Future<void> batsmenOut() async {
-    // TODO: implement batsmenOut
+  Future<void> isWicket(IsWicketRequest request) async {
+    final response = await baseService.post(
+      Network.isWicket(),
+      body: request,
+    );
   }
 
   @override
-  Future<void> selectBowler() async {
-    // TODO: implement selectBowler
-  }
+  Future<void> selectBowler() async {}
 
   @override
   Future<void> selectStrikers() async {}
