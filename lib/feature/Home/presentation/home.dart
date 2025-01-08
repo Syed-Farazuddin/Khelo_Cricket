@@ -1,4 +1,6 @@
 import 'package:crick_hub/common/loaders/loader.dart';
+import 'package:crick_hub/common/models/scoring_models.dart';
+import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
 import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
@@ -122,6 +124,8 @@ class _HomeState extends ConsumerState<Home> {
                           // if (match.scorerId == 1) {
                           //   return;
                           // }
+                          ref.read(currentBowlerProvider.notifier).state =
+                              BowlerDetails(id: 1);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

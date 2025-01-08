@@ -1,5 +1,29 @@
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 
+class WicketModel {
+  int bowlerId;
+  int? fielderId;
+  int? fielder1Id;
+  bool? isCatchOut;
+  bool? isBowled;
+  bool? isRunOut;
+  bool? isKeeperCatch;
+  int? keeperId;
+  bool? isCatchAndBowl;
+
+  WicketModel({
+    required this.bowlerId,
+    this.fielderId,
+    this.fielder1Id,
+    this.isCatchOut = false,
+    this.isBowled = false,
+    this.isRunOut = false,
+    this.isKeeperCatch = false,
+    this.isCatchAndBowl = false,
+    this.keeperId,
+  });
+}
+
 class Updatescoring {
   int? ball;
   int? runs;
@@ -10,7 +34,7 @@ class Updatescoring {
   bool? isWicket;
   int? bowlerId;
   int? overId;
-
+  WicketModel? wicketInfo;
   Updatescoring({
     required this.ball,
     required this.runs,
@@ -21,6 +45,7 @@ class Updatescoring {
     required this.isWicket,
     required this.bowlerId,
     required this.overId,
+    required this.wicketInfo,
   });
 
   Map<String, dynamic> toJson(Updatescoring score) {
@@ -325,12 +350,14 @@ class UpdateScoringResponse {
   bool? status;
   bool? selectNewBowler;
   bool? endInnings;
+  bool? selectNewBatsman;
 
   UpdateScoringResponse({
     this.message,
-    this.selectNewBowler,
+    this.selectNewBowler = false,
     this.status,
     this.endInnings,
+    this.selectNewBatsman = false,
   });
 
   factory UpdateScoringResponse.fromJson(Map<String, dynamic> json) {
@@ -339,6 +366,7 @@ class UpdateScoringResponse {
       selectNewBowler: json['selectNewBowler'],
       status: json['status'],
       endInnings: json['endInnings'],
+      selectNewBatsman: json['selectNewBatsman'],
     );
   }
 }
@@ -458,29 +486,5 @@ class WicketData {
     required this.asset,
     required this.name,
     required this.onclick,
-  });
-}
-
-class IsWicketRequest {
-  bool? isRunOut;
-  bool? isBowled;
-  bool? isCatchOut;
-  bool? isCatchAndBowl;
-  bool? isKeeperCatch;
-  int bowlerId;
-  int? keeperId;
-  int? fielderId;
-  int? fielder2Id;
-
-  IsWicketRequest({
-    required this.bowlerId,
-    required this.fielder2Id,
-    required this.fielderId,
-    required this.isBowled,
-    required this.isCatchAndBowl,
-    required this.isCatchOut,
-    required this.isKeeperCatch,
-    required this.isRunOut,
-    required this.keeperId,
   });
 }

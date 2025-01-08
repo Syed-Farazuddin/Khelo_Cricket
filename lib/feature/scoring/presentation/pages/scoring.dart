@@ -65,6 +65,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         onclick: () {
           debugPrint("Bowled !!!! ");
           isWicket(
+            matchData: widget.data,
+            currentBowler: currentBowler,
             isBowled: true,
             bowlerId: currentBowler.id ?? 0,
           );
@@ -76,6 +78,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         onclick: () {
           debugPrint("It's Catch out ");
           isWicket(
+            matchData: widget.data,
+            currentBowler: currentBowler,
             isCatchOut: true,
             fielderId: 1,
             bowlerId: currentBowler.id ?? 0,
@@ -89,6 +93,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           debugPrint("Run Out .....");
           isWicket(
             isRunOut: true,
+            matchData: widget.data,
+            currentBowler: currentBowler,
             fielderId: 1,
             fielder1Id: 2,
             bowlerId: currentBowler.id ?? 0,
@@ -102,6 +108,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           debugPrint("It's Catch and bowl  ");
           isWicket(
             isCatchAndBowl: true,
+            matchData: widget.data,
+            currentBowler: currentBowler,
             bowlerId: currentBowler.id ?? 0,
           );
         },
@@ -113,6 +121,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
           debugPrint("keeper Catch");
           isWicket(
             isKeeperCatch: true,
+            matchData: widget.data,
+            currentBowler: currentBowler,
             keeperId: 1,
             bowlerId: currentBowler.id ?? 0,
           );
@@ -120,27 +130,44 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       )
     ];
     List<ScoringModel> scoringData = [
-      ScoringModel(name: '0', url: '/matches/${matchData.id}/scoring/'),
-      ScoringModel(name: '1', url: '/matches/${matchData.id}/scoring/'),
-      ScoringModel(name: '2', url: '/matches/${matchData.id}/scoring/'),
-      ScoringModel(name: '3', url: '/matches/${matchData.id}/scoring/'),
-      ScoringModel(name: '4', url: '/matches/${matchData.id}/scoring/'),
-      ScoringModel(name: '6', url: '/matches/${matchData.id}/scoring/'),
-      ScoringModel(name: 'W', url: '/matches/${matchData.id}/scoring/'),
+      ScoringModel(
+        name: '0',
+      ),
+      ScoringModel(
+        name: '1',
+      ),
+      ScoringModel(
+        name: '2',
+      ),
+      ScoringModel(
+        name: '3',
+      ),
+      ScoringModel(
+        name: '4',
+      ),
+      ScoringModel(
+        name: '6',
+      ),
+      ScoringModel(
+        name: 'W',
+        isWicket: true,
+      ),
       ScoringModel(
         name: 'Undo',
-        url: '/matches/${matchData.id}/scoring/',
         isUndo: true,
       ),
       ScoringModel(
         name: 'WD',
-        url: '/matches/${matchData.id}/scoring/',
         isWide: true,
       ),
       ScoringModel(
-          name: 'NB', url: '/matches/${matchData.id}/scoring/', isNoBall: true),
+        name: 'NB',
+        isNoBall: true,
+      ),
       ScoringModel(
-          name: 'NB', url: '/matches/${matchData.id}/scoring/', isNoBall: true),
+        name: 'NB',
+        isNoBall: true,
+      ),
     ];
     return Scaffold(
       appBar: AppBar(),
@@ -248,7 +275,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         itemBuilder: (builder, index) {
                           return GestureDetector(
                             onTap: () {
-                              if (scoringData[index].name == "W") {
+                              if (scoringData[index].isWicket ?? false) {
                                 showModalBottomSheet(
                                   context: context,
                                   builder: (builder) => Container(
@@ -540,8 +567,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   }
 
   Future<void> updateScore({
+    bool isWicket = false,
     required ScoringModel score,
     required int? inningsId,
+    WicketModel? wicketInfo,
     required MatchData matchData,
     required BowlerDetails currentBowler,
   }) async {
@@ -553,9 +582,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       isNoBall: score.isNoBall ?? false,
       isWide: score.isWide ?? false,
       isRunOut: false,
-      isWicket: false,
+      isWicket: score.isWicket,
       overId: currentOver.id,
       runs: int.parse(score.name),
+      wicketInfo: wicketInfo,
     );
     final res = await ref
         .read(
@@ -577,6 +607,22 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
               bowler: player,
               matchData: matchData,
               currentBowler: currentBowler,
+            ),
+          ),
+        ),
+      );
+    }
+    if (res.selectNewBatsman ?? false) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => ChoosePlayer(
+            selectBatman: true,
+            previousPlayerId: currentBowler.id ?? 0,
+            data: matchData,
+            onTap: (player) => updateBatsman(
+              batsman: player,
+              matchData: matchData,
             ),
           ),
         ),
@@ -631,6 +677,13 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     fetchInningsData(matchData: matchData);
   }
 
+  Future<void> updateBatsman({
+    required Players batsman,
+    required MatchData matchData,
+  }) async {
+    debugPrint("Update new batsman with id ${batsman.id}");
+  }
+
   Future<void> fetchInningsData({required MatchData matchData}) async {
     final currentInningsId = matchData.firstInnings?.isCompleted ?? false
         ? matchData.secondInnings?.inningsid ?? 0
@@ -663,28 +716,37 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     int bowlerId = 0,
     int keeperId = 0,
     int wicketkeeperId = 0,
+    int score = 0,
     bool isCatchOut = false,
     bool catchAndBowl = false,
     bool isCatchAndBowl = false,
     bool isKeeperCatch = false,
+    required MatchData matchData,
+    required BowlerDetails currentBowler,
   }) async {
-    await ref
-        .read(
-          scoringProviderProvider.notifier,
-        )
-        .isWicket(
-          IsWicketRequest(
-            bowlerId: bowlerId,
-            fielder2Id: fielder1Id,
-            fielderId: fielderId,
-            isBowled: isBowled,
-            isCatchAndBowl: isCatchAndBowl,
-            isCatchOut: isCatchOut,
-            isKeeperCatch: isKeeperCatch,
-            isRunOut: isRunOut,
-            keeperId: keeperId,
-          ),
-        );
+    WicketModel wicketInfo = WicketModel(
+      bowlerId: currentBowler.id ?? 0,
+      fielder1Id: fielder1Id,
+      fielderId: fielderId,
+      isCatchOut: isCatchOut,
+      isKeeperCatch: isKeeperCatch,
+      isRunOut: isRunOut,
+      keeperId: keeperId,
+      isBowled: isBowled,
+      isCatchAndBowl: isCatchAndBowl,
+    );
+    updateScore(
+      score: ScoringModel(
+        name: score.toString(),
+      ),
+      wicketInfo: wicketInfo,
+      isWicket: true,
+      inningsId: matchData.firstInnings?.isCompleted ?? false
+          ? matchData.inningsB
+          : matchData.inningsA,
+      matchData: matchData,
+      currentBowler: currentBowler,
+    );
   }
 
   Future<void> endMyInnings({
@@ -727,18 +789,18 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 }
 
 class ScoringModel {
-  String? url;
   String name;
   bool? isWide;
   bool? isNoBall;
   bool? isBye;
   bool? isUndo;
+  bool? isWicket;
   ScoringModel({
     required this.name,
     this.isNoBall,
     this.isWide,
     this.isBye,
     this.isUndo,
-    required this.url,
+    this.isWicket = false,
   });
 }

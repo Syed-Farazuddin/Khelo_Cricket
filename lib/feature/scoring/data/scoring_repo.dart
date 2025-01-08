@@ -70,7 +70,7 @@ class ScoringRepo extends ScoringRepository {
   }
 
   @override
-  Future<void> isWicket(IsWicketRequest request) async {
+  Future<void> isWicket(WicketModel request) async {
     final response = await baseService.post(
       Network.isWicket(),
       body: request,

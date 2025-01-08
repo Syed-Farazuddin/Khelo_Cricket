@@ -10,7 +10,7 @@ abstract class ScoringRepository {
     required int inningsId,
   });
 
-  Future<void> isWicket(IsWicketRequest request);
+  Future<void> isWicket(WicketModel request);
 
   Future<InningsModel> endInnings({
     required int inningsId,
