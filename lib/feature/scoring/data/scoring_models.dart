@@ -22,6 +22,20 @@ class WicketModel {
     this.isCatchAndBowl = false,
     this.keeperId,
   });
+
+  Map<String, dynamic> toJson(WicketModel wicket) {
+    return {
+      'bowlerId': wicket.bowlerId,
+      'fielderId': wicket.fielderId,
+      'fielder1Id': wicket.fielder1Id,
+      'isCatchOut': wicket.isCatchOut,
+      'isBowled': wicket.isBowled,
+      'isRunOut': wicket.isRunOut,
+      'isKeeperCatch': wicket.isKeeperCatch,
+      'keeperId': wicket.keeperId,
+      'isCatchAndBowl': wicket.isCatchAndBowl,
+    };
+  }
 }
 
 class Updatescoring {
@@ -35,6 +49,7 @@ class Updatescoring {
   int? bowlerId;
   int? overId;
   WicketModel? wicketInfo;
+
   Updatescoring({
     required this.ball,
     required this.runs,
@@ -58,7 +73,8 @@ class Updatescoring {
       'isRunOut': score.isRunOut,
       'isWicket': score.isWicket,
       'bowlerId': score.bowlerId,
-      'overId': score.overId
+      'overId': score.overId,
+      'wicketInfo': score.wicketInfo!.toJson(score.wicketInfo!)
     };
   }
 }

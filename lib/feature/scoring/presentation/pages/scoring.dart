@@ -295,7 +295,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                                                   const EdgeInsets.all(8.0),
                                               child: SvgPicture.asset(
                                                 wicketList[index].asset ?? '',
-                                                height: 100,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    12,
                                                 colorFilter:
                                                     const ColorFilter.mode(
                                                   Colors.white, // Desired color
@@ -332,6 +335,9 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                                           ? matchData.inningsB
                                           : matchData.inningsA,
                                   matchData: matchData,
+                                  wicketInfo: WicketModel(
+                                    bowlerId: currentBowler.id ?? 0,
+                                  ),
                                   currentBowler: currentBowler,
                                 );
                               }
@@ -339,8 +345,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(
-                                  0.07,
+                                color: Colors.white.withValues(
+                                  alpha: 0.07,
                                 ),
                               ),
                               child: Text(
@@ -410,6 +416,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         ),
         itemBuilder: (builder, idx) {
           int runs = over[idx].runs ?? 0;
+          bool isWicket = over[idx].isWicket ?? false;
           return Container(
             height: 40,
             width: 40,
@@ -417,15 +424,19 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: runs <= 3
-                  ? AppColors.dark.withOpacity(0.2)
+                  ? AppColors.dark.withValues(alpha: 0.2)
                   : const Color.fromARGB(255, 38, 109, 40),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              runs.toString(),
+              isWicket ? "W" : runs.toString(),
               textAlign: TextAlign.center,
               style: GoogleFonts.golosText(
-                color: runs <= 3 ? Colors.white.withOpacity(0.8) : Colors.white,
+                color: isWicket
+                    ? Colors.red
+                    : runs <= 3
+                        ? Colors.white.withValues(alpha: 0.8)
+                        : Colors.white,
                 // fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -494,8 +505,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(
-            0.2,
+          color: Colors.grey.withValues(
+            alpha: 0.2,
           ),
           borderRadius: BorderRadius.circular(
             12,
@@ -584,8 +595,8 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       isRunOut: false,
       isWicket: score.isWicket,
       overId: currentOver.id,
-      runs: int.parse(score.name),
       wicketInfo: wicketInfo,
+      runs: int.parse(score.name),
     );
     final res = await ref
         .read(
