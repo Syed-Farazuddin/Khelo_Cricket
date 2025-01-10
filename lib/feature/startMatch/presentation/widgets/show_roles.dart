@@ -40,6 +40,7 @@ class _ShowRolesState extends ConsumerState<ShowRoles> {
           context,
           MaterialPageRoute(
             builder: (builder) => DisplayPlayers(
+              showTeamAllPlayers: false,
               data: widget.data,
               selectBatman: widget.isStriker || widget.isNonStriker,
               onTap: widget.ontap,

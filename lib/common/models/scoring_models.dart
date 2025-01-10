@@ -10,6 +10,7 @@ class BowlingDetailsModel {
 
 class BowlerDetails {
   int? id;
+  int? playerId;
   int? inningsId;
   int? oversBowled;
   int? order;
@@ -25,10 +26,12 @@ class BowlerDetails {
     this.order = 0,
     this.overLeft = 0,
     this.oversBowled = 0,
+    this.playerId = 0,
   });
 
   factory BowlerDetails.fromJson(Map<String, dynamic> json) {
     return BowlerDetails(
+      playerId: json['playerId'] ?? 0,
       bowlingTeamId: json['bowlingTeamId'] ?? 0,
       id: json['id'],
       inningsId: json['inningsId'],

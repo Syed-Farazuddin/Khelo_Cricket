@@ -11,7 +11,9 @@ class PlayerCard extends StatefulWidget {
     required this.onTap,
     required this.color,
     required this.borderColor,
+    required this.showSelectPlayerIcon,
   });
+  final bool showSelectPlayerIcon;
   final Players player;
   final Function() onTap;
   final Color color;
@@ -67,18 +69,20 @@ class _PlayerCardState extends State<PlayerCard> {
                   ),
                 ],
               ),
-              AnimatedContainer(
-                duration: const Duration(seconds: 1),
-                child: widget.player.selected
-                    ? Image.asset(
-                        "lib/assets/images/selected.png",
-                        height: 30,
-                        width: 30,
-                      )
-                    : const Text(
-                        "Select",
-                      ),
-              ),
+              widget.showSelectPlayerIcon
+                  ? AnimatedContainer(
+                      duration: const Duration(seconds: 1),
+                      child: widget.player.selected
+                          ? Image.asset(
+                              "lib/assets/images/selected.png",
+                              height: 30,
+                              width: 30,
+                            )
+                          : const Text(
+                              "Select",
+                            ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),

@@ -54,14 +54,17 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
         child: ListView.separated(
           itemBuilder: (builder, index) {
             final Players currPlayer = team.players[index];
-            if ((widget.showTeamAllPlayers)) {
+            if (widget.showTeamAllPlayers) {
               (team.selectedPlayers.contains(currPlayer.id))
                   ? PlayerCard(
                       player: currPlayer,
+                      showSelectPlayerIcon: false,
                       onTap: () {
                         widget.onTap(currPlayer);
                       },
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(
+                        alpha: 0.2,
+                      ),
                       borderColor: Colors.white,
                     )
                   : const SizedBox.shrink();
@@ -70,8 +73,13 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
             return currPlayer.id != widget.previousBowlerId
                 ? PlayerCard(
                     player: currPlayer,
-                    onTap: () => widget.onTap(currPlayer),
-                    color: Colors.white.withOpacity(0.2),
+                    showSelectPlayerIcon: false,
+                    onTap: () => widget.onTap(
+                      currPlayer,
+                    ),
+                    color: Colors.white.withValues(
+                      alpha: 0.2,
+                    ),
                     borderColor: Colors.white,
                   )
                 : const SizedBox.shrink();
@@ -82,7 +90,7 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
                       height: 10,
                     )
                   : const SizedBox.shrink(),
-          itemCount: teamB.players.length,
+          itemCount: team.players.length,
         ),
       ),
     );

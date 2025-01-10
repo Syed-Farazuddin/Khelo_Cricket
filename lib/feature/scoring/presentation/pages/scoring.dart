@@ -31,7 +31,6 @@ class ScoringPage extends ConsumerStatefulWidget {
 class _ScoringPageState extends ConsumerState<ScoringPage> {
   late InningsModel inningsData;
   bool loading = false;
-  bool selectNewBowler = false;
   bool endInnings = false;
 
   @override
@@ -52,6 +51,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (loading) const Loader();
     final currentBowler = ref.watch(currentBowlerProvider);
     final matchData = ref.watch(currentMatchProvider);
     int oversBowled = 0;
@@ -588,12 +588,12 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     final currentOver = ref.read(currentOverProvider);
     final updateScoring = Updatescoring(
       ball: 0,
-      bowlerId: currentBowler.id,
+      bowlerId: currentBowler.playerId,
       isBye: score.isBye,
       isNoBall: score.isNoBall ?? false,
       isWide: score.isWide ?? false,
       isRunOut: false,
-      isWicket: score.isWicket,
+      isWicket: isWicket,
       overId: currentOver.id,
       wicketInfo: wicketInfo,
       runs: int.parse(score.name),
@@ -632,6 +632,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             previousPlayerId: currentBowler.id ?? 0,
             data: matchData,
             onTap: (player) => updateBatsman(
+              currentBatsmanid: inningsData.strikerId ?? 0,
               batsman: player,
               matchData: matchData,
             ),
@@ -689,10 +690,15 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   }
 
   Future<void> updateBatsman({
+    required int currentBatsmanid,
     required Players batsman,
     required MatchData matchData,
   }) async {
-    debugPrint("Update new batsman with id ${batsman.id}");
+    ref.read(scoringProviderProvider.notifier).updateBatsman(
+          currentBatsmanid: currentBatsmanid,
+          matchData: matchData,
+          batsman: batsman,
+        );
   }
 
   Future<void> fetchInningsData({required MatchData matchData}) async {
@@ -736,7 +742,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     required BowlerDetails currentBowler,
   }) async {
     WicketModel wicketInfo = WicketModel(
-      bowlerId: currentBowler.id ?? 0,
+      bowlerId: currentBowler.playerId ?? 0,
       fielder1Id: fielder1Id,
       fielderId: fielderId,
       isCatchOut: isCatchOut,

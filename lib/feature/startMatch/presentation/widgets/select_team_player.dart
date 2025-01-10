@@ -202,6 +202,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
             itemBuilder: (builder, index) {
               Players player = widget.team.players[index];
               return PlayerCard(
+                showSelectPlayerIcon: true,
                 player: player,
                 onTap: () {
                   if (widget.team.selectedPlayers.contains(player.id)) {

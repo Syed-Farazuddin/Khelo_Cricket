@@ -66,14 +66,17 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
                     )
                   : const SizedBox.shrink();
             }
-            return const BatmanCard();
+            return BatmanCard(
+              batsman: player,
+              onTap: widget.onTap,
+            );
           },
           separatorBuilder: (builder, index) {
             return const SizedBox(
               height: 10,
             );
           },
-          itemCount: 6,
+          itemCount: team.players.length,
         ),
       ),
     );

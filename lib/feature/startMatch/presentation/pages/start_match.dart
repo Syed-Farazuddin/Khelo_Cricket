@@ -436,6 +436,7 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
             if (team.selectedPlayers.contains(currPlayer.id)) {
               return PlayerCard(
                 player: currPlayer,
+                showSelectPlayerIcon: true,
                 onTap: () {
                   setState(() {
                     player = currPlayer;
@@ -443,7 +444,7 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                   context.pop();
                 },
                 color: const Color.fromARGB(54, 255, 255, 255),
-                borderColor: Colors.white.withOpacity(0.2),
+                borderColor: Colors.white.withValues(alpha: 0.2),
               );
             }
             return const SizedBox.shrink();
@@ -454,7 +455,7 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                       height: 10,
                     )
                   : const SizedBox.shrink(),
-          itemCount: teamB.players.length,
+          itemCount: team.players.length,
         ),
       ),
     );

@@ -93,6 +93,7 @@ class InningsModel {
   int? bowlerId;
   TeamData? batting;
   TeamData? bowling;
+  int? wickets;
 
   PlayerScoreModel? striker;
   PlayerScoreModel? nonStriker;
@@ -103,6 +104,7 @@ class InningsModel {
     required this.inningsid,
     required this.isCompleted,
     required this.nonStrikerId,
+    required this.wickets,
     required this.oversPlayed,
     required this.strikerId,
     required this.totalNoBalls,
@@ -184,6 +186,7 @@ class InningsModel {
     return InningsModel(
       byes: json['bytes'],
       extras: json['extras'],
+      wickets: json['wickets'],
       inningsid: json['id'],
       isCompleted: json['isCompleted'],
       nonStrikerId: json['nonStrikerId'],

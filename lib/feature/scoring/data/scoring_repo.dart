@@ -33,6 +33,9 @@ class ScoringRepo extends ScoringRepository {
   Future<void> undoScore() async {}
 
   @override
+  Future<void> updateBatsman() async {}
+
+  @override
   Future<UpdateScoringResponse> updateScore({
     required Updatescoring scoring,
     required int inningsId,
@@ -70,14 +73,6 @@ class ScoringRepo extends ScoringRepository {
   }
 
   @override
-  Future<void> isWicket(WicketModel request) async {
-    final response = await baseService.post(
-      Network.isWicket(),
-      body: request,
-    );
-  }
-
-  @override
   Future<void> selectBowler() async {}
 
   @override
@@ -86,6 +81,7 @@ class ScoringRepo extends ScoringRepository {
   @override
   Future<InningsModel> fetchInningsData({required int inningsId}) async {
     InningsModel result = InningsModel(
+      wickets: 0,
       byes: 0,
       extras: 0,
       inningsid: 0,
@@ -158,6 +154,7 @@ class ScoringRepo extends ScoringRepository {
       totalRuns: 0,
       totalWides: 0,
       bowlerId: 0,
+      wickets: 0,
       bowling: TeamData(
         name: '',
         id: 0,

@@ -1,5 +1,6 @@
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_repo.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'scoring_provider.g.dart';
@@ -20,9 +21,11 @@ class ScoringProvider extends _$ScoringProvider {
         .updateScore(scoring: scoring, inningsId: inningsId);
   }
 
-  Future<void> isWicket(WicketModel request) async {
-    await ref.read(scoringRepositoryProvider).isWicket(request);
-  }
+  Future<void> updateBatsman({
+    required int currentBatsmanid,
+    required Players batsman,
+    required MatchData matchData,
+  }) async {}
 
   Future<InningsModel> getInningsData({required int inningsId}) async {
     return await ref
