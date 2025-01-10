@@ -115,7 +115,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
           Text(
             "Team :  ${widget.team.name}",
             style: GoogleFonts.golosText(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -126,7 +126,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
           Text(
             "Add New Player",
             style: GoogleFonts.golosText(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -184,7 +184,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
           Text(
             "Previously added players",
             style: GoogleFonts.golosText(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -225,13 +225,13 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                 },
                 color: widget.team.selectedPlayers.contains(player.id)
                     ? Colors.blue
-                    : Colors.white.withOpacity(
-                        0.1,
+                    : Colors.white.withValues(
+                        alpha: 0.1,
                       ),
                 borderColor: widget.team.selectedPlayers.contains(player.id)
                     ? Colors.blue
-                    : Colors.white.withOpacity(
-                        0.1,
+                    : Colors.white.withValues(
+                        alpha: 0.1,
                       ),
               );
             },

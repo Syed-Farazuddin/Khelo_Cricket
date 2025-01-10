@@ -63,8 +63,16 @@ class StartMatchController extends _$StartMatchController {
         .startNewInnings(request: request);
   }
 
-  Future<void> updateBatsman() async {
-    return await ref.read(scoringRepositoryProvider).updateBatsman();
+  Future<void> updateBatsman({
+    required int currentBatsmanid,
+    required Players batsman,
+    required int inningsId,
+  }) async {
+    return await ref.read(scoringRepositoryProvider).updateBatsman(
+          batsman: batsman,
+          currentBatsmanid: currentBatsmanid,
+          inningsId: inningsId,
+        );
   }
 
   Future<void> selectBatsmans({

@@ -109,9 +109,9 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currpage,
         selectedItemColor:
-            Colors.grey.withOpacity(0.9), // Color for selected icon
+            Colors.grey.withValues(alpha: 0.9), // Color for selected icon
         unselectedItemColor:
-            Colors.grey.withOpacity(0.4), // Color for unselected icon
+            Colors.grey.withValues(alpha: 0.4), // Color for unselected icon
         selectedFontSize: 16, // Size of selected icon text
         unselectedFontSize: 12, // Size of unselected icon text
         onTap: (value) {
@@ -126,8 +126,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             icon: SvgPicture.asset(
               colorFilter: ColorFilter.mode(
                 _currpage == 0
-                    ? Colors.grey.withOpacity(0.9)
-                    : Colors.grey.withOpacity(0.4),
+                    ? Colors.grey.withValues(alpha: 0.9)
+                    : Colors.grey.withValues(alpha: 0.4),
                 BlendMode.srcIn,
               ),
               "lib/assets/svgs/coinSvg.svg",
@@ -151,8 +151,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             icon: SvgPicture.asset(
               colorFilter: ColorFilter.mode(
                 _currpage == 3
-                    ? Colors.grey.withOpacity(0.9)
-                    : Colors.grey.withOpacity(0.4),
+                    ? Colors.grey.withValues(alpha: 0.9)
+                    : Colors.grey.withValues(alpha: 0.4),
                 BlendMode.srcIn,
               ),
               "lib/assets/svgs/numbers.svg",

@@ -1,5 +1,6 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
@@ -121,12 +122,12 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
             decoration: BoxDecoration(
               color: index == selectedTeam
                   ? Colors.blue
-                  : Colors.white.withOpacity(
-                      0.18,
+                  : Colors.white.withValues(
+                      alpha: 0.18,
                     ),
               border: Border.all(
-                color: Colors.white.withOpacity(
-                  0.2,
+                color: Colors.white.withValues(
+                  alpha: 0.2,
                 ),
               ),
             ),
@@ -149,6 +150,10 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
   }
 
   Future<void> addNewTeam({required String name}) async {
+    if (name.isEmpty) {
+      Toaster.onError(message: "Please Enter a valid team name");
+      return;
+    }
     await ref
         .read(
           startMatchControllerProvider.notifier,

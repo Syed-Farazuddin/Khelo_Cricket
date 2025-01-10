@@ -94,7 +94,7 @@ class _HomeState extends ConsumerState<Home> {
                     "Your Matches",
                     style: GoogleFonts.golosText(
                       fontSize: 24,
-                      color: Colors.grey.withOpacity(0.9),
+                      color: Colors.grey.withValues(alpha: 0.9),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -129,8 +129,8 @@ class _HomeState extends ConsumerState<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ScoringPage(
-                                data: match,
+                              builder: (context) => MatchDetails(
+                                match: match,
                               ),
                             ),
                           );
@@ -142,7 +142,7 @@ class _HomeState extends ConsumerState<Home> {
                               borderRadius: BorderRadius.circular(
                                 12,
                               ),
-                              color: Colors.grey.withOpacity(0.17),
+                              color: Colors.grey.withValues(alpha: 0.17),
                             ),
                             child: GestureDetector(
                               onTap: () {},

@@ -15,6 +15,7 @@ import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ScoringPage extends ConsumerStatefulWidget {
@@ -209,7 +210,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "${inningsData.totalRuns} / ${inningsData.oversPlayed}",
+                              "${inningsData.totalRuns} / ${inningsData.wickets}",
                               style: CustomTextStyles.largeText,
                             ),
                             const SizedBox(
@@ -423,9 +424,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             // padding: EdgeInsets.symmetric(vertical: 6, horizontal: ),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: runs <= 3
-                  ? AppColors.dark.withValues(alpha: 0.2)
-                  : const Color.fromARGB(255, 38, 109, 40),
+              color: isWicket
+                  ? Colors.red[900]
+                  : runs <= 3
+                      ? AppColors.dark.withValues(alpha: 0.2)
+                      : const Color.fromARGB(255, 38, 109, 40),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -433,11 +436,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
               textAlign: TextAlign.center,
               style: GoogleFonts.golosText(
                 color: isWicket
-                    ? Colors.red
+                    ? Colors.white
                     : runs <= 3
                         ? Colors.white.withValues(alpha: 0.8)
                         : Colors.white,
-                // fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 fontSize: 20,
               ),
             ),
@@ -696,9 +699,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
   }) async {
     ref.read(scoringProviderProvider.notifier).updateBatsman(
           currentBatsmanid: currentBatsmanid,
-          matchData: matchData,
+          inningsId: inningsData.inningsid ?? 0,
           batsman: batsman,
         );
+    context.pop();
+    fetchInningsData(matchData: matchData);
   }
 
   Future<void> fetchInningsData({required MatchData matchData}) async {

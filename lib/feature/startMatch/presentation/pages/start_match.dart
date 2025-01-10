@@ -325,8 +325,8 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                     padding: const EdgeInsets.all(
                       12,
                     ),
-                    decoration:
-                        BoxDecoration(color: Colors.grey.withOpacity(0.12)),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withValues(alpha: 0.12)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,

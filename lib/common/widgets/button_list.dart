@@ -34,8 +34,8 @@ class ButtonList extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: active == index
-                    ? Colors.grey.withOpacity(
-                        0.5,
+                    ? Colors.grey.withValues(
+                        alpha: 0.5,
                       )
                     : Colors.transparent,
                 border: Border.all(

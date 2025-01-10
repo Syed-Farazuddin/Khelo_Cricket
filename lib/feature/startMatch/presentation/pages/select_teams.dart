@@ -243,8 +243,8 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.grey.withOpacity(
-                      0.14,
+                    color: Colors.grey.withValues(
+                      alpha: 0.14,
                     ),
                   ),
                   child: Row(

@@ -26,6 +26,18 @@ class ScoringRepo extends ScoringRepository {
 
   final BaseService baseService;
   final Storage storage;
+
+  Future<Options> authorization() async {
+    final options = Options(
+      headers: {
+        "Authorization": await storage.read(
+          key: 'token',
+        ),
+      },
+    );
+    return options;
+  }
+
   @override
   Future<void> fetchMatchData() async {}
 
@@ -33,7 +45,32 @@ class ScoringRepo extends ScoringRepository {
   Future<void> undoScore() async {}
 
   @override
-  Future<void> updateBatsman() async {}
+  Future<void> updateBatsman({
+    required int currentBatsmanid,
+    required Players batsman,
+    required int inningsId,
+  }) async {
+    try {
+      final options = await authorization();
+      final res = await baseService.post(
+        Network.updateBatmans(inningsId: inningsId),
+        options: options,
+        body: {
+          'batsmanId': currentBatsmanid,
+          'newBatsmanId': batsman.id,
+        },
+      );
+      debugPrint('Success');
+      if (res['success']) {
+        Toaster.onSuccess(
+          message: res['message'],
+        );
+      }
+      debugPrint(res.toString());
+    } catch (e) {
+      debugPrint("Error while updating the batsman");
+    }
+  }
 
   @override
   Future<UpdateScoringResponse> updateScore({

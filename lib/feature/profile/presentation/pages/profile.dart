@@ -181,9 +181,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             return Container(
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Colors.grey.withOpacity(0.09),
+                                    color: Colors.grey.withValues(alpha: 0.09),
                                   ),
-                                  color: Colors.white.withOpacity(0.04)),
+                                  color: Colors.white.withValues(alpha: 0.04)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -249,8 +249,8 @@ Widget Fields({
     ),
     decoration: BoxDecoration(
       color: isActive
-          ? Colors.grey.withOpacity(
-              0.5,
+          ? Colors.grey.withValues(
+              alpha: 0.5,
             )
           : Colors.transparent,
       borderRadius: BorderRadius.circular(
