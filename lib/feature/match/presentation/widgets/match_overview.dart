@@ -88,7 +88,7 @@ class _MatchOverviewState extends ConsumerState<MatchOverview> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${innings.totalRuns.toString()} / ${innings.totalNoBalls} ( ${innings.oversPlayed}.0 ) ',
+              '${innings.totalRuns.toString()} / ${innings.wickets} ( ${innings.oversPlayed}.0 ) ',
               style: CustomTextStyles.large.copyWith(
                 fontWeight: FontWeight.bold,
               ),

@@ -247,6 +247,7 @@ class Innings {
   int? totalWides;
   int? totalNoBalls;
   int? byes;
+  int? wickets;
   int? oversPlayed;
   bool? isCompleted;
   Team? batting;
@@ -259,6 +260,7 @@ class Innings {
     required this.id,
     required this.byes,
     required this.extras,
+    required this.wickets,
     required this.isCompleted,
     required this.totalNoBalls,
     required this.striker,
@@ -282,6 +284,7 @@ class Innings {
     final bowler = Bowler.fromJson(json['bowler']);
     return Innings(
       byes: json['bytes'],
+      wickets: json['wickets'],
       extras: json['extras'],
       batting: batting,
       bowling: bowling,

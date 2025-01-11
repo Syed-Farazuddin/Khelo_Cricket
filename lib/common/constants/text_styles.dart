@@ -12,6 +12,11 @@ class CustomTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w400,
   );
+  static TextStyle subheadings = GoogleFonts.golosText(
+    fontSize: 18,
+    color: Colors.green[500],
+    fontWeight: FontWeight.bold,
+  );
   static TextStyle largeText = GoogleFonts.golosText(
     fontSize: 24,
     fontWeight: FontWeight.bold,

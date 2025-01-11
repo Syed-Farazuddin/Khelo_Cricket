@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
@@ -121,9 +122,6 @@ class _HomeState extends ConsumerState<Home> {
                       final match = matches[index];
                       return GestureDetector(
                         onTap: () {
-                          // if (match.scorerId == 1) {
-                          //   return;
-                          // }
                           ref.read(currentBowlerProvider.notifier).state =
                               BowlerDetails(id: 1);
                           Navigator.push(
@@ -188,17 +186,15 @@ class _HomeState extends ConsumerState<Home> {
                                   showTeam(
                                     details: match.secondInnings!,
                                   ),
-                                  // const Divider(
-                                  //   color: Colors.white,
-                                  //   height: 1,
-                                  //   thickness: 0.2,
-                                  // ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 8,
                                       horizontal: 12,
                                     ),
-                                    child: Text(match.status.toString()),
+                                    child: Text(
+                                      match.status.toString(),
+                                      style: CustomTextStyles.subheadings,
+                                    ),
                                   )
                                 ],
                               ),
@@ -235,7 +231,7 @@ Widget showTeam({required InningsModel details}) {
         Row(
           children: [
             Text(
-              "${details.totalRuns} / ${details.extras}",
+              "${details.totalRuns} / ${details.wickets}",
               style: headingStyle,
             ),
             const SizedBox(

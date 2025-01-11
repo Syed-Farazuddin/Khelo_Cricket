@@ -286,6 +286,12 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                                     // color: Colors.grey[400],
                                     padding: const EdgeInsets.all(8),
                                     child: GridView.builder(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4,
+                                        mainAxisSpacing: 10,
+                                        crossAxisSpacing: 10,
+                                      ),
                                       itemBuilder: (context, index) =>
                                           GestureDetector(
                                         onTap: wicketList[index].onclick,
@@ -318,12 +324,6 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                                         ),
                                       ),
                                       itemCount: wicketList.length,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                      ),
                                     ),
                                   ),
                                 );
