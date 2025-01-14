@@ -1,3 +1,5 @@
+import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
+
 class BowlingDetailsModel {
   BowlerDetails? bowlerDetails;
   OverDetails? overDetails;
@@ -47,20 +49,26 @@ class OverDetails {
   int? id;
   int? bowlerId;
   int? order;
+  List<BallModel>? balls;
 
   OverDetails({
     this.id = 0,
     this.bowlerId = 0,
     this.order = 0,
+    this.balls,
   });
 
   factory OverDetails.fromJson(
     Map<String, dynamic> json,
   ) {
+    final ballDetails = json['balls'] as List;
+    final balls = ballDetails.map((ball) => BallModel.fromJson(ball)).toList();
+
     return OverDetails(
       id: json['id'],
       bowlerId: json['bowlerId'],
       order: json['order'],
+      balls: balls,
     );
   }
 }

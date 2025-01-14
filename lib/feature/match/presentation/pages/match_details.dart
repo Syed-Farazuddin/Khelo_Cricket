@@ -56,32 +56,29 @@ class _MatchDetailsState extends ConsumerState<MatchDetails> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(9),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                ButtonList(
-                  list: items,
-                  onTap: (val) {
-                    setState(() {
-                      active = val;
-                    });
-                  },
-                  active: active,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                widgets[active],
-              ],
-            ),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              ButtonList(
+                list: items,
+                onTap: (val) {
+                  setState(() {
+                    active = val;
+                  });
+                },
+                active: active,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              widgets[active],
+            ],
           ),
         ),
       ),

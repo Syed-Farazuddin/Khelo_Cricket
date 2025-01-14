@@ -29,7 +29,16 @@ class _MatchOverviewState extends ConsumerState<MatchOverview> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? const Loader()
+        ? const Column(
+            children: [
+              SizedBox(
+                height: 60,
+              ),
+              Center(
+                child: Loader(),
+              ),
+            ],
+          )
         : Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -67,7 +76,9 @@ class _MatchOverviewState extends ConsumerState<MatchOverview> {
           );
   }
 
-  Widget viewTeamScores(Innings innings) {
+  Widget viewTeamScores(
+    Innings innings,
+  ) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,7 +110,10 @@ class _MatchOverviewState extends ConsumerState<MatchOverview> {
     );
   }
 
-  Widget rowText({required String? label1, required String? label2}) {
+  Widget rowText({
+    required String? label1,
+    required String? label2,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

@@ -1,3 +1,5 @@
+import 'package:crick_hub/common/models/scoring_models.dart';
+
 class MatchModels {}
 
 class MatchOverviewModel {
@@ -186,6 +188,12 @@ class BowlingDetails {
   int? order;
   bool? isCompleted;
   int? oversLeft;
+  int? wides;
+  int? runs;
+  int? dots;
+  int? noBalls;
+  int? wickets;
+  List<OverDetails> over;
 
   BowlingDetails({
     required this.id,
@@ -195,9 +203,18 @@ class BowlingDetails {
     required this.oversBowled,
     required this.oversLeft,
     required this.playerId,
+    required this.dots,
+    required this.noBalls,
+    required this.over,
+    required this.runs,
+    required this.wickets,
+    required this.wides,
   });
 
   factory BowlingDetails.fromJson(Map<String, dynamic> json) {
+    final overDetails = json['over'] as List;
+    List<OverDetails> overs =
+        overDetails.map((over) => OverDetails.fromJson(over)).toList();
     return BowlingDetails(
       id: json['id'],
       inningsId: json['inningsId'],
@@ -206,6 +223,12 @@ class BowlingDetails {
       oversBowled: json['oversBowled'],
       oversLeft: json['oversLeft'],
       playerId: json['playerId'],
+      dots: json['dots'],
+      noBalls: json['noBalls'],
+      runs: json['runs'],
+      wickets: json['wickets'],
+      wides: json['wides'],
+      over: overs,
     );
   }
 }
@@ -218,16 +241,33 @@ class Team {
   int? wins;
   int? losses;
   int? draws;
+  List<BattingDetails> batmens;
+  List<BowlingDetails> bowlers;
   Team({
     required this.draws,
     required this.id,
     required this.imageUrl,
     required this.losses,
     required this.name,
+    required this.batmens,
     required this.totalMatches,
     required this.wins,
+    required this.bowlers,
   });
-  factory Team.fromJson(Map<String, dynamic> json) {
+
+  factory Team.fromJson({
+    required Map<String, dynamic> json,
+    required bool batting,
+  }) {
+    List<BattingDetails> batsmens = [];
+    List<BowlingDetails> bowlers = [];
+    if (batting) {
+      final batmen = json['batmens'] as List;
+      batsmens = batmen.map((json) => BattingDetails.fromJson(json)).toList();
+    } else {
+      final bowler = json['bowlers'] as List;
+      bowlers = bowler.map((json) => BowlingDetails.fromJson(json)).toList();
+    }
     return Team(
       draws: json['team']['draws'],
       id: json['team']['id'],
@@ -236,6 +276,8 @@ class Team {
       name: json['team']['name'],
       totalMatches: json['team']['totalMatches'],
       wins: json['team']['wins'],
+      batmens: batsmens,
+      bowlers: bowlers,
     );
   }
 }
@@ -279,9 +321,16 @@ class Innings {
     final nonStriker = Batsmen.fromJson(nonStri);
     final batTeam = json['batting'];
     final bowlTeam = json['bowling'];
-    final batting = Team.fromJson(batTeam[0]);
-    final bowling = Team.fromJson(bowlTeam[0]);
+    final batting = Team.fromJson(
+      json: batTeam[0],
+      batting: true,
+    );
+    final bowling = Team.fromJson(
+      json: bowlTeam[0],
+      batting: false,
+    );
     final bowler = Bowler.fromJson(json['bowler']);
+
     return Innings(
       byes: json['bytes'],
       wickets: json['wickets'],
