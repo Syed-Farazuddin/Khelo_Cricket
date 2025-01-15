@@ -5,6 +5,7 @@ import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/core/colors/colors.dart';
+import 'package:crick_hub/feature/match/domain/match_models.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/choose_player.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
@@ -30,7 +31,34 @@ class ScoringPage extends ConsumerStatefulWidget {
 }
 
 class _ScoringPageState extends ConsumerState<ScoringPage> {
-  late InningsModel inningsData;
+  late InningsModel inningsData = InningsModel(
+    byes: 0,
+    extras: 0,
+    inningsid: 0,
+    isCompleted: false,
+    nonStrikerId: 0,
+    wickets: 0,
+    oversPlayed: 0,
+    strikerId: 0,
+    totalNoBalls: 0,
+    totalRuns: 0,
+    totalWides: 0,
+    nonStriker: PlayerScoreModel(
+      player: Players(name: '', id: 0),
+      score: ScoreModel(),
+    ),
+    striker: PlayerScoreModel(
+      player: Players(name: '', id: 0),
+      score: ScoreModel(),
+    ),
+    batting: TeamData(name: '', id: 0),
+    bowling: TeamData(name: '', id: 0),
+    bowlerId: 0,
+    bowler: PlayerBowlerScoreModel(
+      player: Players(name: '', id: 0),
+      score: BowlingScoreModel(),
+    ),
+  );
   bool loading = false;
   bool endInnings = false;
 

@@ -60,9 +60,13 @@ class OverDetails {
 
   factory OverDetails.fromJson(
     Map<String, dynamic> json,
+    bool saveBalls,
   ) {
-    final ballDetails = json['balls'] as List;
-    final balls = ballDetails.map((ball) => BallModel.fromJson(ball)).toList();
+    List<BallModel> balls = [];
+    if (saveBalls) {
+      final ballDetails = json['balls'] as List;
+      balls = ballDetails.map((ball) => BallModel.fromJson(ball)).toList();
+    }
 
     return OverDetails(
       id: json['id'],

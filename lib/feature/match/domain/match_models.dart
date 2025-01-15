@@ -214,7 +214,7 @@ class BowlingDetails {
   factory BowlingDetails.fromJson(Map<String, dynamic> json) {
     final overDetails = json['over'] as List;
     List<OverDetails> overs =
-        overDetails.map((over) => OverDetails.fromJson(over)).toList();
+        overDetails.map((over) => OverDetails.fromJson(over, true)).toList();
     return BowlingDetails(
       id: json['id'],
       inningsId: json['inningsId'],

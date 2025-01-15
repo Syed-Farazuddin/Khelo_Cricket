@@ -178,6 +178,39 @@ class ScoringRepo extends ScoringRepository {
   }
 
   @override
+  Future<List<Players>> getPlayingTeam({
+    required bool battingPlayers,
+    required int inningsId,
+  }) async {
+    List<Players> players = [];
+    try {
+      final response = await baseService.post(
+        Network.getPlaying11(inningsId: inningsId),
+        body: {
+          'batting': battingPlayers,
+        },
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+
+      if (!response['success']) {
+        Toaster.onError(message: response['message']);
+        return [];
+      }
+      final playersData = response['players'] as List;
+      players = playersData.map((player) => Players.fromJson(player)).toList();
+    } catch (e) {
+      debugPrint("Error while fetching playing team");
+    }
+    return players;
+  }
+
+  @override
   Future<InningsModel> endInnings({required int inningsId}) async {
     InningsModel result = InningsModel(
       byes: 0,

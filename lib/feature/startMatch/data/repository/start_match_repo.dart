@@ -252,7 +252,7 @@ class StartMatchRepo extends StartMatchRepository {
       final bowerDetailas = response['bowler'];
       final overDetails = response['over'];
       BowlerDetails bowlerDetails = BowlerDetails.fromJson(bowerDetailas);
-      OverDetails over = OverDetails.fromJson(overDetails);
+      OverDetails over = OverDetails.fromJson(overDetails, false);
       result.bowler = bowlerDetails;
       result.over = over;
     } catch (e) {

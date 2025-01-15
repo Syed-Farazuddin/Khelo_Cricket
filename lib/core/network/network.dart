@@ -13,6 +13,9 @@ class Network {
       'team/$teamId/add_player';
   static String updateBatmans({required int inningsId}) =>
       '/matches/$inningsId/scoring/update_batsman';
+
+  static String getPlaying11({required int inningsId}) =>
+      '/matches/$inningsId/get_team_players';
   static String createPlayerAndAddInTeam() =>
       'auth/create_player_and_add_in_team';
   static String getPlayerProfile({required final String userId}) =>

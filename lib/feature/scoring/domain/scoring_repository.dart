@@ -21,6 +21,11 @@ abstract class ScoringRepository {
     required int inningsId,
   });
 
+  Future<List<Players>> getPlayingTeam({
+    required bool battingPlayers,
+    required int inningsId,
+  });
+
   Future<void> undoScore();
 
   Future<void> selectStrikers();

@@ -1,7 +1,7 @@
 import 'package:crick_hub/common/widgets/batman_card.dart';
 import 'package:crick_hub/common/widgets/bowler_card.dart';
+import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
-import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,24 +23,25 @@ class ChoosePlayer extends ConsumerStatefulWidget {
 }
 
 class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
+  List<Players> players = [];
+
+  void init() {
+    fetchPlayers(
+      batting: widget.selectBatman,
+      inningsId: widget.data.firstInnings!.isCompleted ?? false
+          ? widget.data.firstInnings!.inningsid ?? 0
+          : widget.data.secondInnings!.inningsid ?? 0,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Team teamA = ref.read(selectedTeamA);
-    final Team teamB = ref.read(selectedTeamB);
-    final Team team;
-    if (widget.data.tossWonTeamId == teamA.teamId) {
-      if (widget.selectBatman && widget.data.chooseToBat!) {
-        team = teamA;
-      } else {
-        team = teamB;
-      }
-    } else {
-      if (widget.selectBatman && widget.data.chooseToBat!) {
-        team = teamB;
-      } else {
-        team = teamA;
-      }
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -51,20 +52,17 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
         padding: const EdgeInsets.all(8),
         child: ListView.separated(
           itemBuilder: (builder, index) {
-            final player = team.players[index];
+            final player = players[index];
             if (!(widget.selectBatman)) {
-              return team.selectedPlayers.contains(player.id) &&
-                      widget.previousPlayerId != player.id
-                  ? GestureDetector(
-                      onTap: () {
-                        widget.onTap(player);
-                      },
-                      child: BowlerCard(
-                        bowler: player,
-                        onTap: widget.onTap,
-                      ),
-                    )
-                  : const SizedBox.shrink();
+              return GestureDetector(
+                onTap: () {
+                  widget.onTap(player);
+                },
+                child: BowlerCard(
+                  bowler: player,
+                  onTap: widget.onTap,
+                ),
+              );
             }
             return BatmanCard(
               batsman: player,
@@ -76,9 +74,21 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
               height: 10,
             );
           },
-          itemCount: team.players.length,
+          itemCount: players.length,
         ),
       ),
     );
+  }
+
+  Future<void> fetchPlayers({
+    required int inningsId,
+    required bool batting,
+  }) async {
+    final data = await ref
+        .read(scoringProviderProvider.notifier)
+        .getPlayingTeam(inningsId: inningsId, battingPlayers: batting);
+    setState(() {
+      players = data;
+    });
   }
 }

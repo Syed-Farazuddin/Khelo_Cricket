@@ -370,12 +370,14 @@ class UpdateScoringResponse {
   bool? selectNewBowler;
   bool? endInnings;
   bool? selectNewBatsman;
+  List<Players>? players;
 
   UpdateScoringResponse({
     this.message,
     this.selectNewBowler = false,
     this.status,
     this.endInnings,
+    this.players = const [],
     this.selectNewBatsman = false,
   });
 
