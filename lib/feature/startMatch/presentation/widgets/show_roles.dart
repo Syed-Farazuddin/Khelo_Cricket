@@ -70,9 +70,22 @@ class _ShowRolesState extends ConsumerState<ShowRoles> {
                     height: 200,
                     width: 150,
                     loadingBuilder: (context, child, loadingProgress) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      if (loadingProgress == null) {
+                        // Image has loaded
+                        return child;
+                      } else {
+                        // Image is still loading
+                        double progress =
+                            loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1);
+
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value:
+                                progress, // Show progress indicator with current progress
+                          ),
+                        );
+                      }
                     },
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(

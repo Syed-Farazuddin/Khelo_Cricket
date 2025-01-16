@@ -29,8 +29,8 @@ class _ChoosePlayerState extends ConsumerState<ChoosePlayer> {
     fetchPlayers(
       batting: widget.selectBatman,
       inningsId: widget.data.firstInnings!.isCompleted ?? false
-          ? widget.data.firstInnings!.inningsid ?? 0
-          : widget.data.secondInnings!.inningsid ?? 0,
+          ? widget.data.secondInnings!.inningsid ?? 0
+          : widget.data.firstInnings!.inningsid ?? 0,
     );
   }
 

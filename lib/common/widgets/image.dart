@@ -1,6 +1,5 @@
 import 'package:crick_hub/common/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CustomImage extends StatefulWidget {
   const CustomImage({super.key, required this.image});
@@ -23,12 +22,22 @@ class _CustomImageState extends State<CustomImage> {
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
-            loadingBuilder: (context, child, loadingProgress) => Center(
-              child: LoadingAnimationWidget.bouncingBall(
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                // Image has loaded
+                return child;
+              } else {
+                // Image is still loading
+                double progress = loadingProgress.cumulativeBytesLoaded /
+                    (loadingProgress.expectedTotalBytes ?? 1);
+                return Center(
+                  child: CircularProgressIndicator(
+                    // Show progress indicator with current progress
+                    value: progress,
+                  ),
+                );
+              }
+            },
             errorBuilder: (context, error, stackTrace) => Image.asset(''),
           ),
         ),

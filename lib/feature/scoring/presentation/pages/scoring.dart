@@ -5,7 +5,6 @@ import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/core/colors/colors.dart';
-import 'package:crick_hub/feature/match/domain/match_models.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/choose_player.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';

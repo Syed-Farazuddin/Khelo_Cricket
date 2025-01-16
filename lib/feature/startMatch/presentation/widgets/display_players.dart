@@ -1,6 +1,6 @@
 import 'package:crick_hub/common/widgets/player_card.dart';
+import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
-import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,26 +23,21 @@ class DisplayPlayers extends ConsumerStatefulWidget {
 }
 
 class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
+  List<Players> players = [];
+
+  @override
+  void initState() {
+    fetchPlayers(
+      inningsId: widget.data.firstInnings!.isCompleted ?? false
+          ? widget.data.secondInnings!.inningsid ?? 0
+          : widget.data.firstInnings!.inningsid ?? 0,
+      batting: widget.selectBatman,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Team teamA = ref.read(selectedTeamA);
-    final Team teamB = ref.read(selectedTeamB);
-    final Team team;
-    if (widget.data.tossWonTeamId == teamA.teamId) {
-      if (widget.selectBatman && widget.data.chooseToBat!) {
-        team = teamA;
-      } else {
-        team = teamB;
-      }
-    } else {
-      if (widget.selectBatman &&
-          widget.data.chooseToBat != null &&
-          widget.data.chooseToBat!) {
-        team = teamB;
-      } else {
-        team = teamA;
-      }
-    }
     return Scaffold(
       appBar: AppBar(
         title: widget.selectBatman
@@ -53,21 +48,19 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
         padding: const EdgeInsets.all(12),
         child: ListView.separated(
           itemBuilder: (builder, index) {
-            final Players currPlayer = team.players[index];
+            final Players currPlayer = players[index];
             if (widget.showTeamAllPlayers) {
-              (team.selectedPlayers.contains(currPlayer.id))
-                  ? PlayerCard(
-                      player: currPlayer,
-                      showSelectPlayerIcon: false,
-                      onTap: () {
-                        widget.onTap(currPlayer);
-                      },
-                      color: Colors.white.withValues(
-                        alpha: 0.2,
-                      ),
-                      borderColor: Colors.white,
-                    )
-                  : const SizedBox.shrink();
+              PlayerCard(
+                player: currPlayer,
+                showSelectPlayerIcon: false,
+                onTap: () {
+                  widget.onTap(currPlayer);
+                },
+                color: Colors.white.withValues(
+                  alpha: 0.2,
+                ),
+                borderColor: Colors.white,
+              );
             }
 
             return currPlayer.id != widget.previousBowlerId
@@ -84,15 +77,24 @@ class _DisplayPlayersState extends ConsumerState<DisplayPlayers> {
                   )
                 : const SizedBox.shrink();
           },
-          separatorBuilder: (builder, index) =>
-              team.selectedPlayers.contains(team.players[index].id)
-                  ? const SizedBox(
-                      height: 10,
-                    )
-                  : const SizedBox.shrink(),
-          itemCount: team.players.length,
+          separatorBuilder: (builder, index) => const SizedBox(
+            height: 10,
+          ),
+          itemCount: players.length,
         ),
       ),
     );
+  }
+
+  Future<void> fetchPlayers({
+    required int inningsId,
+    required bool batting,
+  }) async {
+    final data = await ref
+        .read(scoringProviderProvider.notifier)
+        .getPlayingTeam(inningsId: inningsId, battingPlayers: batting);
+    setState(() {
+      players = data;
+    });
   }
 }

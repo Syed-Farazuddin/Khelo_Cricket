@@ -1,6 +1,5 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
-import 'package:crick_hub/common/widgets/player_card.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_batsman.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:go_router/go_router.dart';
 
 class StartOrScheduleMatch extends ConsumerStatefulWidget {
   const StartOrScheduleMatch({super.key, required this.startMatch});
@@ -397,66 +395,6 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
       context,
       MaterialPageRoute(
         builder: (context) => const SelectBatsman(),
-      ),
-    );
-  }
-
-  Widget selectPlayer({
-    required MatchData data,
-    required bool selectBatman,
-    required Players player,
-  }) {
-    final Team teamA = ref.read(selectedTeamA);
-    final Team teamB = ref.read(selectedTeamB);
-    final Team team;
-    if (data.tossWonTeamId == teamA.teamId) {
-      if (selectBatman && data.chooseToBat!) {
-        team = teamA;
-      } else {
-        team = teamB;
-      }
-    } else {
-      if (selectBatman && data.chooseToBat!) {
-        team = teamB;
-      } else {
-        team = teamA;
-      }
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: selectBatman
-            ? const Text("Select Batsman")
-            : const Text("Select Bowler"),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(12),
-        child: ListView.separated(
-          itemBuilder: (builder, index) {
-            final Players currPlayer = team.players[index];
-            if (team.selectedPlayers.contains(currPlayer.id)) {
-              return PlayerCard(
-                player: currPlayer,
-                showSelectPlayerIcon: true,
-                onTap: () {
-                  setState(() {
-                    player = currPlayer;
-                  });
-                  context.pop();
-                },
-                color: const Color.fromARGB(54, 255, 255, 255),
-                borderColor: Colors.white.withValues(alpha: 0.2),
-              );
-            }
-            return const SizedBox.shrink();
-          },
-          separatorBuilder: (builder, index) =>
-              team.selectedPlayers.contains(team.players[index].id)
-                  ? const SizedBox(
-                      height: 10,
-                    )
-                  : const SizedBox.shrink(),
-          itemCount: team.players.length,
-        ),
       ),
     );
   }
