@@ -1,5 +1,6 @@
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/common/widgets/squads.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_batsman.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
@@ -69,9 +70,11 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
           ),
           child: Column(
             children: [
-              squads(
-                teamA: teamA,
-                teamB: teamB,
+              Squads(
+                teamA: teamA.name,
+                teamAPlayers: teamA.players,
+                teamB: teamB.name,
+                teamBPlayers: teamB.players,
               ),
               const SizedBox(
                 height: 30,
@@ -216,8 +219,11 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
     );
   }
 
-  Widget startOrScheduleButton(
-      {required bool isStartMatch, required Team teamA, required Team teamB}) {
+  Widget startOrScheduleButton({
+    required bool isStartMatch,
+    required Team teamA,
+    required Team teamB,
+  }) {
     return Column(
       children: [
         const SizedBox(
@@ -273,88 +279,6 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
           textAlign: TextAlign.center,
         ),
       ),
-    );
-  }
-
-  Widget squads({required Team teamA, required Team teamB}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: showSquads(
-            teamA,
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Expanded(
-          child: showSquads(
-            teamB,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget showSquads(Team team) {
-    List<Players> players = team.players;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          team.name.toString(),
-          style: GoogleFonts.golosText(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (builder, index) {
-            return players[index].selected
-                ? Container(
-                    padding: const EdgeInsets.all(
-                      12,
-                    ),
-                    decoration: BoxDecoration(
-                        color: Colors.grey.withValues(alpha: 0.12)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              players[index].name.toString(),
-                              style: GoogleFonts.golosText(
-                                fontSize: 16,
-                              ),
-                            ),
-                            if (players[index].isCaptain) const Text("(C)")
-                          ],
-                        ),
-                        const Icon(
-                          Icons.arrow_right,
-                          size: 28,
-                        )
-                      ],
-                    ),
-                  )
-                : const SizedBox.shrink();
-          },
-          separatorBuilder: (builder, index) => const SizedBox(
-            height: 10,
-          ),
-          itemCount: players.length,
-        ),
-      ],
     );
   }
 

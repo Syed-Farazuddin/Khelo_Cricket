@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/models/scoring_models.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 
 class MatchModels {}
 
@@ -243,6 +244,7 @@ class Team {
   int? draws;
   List<BattingDetails> batmens;
   List<BowlingDetails> bowlers;
+  List<Players> playing;
   Team({
     required this.draws,
     required this.id,
@@ -250,6 +252,7 @@ class Team {
     required this.losses,
     required this.name,
     required this.batmens,
+    required this.playing,
     required this.totalMatches,
     required this.wins,
     required this.bowlers,
@@ -261,6 +264,7 @@ class Team {
   }) {
     List<BattingDetails> batsmens = [];
     List<BowlingDetails> bowlers = [];
+    List<Players> playing11 = [];
     if (batting) {
       final batmen = json['batmens'] as List;
       batsmens = batmen.map((json) => BattingDetails.fromJson(json)).toList();
@@ -268,8 +272,11 @@ class Team {
       final bowler = json['bowlers'] as List;
       bowlers = bowler.map((json) => BowlingDetails.fromJson(json)).toList();
     }
+    final playing = json['playing11'] as List;
+    playing11 = playing.map((p) => Players.fromJson(p)).toList();
     return Team(
       draws: json['team']['draws'],
+      playing: playing11,
       id: json['team']['id'],
       imageUrl: json['team']['imageUrl'],
       losses: json['team']['losses'],
