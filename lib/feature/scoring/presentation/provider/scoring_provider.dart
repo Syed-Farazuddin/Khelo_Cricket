@@ -45,6 +45,14 @@ class ScoringProvider extends _$ScoringProvider {
         .endInnings(inningsId: inningsId);
   }
 
+  Future<bool> endMatch({
+    required int matchId,
+  }) async {
+    return await ref.read(scoringRepositoryProvider).endMatch(
+          matchId: matchId,
+        );
+  }
+
   Future<List<Players>> getPlayingTeam({
     required bool battingPlayers,
     required int inningsId,

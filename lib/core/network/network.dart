@@ -31,6 +31,8 @@ class Network {
       '/matches/$inningsId/scoring/select_bowler';
   static String getInningsData({required int inningsid}) =>
       '/matches/innings/$inningsid';
+  static String endMatch({required int matchId}) =>
+      '/matches/$matchId/end_match';
   static String getMatchOverview({required int matchId}) =>
       '/matches/$matchId/match_overview';
   static String getMatchDetailItems() => '/matches/items';

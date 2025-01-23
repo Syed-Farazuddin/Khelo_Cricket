@@ -11,6 +11,10 @@ abstract class ScoringRepository {
     required int inningsId,
   });
 
+  Future<void> endMatch({
+    required int matchId,
+  });
+
   Future<void> updateBatsman({
     required int currentBatsmanid,
     required Players batsman,

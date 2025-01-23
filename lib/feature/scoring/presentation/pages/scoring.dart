@@ -67,11 +67,11 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     init();
   }
 
-  void init() {
+  void init() async {
     setState(() {
       loading = true;
     });
-    fetchInningsData(matchData: widget.data);
+    await fetchInningsData(matchData: widget.data);
     setState(() {
       loading = false;
     });

@@ -369,6 +369,7 @@ class UpdateScoringResponse {
   bool? status;
   bool? selectNewBowler;
   bool? endInnings;
+  bool? endMatch;
   bool? selectNewBatsman;
   List<Players>? players;
 
@@ -376,7 +377,8 @@ class UpdateScoringResponse {
     this.message,
     this.selectNewBowler = false,
     this.status,
-    this.endInnings,
+    this.endMatch = false,
+    this.endInnings = false,
     this.players = const [],
     this.selectNewBatsman = false,
   });
@@ -386,6 +388,7 @@ class UpdateScoringResponse {
       message: json['message'],
       selectNewBowler: json['selectNewBowler'],
       status: json['status'],
+      endMatch: json['endMatch'],
       endInnings: json['endInnings'],
       selectNewBatsman: json['selectNewBatsman'],
     );

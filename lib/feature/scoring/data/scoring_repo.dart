@@ -269,4 +269,29 @@ class ScoringRepo extends ScoringRepository {
     }
     return result;
   }
+
+  @override
+  Future<bool> endMatch({
+    required int matchId,
+  }) async {
+    bool result = false;
+    try {
+      final response = await baseService.get(
+        Network.endMatch(matchId: matchId),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+      if (response['success']) {
+        result = true;
+      }
+    } catch (e) {
+      debugPrint('Error while fetching innings Data');
+    }
+    return result;
+  }
 }
