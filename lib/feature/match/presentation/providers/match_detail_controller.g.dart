@@ -7,7 +7,7 @@ part of 'match_detail_controller.dart';
 // **************************************************************************
 
 String _$matchDetailControllerHash() =>
-    r'af91ea18aee4628892d963bf1556c416fdfca9ce';
+    r'b9c31683d82aad79cbebe2f0c6356da86a6aed19';
 
 /// See also [MatchDetailController].
 @ProviderFor(MatchDetailController)
