@@ -1,6 +1,7 @@
 import 'package:crick_hub/feature/authentication/presentation/pages/authentication.dart';
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
+import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
 import 'package:crick_hub/feature/player/presentation/pages/player_details.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
@@ -23,6 +24,16 @@ class Routes {
         name: "/home",
         builder: (context, state) {
           return const DashboardPage();
+        },
+      ),
+      GoRoute(
+        path: "/matchDetails",
+        name: "/matchDetails",
+        builder: (context, state) {
+          final extra = state.extra as MatchData;
+          return MatchDetails(
+            match: extra,
+          );
         },
       ),
       GoRoute(
@@ -122,4 +133,13 @@ class Routes {
       ),
     ],
   );
+
+  void navigateToNewPage(
+    BuildContext context,
+    String page,
+    Object extra,
+  ) {
+    // This will clear all the previous routes and go to '/newPage'
+    GoRouter.of(context).go('/$page', extra: extra);
+  }
 }

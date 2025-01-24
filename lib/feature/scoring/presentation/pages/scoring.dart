@@ -3,6 +3,7 @@ import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
+import 'package:crick_hub/common/routes/routes.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/pop_up.dart';
 import 'package:crick_hub/core/colors/colors.dart';
@@ -810,17 +811,17 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         );
     debugPrint(result.toString());
 
-    Navigator.of(context).pop();
     if (result) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MatchDetails(
-            match: matchData,
-          ),
-        ),
-        (Route<dynamic> route) => false,
-      );
+      Routes().navigateToNewPage(context, 'matchDetails', matchData);
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => MatchDetails(
+      //       match: matchData,
+      //     ),
+      //   ),
+      //   (Route<dynamic> route) => false,
+      // );
     }
   }
 
