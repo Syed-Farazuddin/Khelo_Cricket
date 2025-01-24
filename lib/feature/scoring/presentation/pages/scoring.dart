@@ -813,15 +813,6 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
 
     if (result) {
       Routes().navigateToNewPage(context, 'matchDetails', matchData);
-      // Navigator.pushAndRemoveUntil(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => MatchDetails(
-      //       match: matchData,
-      //     ),
-      //   ),
-      //   (Route<dynamic> route) => false,
-      // );
     }
   }
 
