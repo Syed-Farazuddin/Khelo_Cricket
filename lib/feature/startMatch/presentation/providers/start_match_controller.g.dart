@@ -7,7 +7,7 @@ part of 'start_match_controller.dart';
 // **************************************************************************
 
 String _$startMatchControllerHash() =>
-    r'ba6b380496c232e088670176e664dfdb609a3691';
+    r'2213d38bbb188023cc1c5c48aa2d65106ec8eb73';
 
 /// See also [StartMatchController].
 @ProviderFor(StartMatchController)
