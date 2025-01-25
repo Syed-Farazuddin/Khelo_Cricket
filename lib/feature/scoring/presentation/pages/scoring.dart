@@ -3,11 +3,9 @@ import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
-import 'package:crick_hub/common/routes/routes.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
-import 'package:crick_hub/common/widgets/pop_up.dart';
 import 'package:crick_hub/core/colors/colors.dart';
-import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
+import 'package:crick_hub/feature/match/presentation/widgets/match_app_bar.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/choose_player.dart';
 import 'package:crick_hub/feature/scoring/presentation/provider/scoring_provider.dart';
@@ -201,7 +199,10 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       ),
     ];
     return Scaffold(
-      appBar: AppBar(),
+      appBar: CustomAppBar(
+        title: "title",
+        match: widget.data,
+      ),
       body: loading
           ? const Loader()
           : SingleChildScrollView(
@@ -281,10 +282,20 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                             ],
                           ),
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "${inningsData.status}",
+                          style: CustomTextStyles.mediumText,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Text(
                           "Overs Remaining : ${(matchData.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
                           style: CustomTextStyles.mediumText,
-                        )
+                        ),
                       ],
                     ),
                     // The bottom should contain the scoring card where we can manually enter score and all.
@@ -538,9 +549,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.withValues(
-            alpha: 0.2,
-          ),
+          color: AppColors.subBackground.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(
             12,
           ),
@@ -577,9 +586,9 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   width: 15,
-            // ),
+            const SizedBox(
+              width: 6,
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -677,24 +686,44 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return PopUp(
-            label: "End Inning",
-            onTap: () {
-              endMyInnings(matchData: matchData);
-            },
-          );
-        },
-      );
-    }
-    if (res.endMatch ?? false) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return PopUp(
-            label: "End Match",
-            onTap: () {
-              endMatch(matchData: matchData);
-            },
+          return Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width *
+                  0.8, // 80% of screen width
+              height: 200, // Fixed height, adjust as needed
+              padding: const EdgeInsets.all(20), // Add some padding
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "End Inning",
+                    style: CustomTextStyles.heading,
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Custombutton(
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        title: "Back",
+                        width: 100,
+                      ),
+                      const SizedBox(width: 10),
+                      Custombutton(
+                        onTap: () {
+                          endMyInnings(matchData: matchData);
+                        },
+                        title: "End Inning",
+                        width: 100,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           );
         },
       );
@@ -801,19 +830,6 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       ),
     );
     // Refresh the data of the match
-  }
-
-  Future<void> endMatch({
-    required MatchData matchData,
-  }) async {
-    final result = await ref.watch(scoringProviderProvider.notifier).endMatch(
-          matchId: matchData.id ?? 0,
-        );
-    debugPrint(result.toString());
-
-    if (result) {
-      Routes().navigateToNewPage(context, 'matchDetails', matchData);
-    }
   }
 
   Future<void> changeBowler({

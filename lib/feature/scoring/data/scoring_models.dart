@@ -94,6 +94,7 @@ class InningsModel {
   TeamData? batting;
   TeamData? bowling;
   int? wickets;
+  String? status;
 
   PlayerScoreModel? striker;
   PlayerScoreModel? nonStriker;
@@ -116,6 +117,7 @@ class InningsModel {
     required this.bowling,
     required this.bowlerId,
     required this.bowler,
+    this.status,
   });
 
   factory InningsModel.fromJson(Map<String, dynamic> json) {
@@ -195,6 +197,7 @@ class InningsModel {
       totalNoBalls: json['totalNoBalls'],
       totalRuns: json['totalRuns'],
       totalWides: json['totalWides'],
+      status: json['status'],
       striker: striker,
       nonStriker: nonStriker,
       bowlerId: json['bowlerId'],
