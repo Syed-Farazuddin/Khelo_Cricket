@@ -3,7 +3,9 @@ import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
+import 'package:crick_hub/common/routes/routes.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
+import 'package:crick_hub/common/widgets/pop_up.dart';
 import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/match/presentation/widgets/match_app_bar.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
@@ -213,26 +215,32 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${matchData.state}",
-                              style: GoogleFonts.golosText(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 14,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${matchData.state}",
+                                style: GoogleFonts.golosText(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "${matchData.ground}",
-                              style: GoogleFonts.golosText(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                              Text(
+                                "${matchData.ground}",
+                                style: GoogleFonts.golosText(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -266,9 +274,13 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                           height: 15,
                         ),
                         Container(
-                          padding: const EdgeInsets.all(8.0),
-                          decoration:
-                              const BoxDecoration(color: AppColors.whitish),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 14,
+                          ),
+                          decoration: const BoxDecoration(
+                            color: AppColors.whitish,
+                          ),
                           child: Column(
                             children: [
                               showBowler(bowler: inningsData.bowler!),
@@ -285,16 +297,26 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          "${inningsData.status}",
-                          style: CustomTextStyles.mediumText,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                          ),
+                          child: Text(
+                            "${inningsData.status}",
+                            style: CustomTextStyles.mediumText,
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          "Overs Remaining : ${(matchData.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
-                          style: CustomTextStyles.mediumText,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                          ),
+                          child: Text(
+                            "Overs Remaining : ${(matchData.overs ?? 0) - (inningsData.oversPlayed ?? 0)}",
+                            style: CustomTextStyles.mediumText,
+                          ),
                         ),
                       ],
                     ),
@@ -686,49 +708,42 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Dialog(
-            child: Container(
-              width: MediaQuery.of(context).size.width *
-                  0.8, // 80% of screen width
-              height: 200, // Fixed height, adjust as needed
-              padding: const EdgeInsets.all(20), // Add some padding
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "End Inning",
-                    style: CustomTextStyles.heading,
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Custombutton(
-                        onTap: () {
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                        title: "Back",
-                        width: 100,
-                      ),
-                      const SizedBox(width: 10),
-                      Custombutton(
-                        onTap: () {
-                          endMyInnings(matchData: matchData);
-                        },
-                        title: "End Inning",
-                        width: 100,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+          return PopUp(
+            label: "End Innings",
+            onTap: () {
+              endMyInnings(matchData: matchData);
+            },
+          );
+        },
+      );
+    }
+    if (res.endMatch ?? false) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PopUp(
+            label: "End Match",
+            onTap: () {
+              endMatch(matchData: matchData);
+            },
           );
         },
       );
     }
     fetchInningsData(matchData: matchData);
+  }
+
+  Future<void> endMatch({
+    required MatchData matchData,
+  }) async {
+    final result = await ref.watch(scoringProviderProvider.notifier).endMatch(
+          matchId: matchData.id ?? 0,
+        );
+    debugPrint(result.toString());
+
+    if (result) {
+      Routes().navigateToNewPage(context, 'matchDetails', matchData);
+    }
   }
 
   Future<void> updateBatsman({
