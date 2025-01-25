@@ -1,6 +1,8 @@
 import 'package:crick_hub/common/constants/constants.dart';
+import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/authentication/presentation/provider/auth_provider.dart';
 import 'package:crick_hub/feature/authentication/presentation/widgets/otp_form.dart';
 import 'package:flutter/material.dart';
@@ -21,28 +23,53 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 70, top: 0),
-          child: Column(
-            children: [
-              Image.asset(
-                '${Constants.assetImagepath}landing.jpg',
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              buildForm(),
-            ],
+      body: Stack(
+        children: [
+          Image.asset(
+            '${Constants.assetImagepath}landing.jpg',
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
           ),
-        ),
+          SafeArea(
+            bottom: false,
+            top: false,
+            minimum: const EdgeInsets.only(top: 80),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                      8,
+                    ),
+                  ),
+                  child: Text(
+                    "Crickhub",
+                    style: CustomTextStyles.largeText.copyWith(
+                      color: AppColors.purple,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 32,
+                    ),
+                  ),
+                ),
+                buildForm(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget buildForm() {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.black.withValues(alpha: 0.9),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
