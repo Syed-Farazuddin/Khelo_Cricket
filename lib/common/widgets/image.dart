@@ -16,7 +16,7 @@ class _CustomImageState extends State<CustomImage> {
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child: Image.network(
-            widget.image != "" || widget.image != "null"
+            widget.image == "" || widget.image == "null"
                 ? Constants.dummyImage
                 : widget.image,
             fit: BoxFit.cover,

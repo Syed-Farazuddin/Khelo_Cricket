@@ -21,60 +21,60 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  '${Constants.assetImagepath}landing.jpg',
-                ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 70, top: 0),
+          child: Column(
+            children: [
+              Image.asset(
+                '${Constants.assetImagepath}landing.jpg',
               ),
-            ),
-            child: SafeArea(
-              minimum: const EdgeInsets.only(top: 70),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                height: 300,
-                width: MediaQuery.of(context).size.width,
-                child: buildForm(),
+              const SizedBox(
+                height: 10,
               ),
-            ),
+              buildForm(),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget buildForm() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CustomInputField(
-          label: "Enter Your Mobile Number",
-          controller: controller,
-          maxlength: 10,
-        ),
-        const SizedBox(height: 20),
-        if (showOtp)
-          OtpFormWidget(
-            mobile: controller.text,
-            isNewPlayer: isNewPlayer,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            children: [
+              CustomInputField(
+                label: "Enter Your Mobile Number",
+                controller: controller,
+                maxlength: 10,
+              ),
+              const SizedBox(height: 20),
+              if (!showOtp)
+                Custombutton(
+                  onTap: () async {
+                    await sendOtp(mobile: controller.text);
+                  },
+                  title: "Send OTP",
+                  width: MediaQuery.of(context).size.width / 2,
+                ),
+            ],
           ),
-        if (!showOtp)
-          Custombutton(
-            onTap: () async {
-              await sendOtp(mobile: controller.text);
-            },
-            title: "Send OTP",
-            width: MediaQuery.of(context).size.width / 2,
-          ),
-      ],
+          if (showOtp)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: OtpFormWidget(
+                mobile: controller.text,
+                isNewPlayer: isNewPlayer,
+              ),
+            ),
+        ],
+      ),
     );
   }
 
