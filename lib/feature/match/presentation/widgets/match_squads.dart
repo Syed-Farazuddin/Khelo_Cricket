@@ -63,6 +63,9 @@ class _MatchSquadsState extends ConsumerState<MatchSquads> {
                   teamName: data.firstInnings!.batting?.name ?? '',
                   squads: data.firstInnings!.batting!.playing,
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 showSquads(
                   teamName: data.firstInnings!.bowling?.name ?? '',
                   squads: data.firstInnings!.bowling!.playing,

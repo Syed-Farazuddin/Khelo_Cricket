@@ -26,8 +26,8 @@ class Players {
       name: json['user']['name'].toString(),
       id: json['id'],
       image: json['imageUrl'].toString(),
-      battingStyle: json['battingStyle'].toString(),
-      bowlingStyle: json['bowlingStyle'].toString(),
+      // battingStyle: json['battingStyle'].toString(),
+      // bowlingStyle: json['bowlingStyle'].toString(),
     );
     return player;
   }

@@ -85,8 +85,7 @@ class Batsmen {
       id: 0,
       inningsId: 0,
       isOut: false,
-      playerId: 0,
-      playerName: '',
+      player: Player(name: '', image: ''),
       runsScored: [],
       sixes: 0,
       totalRuns: 0,
@@ -139,8 +138,7 @@ class Bowler {
 
 class BattingDetails {
   int? id;
-  String? playerName;
-  int? playerId;
+  Player? player;
   int? inningsId;
   List<int>? runsScored;
   int? totalRuns;
@@ -157,26 +155,42 @@ class BattingDetails {
     required this.id,
     required this.inningsId,
     required this.isOut,
-    required this.playerId,
-    required this.playerName,
+    required this.player,
     required this.runsScored,
     required this.sixes,
     required this.totalRuns,
   });
 
   factory BattingDetails.fromJson(Map<String, dynamic> json) {
+    Player player = Player(image: '', name: '');
+    player = Player.fromJson(json['player']);
     return BattingDetails(
       bowlerName: json['bowlerName'],
       caughtByName: json['caughtByName'],
       fours: json['fours'],
       id: json['id'],
       inningsId: json['inningsId'],
+      player: player,
       isOut: json['isOut'],
-      playerId: json['playerId'],
-      playerName: json['playerName'],
       runsScored: json['runsScored'],
       sixes: json['sixes'],
       totalRuns: json['totalRuns'],
+    );
+  }
+}
+
+class Player {
+  String? name;
+  String? image;
+  Player({
+    this.image,
+    this.name,
+  });
+
+  factory Player.fromJson(Map<String, dynamic> json) {
+    return Player(
+      name: json['user']['name'],
+      image: json['imageUrl'],
     );
   }
 }
@@ -267,7 +281,11 @@ class Team {
     List<Players> playing11 = [];
     if (batting) {
       final batmen = json['batmens'] as List;
-      batsmens = batmen.map((json) => BattingDetails.fromJson(json)).toList();
+      batsmens = batmen
+          .map(
+            (json) => BattingDetails.fromJson(json),
+          )
+          .toList();
     } else {
       final bowler = json['bowlers'] as List;
       bowlers = bowler.map((json) => BowlingDetails.fromJson(json)).toList();

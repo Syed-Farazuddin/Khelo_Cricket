@@ -1,5 +1,6 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
+import 'package:crick_hub/common/widgets/image.dart';
 import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/match/domain/match_models.dart';
 import 'package:crick_hub/feature/match/presentation/providers/match_detail_controller.dart';
@@ -74,6 +75,9 @@ class _MatchScorecardState extends ConsumerState<MatchScorecard> {
               showInningsDetails(
                 innings: data.firstInnings,
               ),
+            const SizedBox(
+              height: 20,
+            ),
             expandTile(
               team: data.secondInnings!.batting!,
               expand: showSecondInnnigs,
@@ -157,12 +161,22 @@ class _MatchScorecardState extends ConsumerState<MatchScorecard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '${batmen.playerName ?? 'Player $index'} ${batmen.isOut ?? false ? "" : "*"}',
-                    style: CustomTextStyles.large.copyWith(
-                      color: AppColors.white,
-                      fontSize: 16,
-                    ),
+                  Row(
+                    children: [
+                      CustomImage(
+                        image: batmen.player?.image ?? '',
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        '${batmen.player?.name ?? 'Player $index'} ${batmen.isOut ?? false ? "" : "*"}',
+                        style: CustomTextStyles.large.copyWith(
+                          color: AppColors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
                     batmen.totalRuns.toString(),

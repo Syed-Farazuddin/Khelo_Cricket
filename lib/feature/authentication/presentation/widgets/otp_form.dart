@@ -46,7 +46,6 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final otp = TextEditingController();
     const focusedBorderColor = Colors.white;
     const borderColor = Colors.grey;
 
@@ -78,11 +77,10 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
               separatorBuilder: (index) => const SizedBox(width: 8),
               hapticFeedbackType: HapticFeedbackType.lightImpact,
               onCompleted: (pin) {
-                debugPrint('onCompleted: $pin');
+                debugPrint('pin controller ${pinController.text}');
               },
               onChanged: (value) {
-                otp.text = value;
-                debugPrint('onChanged: $value');
+                debugPrint('onChanged: $value ');
               },
               cursor: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -125,9 +123,10 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
           Custombutton(
             onTap: () async {
               focusNode.unfocus();
+              debugPrint("Otp text is  ${pinController.text}");
               bool res = await verifyOtp(
                 mobile: widget.mobile,
-                otp: otp.text,
+                otp: pinController.text,
                 isNewplayer: widget.isNewPlayer,
               );
               if (res) {
@@ -150,7 +149,7 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
   //   String mobile = widget.mobile;
   //   final user = await ref
   //       .read(authProviderProvider.notifier)
-  //       .verifyOtp(mobile: mobile, otp: '', isNewPlayer: true);
+  //       .verifyOtp(mobile: mobile, otp: '\', isNewPlayer: true);
   // }
 
   Future<bool> verifyOtp({

@@ -4,7 +4,6 @@ import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_bowler.dart';
-import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_roles.dart';
@@ -32,8 +31,8 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
   @override
   Widget build(BuildContext context) {
     final MatchData data = ref.watch(currentMatchProvider);
-    final strikerProvider = ref.watch(striker);
-    final nonStrikerProvider = ref.watch(nonStriker);
+    Players striker = Players(name: 'name', id: 0);
+    Players nonStriker = Players(name: 'name', id: 0);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,13 +53,10 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ShowRoles(
-                  role: strikerProvider.id != 0
-                      ? strikerProvider.name ?? ""
-                      : "Striker",
-                  path:
-                      strikerProvider.id != 0 && strikerProvider.image != 'null'
-                          ? strikerProvider.image ?? Constants.dummyImage
-                          : "lib/assets/images/striker.png",
+                  role: striker.id != 0 ? striker.name ?? "" : "Striker",
+                  path: striker.id != 0 && striker.image != 'null'
+                      ? striker.image ?? Constants.dummyImage
+                      : "lib/assets/images/striker.png",
                   networkUrl: Network.selectBatmans(
                     inningsId: data.firstInnings?.isCompleted ?? false
                         ? data.inningsB ?? 0
@@ -69,10 +65,10 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   isStriker: true,
                   isBowler: false,
                   isNonStriker: false,
-                  player: strikerProvider,
+                  player: striker,
                   data: data,
                   ontap: (player) {
-                    ref.read(striker.notifier).state = player;
+                    striker = player;
                     context.pop();
                   },
                 ),
@@ -84,21 +80,18 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   isBowler: false,
                   data: data,
                   isNonStriker: true,
-                  role: nonStrikerProvider.id != 0
-                      ? nonStrikerProvider.name ?? ""
-                      : "Striker",
-                  path: nonStrikerProvider.id != 0 &&
-                          nonStrikerProvider.image != 'null'
-                      ? nonStrikerProvider.image ?? Constants.dummyImage
+                  role: nonStriker.id != 0 ? nonStriker.name ?? "" : "Striker",
+                  path: nonStriker.id != 0 && nonStriker.image != 'null'
+                      ? nonStriker.image ?? Constants.dummyImage
                       : "lib/assets/images/non_striker.png",
                   networkUrl: Network.selectBatmans(
                     inningsId: data.firstInnings?.isCompleted ?? false
                         ? data.inningsB ?? 0
                         : data.inningsA ?? 0,
                   ),
-                  player: nonStrikerProvider,
+                  player: nonStriker,
                   ontap: (player) {
-                    ref.read(nonStriker.notifier).state = player;
+                    nonStriker = player;
                     context.pop();
                   },
                 ),
@@ -119,14 +112,14 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                 ),
                 Custombutton(
                   onTap: () async {
-                    if (strikerProvider.id == 0) {
+                    if (striker.id == 0) {
                       Toaster.onError(
                         message: "Make sure you select Striker",
                       );
                       return;
                     }
 
-                    if (nonStrikerProvider.id == 0) {
+                    if (striker.id == 0) {
                       Toaster.onError(
                         message: "Make sure you select Non Striker",
                       );
@@ -135,8 +128,8 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                     await ref
                         .watch(startMatchControllerProvider.notifier)
                         .selectBatsmans(
-                          striker: strikerProvider,
-                          nonStriker: nonStrikerProvider,
+                          striker: striker,
+                          nonStriker: nonStriker,
                           inningsId: data.firstInnings?.isCompleted ?? false
                               ? data.inningsB ?? 0
                               : data.inningsA ?? 0,
@@ -153,7 +146,7 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   width: 100,
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

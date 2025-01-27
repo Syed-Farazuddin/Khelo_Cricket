@@ -36,6 +36,7 @@ class CustomInputField extends StatelessWidget {
           onChanged: onchanged,
           controller: controller,
           // maxLength: 10,
+          cursorColor: Colors.white,
           keyboardType: textAllowed ? null : TextInputType.number,
           inputFormatters: textAllowed
               ? []

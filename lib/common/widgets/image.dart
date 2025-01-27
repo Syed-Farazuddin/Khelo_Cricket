@@ -13,33 +13,30 @@ class _CustomImageState extends State<CustomImage> {
   Widget build(BuildContext context) {
     return CircleAvatar(
       child: ClipOval(
-        child: Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: Image.network(
-            widget.image == "" || widget.image == "null"
-                ? Constants.dummyImage
-                : widget.image,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                // Image has loaded
-                return child;
-              } else {
-                // Image is still loading
-                double progress = loadingProgress.cumulativeBytesLoaded /
-                    (loadingProgress.expectedTotalBytes ?? 1);
-                return Center(
-                  child: CircularProgressIndicator(
-                    // Show progress indicator with current progress
-                    value: progress,
-                  ),
-                );
-              }
-            },
-            errorBuilder: (context, error, stackTrace) => Image.asset(''),
-          ),
+        child: Image.network(
+          widget.image == "" || widget.image == "null"
+              ? Constants.dummyImage
+              : widget.image,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              // Image has loaded
+              return child;
+            } else {
+              // Image is still loading
+              double progress = loadingProgress.cumulativeBytesLoaded /
+                  (loadingProgress.expectedTotalBytes ?? 1);
+              return Center(
+                child: CircularProgressIndicator(
+                  // Show progress indicator with current progress
+                  value: progress,
+                ),
+              );
+            }
+          },
+          errorBuilder: (context, error, stackTrace) => Image.asset(''),
         ),
       ),
     );

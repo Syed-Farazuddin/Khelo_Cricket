@@ -4,7 +4,6 @@ import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
-import 'package:crick_hub/feature/startMatch/presentation/providers/select_players_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/show_roles.dart';
@@ -37,7 +36,7 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
   @override
   Widget build(BuildContext context) {
     final MatchData data = ref.watch(currentMatchProvider);
-    final bowlerProvider = ref.watch(bowler);
+    Players bowler = Players(name: '', id: 0);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,21 +53,19 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
           children: [
             ShowRoles(
               ontap: (player) {
-                ref.read(bowler.notifier).state = player;
+                bowler = player;
                 context.pop();
               },
-              role: bowlerProvider.id != 0
-                  ? "${bowlerProvider.name} (BOWLER)"
-                  : "Bowler",
+              role: bowler.id != 0 ? "${bowler.name} (BOWLER)" : "Bowler",
               data: data,
-              path: bowlerProvider.id != 0 && bowlerProvider.image != 'null'
-                  ? bowlerProvider.image ?? Constants.dummyImage
+              path: bowler.id != 0 && bowler.image != 'null'
+                  ? bowler.image ?? Constants.dummyImage
                   : "lib/assets/images/bowler.png",
               networkUrl: "",
               isStriker: false,
               isBowler: true,
               isNonStriker: false,
-              player: bowlerProvider,
+              player: bowler,
             ),
             const SizedBox(
               height: 20,
@@ -85,14 +82,14 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
                 ),
                 Custombutton(
                   onTap: () async {
-                    if (bowlerProvider.id == 0) {
+                    if (bowler.id == 0) {
                       Toaster.onError(message: "Make sure you select a Bowler");
                       return;
                     }
                     final SelectBowlerReponse response = await ref
                         .watch(startMatchControllerProvider.notifier)
                         .selectBowler(
-                          bowler: bowlerProvider,
+                          bowler: bowler,
                           order: 0,
                           inningsId: data.firstInnings?.isCompleted ?? false
                               ? data.inningsB ?? 0

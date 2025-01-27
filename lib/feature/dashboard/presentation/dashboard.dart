@@ -53,10 +53,13 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
               context.pushNamed('/authentication');
             },
-            child: Text(
-              'Sign out',
-              style: GoogleFonts.golosText(
-                fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: Text(
+                'Sign out',
+                style: GoogleFonts.golosText(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           )

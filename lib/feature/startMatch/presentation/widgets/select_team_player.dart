@@ -31,7 +31,6 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
   int active = 0;
   bool showCreateNewPlayer = false;
   TextEditingController mobileController = TextEditingController();
-  final List<String> fields = ["Using mobile Number", "Without Mobile"];
 
   @override
   Widget build(BuildContext context) {
@@ -132,19 +131,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
             ),
           ),
           const SizedBox(
-            height: 20,
-          ),
-          ButtonList(
-            list: fields,
-            onTap: (value) {
-              setState(() {
-                active = value;
-              });
-            },
-            active: active,
-          ),
-          const SizedBox(
-            height: 20,
+            height: 10,
           ),
           Row(
             children: [
@@ -152,7 +139,7 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
                 child: CustomInputField(
                   controller: mobileController,
                   maxlength: 10,
-                  label: "Add new player ${fields[active]}",
+                  label: "Enter mobile number",
                 ),
               ),
               Custombutton(
