@@ -21,6 +21,7 @@ class Network {
   static String getPlayerProfile({required final String userId}) =>
       'user/$userId/profile';
   static String startYourMatch() => "/matches/start_match";
+  static String registerTournament() => "/tournament/register";
   static String startNewInnings() => '/matches/start_new_innings';
   static String getYourMatches() => "/matches/your_matches";
   static String updateScore({required int inningsId}) =>

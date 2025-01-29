@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/constants/constants.dart';
+import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
@@ -11,7 +12,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SelectTeams extends ConsumerStatefulWidget {
-  const SelectTeams({super.key});
+  const SelectTeams({
+    super.key,
+  });
   @override
   ConsumerState<SelectTeams> createState() => _SelectTeamsState();
 }
@@ -56,11 +59,7 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                   children: [
                     Text(
                       "Select Teams",
-                      style: GoogleFonts.golosText(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: CustomTextStyles.largeText,
                     ),
                     const SizedBox(
                       height: 30,

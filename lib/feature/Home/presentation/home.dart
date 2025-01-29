@@ -67,7 +67,8 @@ class _HomeState extends ConsumerState<Home> {
                             width: MediaQuery.of(context).size.width / 2,
                             title: "Start Match",
                             icon: (Icons.add),
-                            showIcon: true,
+                            color: Colors.grey.withValues(alpha: 0.18),
+                            textColor: Colors.white,
                           ),
                         ),
                         const SizedBox(
@@ -79,9 +80,10 @@ class _HomeState extends ConsumerState<Home> {
                             onTap: () {
                               context.goNamed("/startTournament");
                             },
-                            title: "Start  tournament",
+                            title: "Register tournament",
                             icon: (Icons.add),
-                            showIcon: true,
+                            color: Colors.grey.withValues(alpha: 0.18),
+                            textColor: Colors.white,
                           ),
                         ),
                       ],
