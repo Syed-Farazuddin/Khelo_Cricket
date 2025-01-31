@@ -48,7 +48,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               widget.label,
               style: CustomTextStyles.large.copyWith(
                 fontWeight: widget.selectedDate.isNotEmpty
-                    ? FontWeight.bold
+                    ? FontWeight.w400
                     : FontWeight.normal,
               ),
             )

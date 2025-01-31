@@ -27,6 +27,11 @@ class ScoringRepo extends ScoringRepository {
   final BaseService baseService;
   final Storage storage;
 
+  @override
+  Future<void> fetchMatchData() async {}
+
+  @override
+  Future<void> undoScore() async {}
   Future<Options> authorization() async {
     final options = Options(
       headers: {
@@ -37,12 +42,6 @@ class ScoringRepo extends ScoringRepository {
     );
     return options;
   }
-
-  @override
-  Future<void> fetchMatchData() async {}
-
-  @override
-  Future<void> undoScore() async {}
 
   @override
   Future<void> updateBatsman({

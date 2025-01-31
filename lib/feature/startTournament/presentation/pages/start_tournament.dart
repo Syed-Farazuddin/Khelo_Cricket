@@ -1,24 +1,28 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
+import 'package:crick_hub/common/widgets/checkbox_filed.dart';
 import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_date_picker.dart';
 import 'package:crick_hub/common/widgets/custom_image_selector.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/feature/startTournament/data/tournament_repository.dart';
+import 'package:crick_hub/feature/startTournament/domain/tournament_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StartTournament extends ConsumerStatefulWidget {
-  const StartTournament({
-    super.key,
-  });
+  const StartTournament({super.key});
 
   @override
   ConsumerState<StartTournament> createState() => _StartTournamentState();
 }
 
 class _StartTournamentState extends ConsumerState<StartTournament> {
-  TextEditingController name = TextEditingController();
-  TextEditingController startDate = TextEditingController();
-  TextEditingController endDate = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController startDate = TextEditingController();
+  final TextEditingController place = TextEditingController();
+  final TextEditingController endDate = TextEditingController();
+  bool openForAll = false;
+  bool registrationsOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +40,12 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
             controller: name,
             textAllowed: true,
           ),
+          CustomInputField(
+            label: "Place",
+            controller: place,
+            textAllowed: true,
+          ),
           const CustomImageSelector(),
-          // DatePicker
           CustomDatePicker(
             label: startDate.text.isEmpty
                 ? "Select Start Date"
@@ -62,13 +70,43 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
               debugPrint("New date is selected $d");
             },
           ),
+          CheckboxFiled(
+            label: 'Open For All',
+            onChanged: (value) {
+              setState(() {
+                openForAll = value ?? false;
+              });
+            },
+            value: openForAll,
+          ),
+          CheckboxFiled(
+            label: 'Registrations open?',
+            onChanged: (value) {
+              setState(() {
+                registrationsOpen = value ?? false;
+              });
+            },
+            value: registrationsOpen,
+          ),
           Row(
             children: [
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Custombutton(
-                    onTap: () {},
+                    onTap: () async {
+                      await ref
+                          .read(tournamentRepositoryProvider)
+                          .registerTournament(
+                            RegisterTournamentRequest(
+                              endDate: endDate.text,
+                              startDate: startDate.text,
+                              imageUrl:
+                                  'https://img.freepik.com/premium-vector/cricket-championship-tournament-match-background_30996-6111.jpg',
+                              name: name.text,
+                            ),
+                          );
+                    },
                     title: "Register",
                     width: 100,
                   ),
@@ -77,25 +115,6 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Future<void> startTournament() async {
-    // await
-  }
-
-  Widget customDatePicker() {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: DatePickerDialog(
-        firstDate: DateTime.now(),
-        selectableDayPredicate: (sx) {
-          final s = sx;
-          debugPrint("S is $s");
-          return false;
-        },
-        lastDate: DateTime(DateTime.now().year + 1),
       ),
     );
   }
