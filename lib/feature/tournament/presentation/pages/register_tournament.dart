@@ -31,11 +31,18 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
       appBar: AppBar(
         title: Text(
           'Register for a tournament',
-          style: CustomTextStyles.large,
+          style: CustomTextStyles.subheadings.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 20,
+          ),
           CustomInputField(
             label: "Tournament name",
             controller: name,

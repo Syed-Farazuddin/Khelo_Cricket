@@ -3,6 +3,7 @@ import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
+import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
 import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
@@ -22,7 +23,8 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
-  int active = 0;
+  int sublistActive = 0;
+  int listActive = 0;
   bool loading = false;
   List<String> items = ["Completed", "Upcoming"];
   List<MatchData> matches = [];
@@ -51,6 +53,8 @@ class _HomeState extends ConsumerState<Home> {
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 10,
@@ -78,7 +82,7 @@ class _HomeState extends ConsumerState<Home> {
                           child: Custombutton(
                             width: MediaQuery.of(context).size.width / 2,
                             onTap: () {
-                              context.goNamed("/startTournament");
+                              context.pushNamed("/startTournament");
                             },
                             title: "Register tournament",
                             icon: (Icons.add),
@@ -93,25 +97,33 @@ class _HomeState extends ConsumerState<Home> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    "Your Matches",
-                    style: GoogleFonts.golosText(
-                      fontSize: 24,
-                      color: Colors.grey.withValues(alpha: 0.9),
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, bottom: 10),
+                    child: ButtonList(
+                      list: const ['Your Matches', "Tournaments"],
+                      onTap: (value) {
+                        setState(() {
+                          listActive = value;
+                        });
+                      },
+                      activeColor: AppColors.green,
+                      active: listActive,
                     ),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  ButtonList(
-                    list: items,
-                    onTap: (val) {
-                      setState(() {
-                        active = val;
-                      });
-                    },
-                    active: active,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: ButtonList(
+                      list: items,
+                      onTap: (val) {
+                        setState(() {
+                          sublistActive = val;
+                        });
+                      },
+                      active: sublistActive,
+                    ),
                   ),
                   const SizedBox(
                     height: 30,

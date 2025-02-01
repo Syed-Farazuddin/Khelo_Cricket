@@ -5,9 +5,11 @@ class ButtonList extends StatelessWidget {
   final List list;
   final int active;
   final void Function(int value) onTap;
+  final Color? activeColor;
   const ButtonList({
     super.key,
     required this.list,
+    this.activeColor = Colors.grey,
     required this.onTap,
     required this.active,
   });
@@ -34,7 +36,7 @@ class ButtonList extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: active == index
-                    ? Colors.grey.withValues(
+                    ? activeColor!.withValues(
                         alpha: 0.5,
                       )
                     : Colors.transparent,

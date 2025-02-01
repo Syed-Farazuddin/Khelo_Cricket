@@ -53,4 +53,20 @@ class TournamentRepository extends TournamentRepo {
     );
     return options;
   }
+
+  @override
+  Future<List> getTournamentItems() async {
+    List items = [];
+    try {
+      Options options = await authorization();
+      final result = await baseService.get(
+        Network.getTournamentItems(),
+        options: options,
+      ) as List;
+      items = result;
+    } catch (e) {
+      debugPrint("Error while fetching tournament items");
+    }
+    return items;
+  }
 }
