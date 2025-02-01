@@ -11,7 +11,7 @@ import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_teams.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/start_match.dart';
 import 'package:crick_hub/feature/startMatch/presentation/widgets/display_players.dart';
-import 'package:crick_hub/feature/startTournament/presentation/pages/start_tournament.dart';
+import 'package:crick_hub/feature/tournament/presentation/pages/register_tournament.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

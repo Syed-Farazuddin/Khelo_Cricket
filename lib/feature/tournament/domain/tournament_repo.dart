@@ -1,4 +1,4 @@
-import 'package:crick_hub/feature/startTournament/domain/tournament_models.dart';
+import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 
 abstract class TournamentRepo {
   Future<bool> registerTournament(RegisterTournamentRequest request);

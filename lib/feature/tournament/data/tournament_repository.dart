@@ -1,8 +1,8 @@
 import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
-import 'package:crick_hub/feature/startTournament/domain/tournament_models.dart';
-import 'package:crick_hub/feature/startTournament/domain/tournament_repo.dart';
+import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
+import 'package:crick_hub/feature/tournament/domain/tournament_repo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

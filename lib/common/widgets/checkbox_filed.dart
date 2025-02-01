@@ -11,6 +11,7 @@ class CheckboxFiled extends StatefulWidget {
   final Function(bool? val) onChanged;
   final bool value;
   final String label;
+
   @override
   State<CheckboxFiled> createState() => _CheckboxFiledState();
 }

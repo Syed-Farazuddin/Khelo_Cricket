@@ -4,8 +4,9 @@ import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/custom_date_picker.dart';
 import 'package:crick_hub/common/widgets/custom_image_selector.dart';
 import 'package:crick_hub/common/widgets/custom_input.dart';
-import 'package:crick_hub/feature/startTournament/data/tournament_repository.dart';
-import 'package:crick_hub/feature/startTournament/domain/tournament_models.dart';
+import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
+import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
+import 'package:crick_hub/feature/tournament/presentation/pages/tournament_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -95,17 +96,28 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
                   padding: const EdgeInsets.all(14.0),
                   child: Custombutton(
                     onTap: () async {
-                      await ref
+                      final result = await ref
                           .read(tournamentRepositoryProvider)
                           .registerTournament(
                             RegisterTournamentRequest(
                               endDate: endDate.text,
+                              place: place.text,
                               startDate: startDate.text,
                               imageUrl:
                                   'https://img.freepik.com/premium-vector/cricket-championship-tournament-match-background_30996-6111.jpg',
                               name: name.text,
+                              openForAll: openForAll,
+                              registrationsOpen: registrationsOpen,
                             ),
                           );
+                      if (result) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => TournamentInfo(),
+                          ),
+                        );
+                      }
                     },
                     title: "Register",
                     width: 100,
