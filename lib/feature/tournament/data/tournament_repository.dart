@@ -25,8 +25,9 @@ class TournamentRepository extends TournamentRepo {
   });
 
   @override
-  Future<bool> registerTournament(RegisterTournamentRequest request) async {
-    bool result = false;
+  Future<TournamentData> registerTournament(
+      RegisterTournamentRequest request) async {
+    TournamentData result = TournamentData();
     try {
       Options options = await authorization();
       final response = await baseService.post(
@@ -34,7 +35,8 @@ class TournamentRepository extends TournamentRepo {
         body: request.toJson(),
         options: options,
       );
-      result = response;
+
+      result = TournamentData.fromJson(response);
     } catch (e) {
       debugPrint("Error while registering for tournament $e");
     }

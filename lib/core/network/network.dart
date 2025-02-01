@@ -3,27 +3,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final networkProvider = Provider((ref) => Network());
 
 class Network {
+  // Auth LINKS
   static String sendOtp() => 'auth/sendOtp';
   static String verifyOtp() => 'auth/verifyotp';
-  static String profile() => 'profile';
-  static String updateProfile({required int id}) => '/profile/$id/update';
-  static String fetchTeams() => 'team/get_your_teams';
-  static String createNewTeam() => 'team/create_team';
-  static String addNewPlayer({required int teamId}) =>
-      'team/$teamId/add_player';
-  static String updateBatmans({required int inningsId}) =>
-      '/matches/$inningsId/scoring/update_batsman';
-
-  static String getPlaying11({required int inningsId}) =>
-      '/matches/$inningsId/get_team_players';
   static String createPlayerAndAddInTeam() =>
       'auth/create_player_and_add_in_team';
-  static String getPlayerProfile({required final String userId}) =>
-      'user/$userId/profile';
+
+  // Profile Links
+
+  static String profile() => 'profile';
+  static String updateProfile({required int id}) => '/profile/$id/update';
+
+  // Team Data Links
+
+  static String fetchTeams() => 'team/get_your_teams';
+  static String createNewTeam() => 'team/create_team';
+  static String addNewPlayer({
+    required int teamId,
+  }) =>
+      'team/$teamId/add_player';
+
+  // Matches LINKS
+
   static String startYourMatch() => "/matches/start_match";
-  static String registerTournament() => "/tournament/register";
   static String startNewInnings() => '/matches/start_new_innings';
   static String getYourMatches() => "/matches/your_matches";
+  static String updateBatmans({required int inningsId}) =>
+      '/matches/$inningsId/scoring/update_batsman';
+  static String getPlaying11({required int inningsId}) =>
+      '/matches/$inningsId/get_team_players';
+  static String getPlayerProfile({required final String userId}) =>
+      'user/$userId/profile';
   static String updateScore({required int inningsId}) =>
       '/matches/$inningsId/scoring';
   static String selectBatmans({required int inningsId}) =>
@@ -38,4 +48,9 @@ class Network {
       '/matches/$matchId/match_overview';
   static String getMatchDetailItems() => '/matches/items';
   static String isWicket() => '';
+
+  // Tournament URLS
+
+  static String registerTournament() => "/tournament/register";
+  static String getTournamentItems() => "tournament/items";
 }

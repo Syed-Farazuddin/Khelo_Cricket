@@ -36,6 +36,7 @@ class TournamentData {
   List<TeamData> teams;
   List<MatchData> matches;
   String? name;
+  int? id;
   String? place;
   String? startDate;
   String? endDate;
@@ -46,6 +47,7 @@ class TournamentData {
   TournamentData({
     this.endDate,
     this.imageUrl,
+    this.id,
     this.matches = const [],
     this.teams = const [],
     this.name,
@@ -54,4 +56,21 @@ class TournamentData {
     this.registrationsOpen,
     this.startDate,
   });
+
+  factory TournamentData.fromJson(Map<String, dynamic> json) {
+    List<MatchData> matches = [];
+    List<TeamData> registeredTeams = [];
+    return TournamentData(
+      name: json['name'],
+      id: json['id'],
+      startDate: json['startDate'],
+      endDate: json['endDate'],
+      imageUrl: json['imageUrl'],
+      matches: matches,
+      registrationsOpen: json['registrationsOpen'],
+      openForAll: json['openForAll'],
+      place: json['place'],
+      teams: registeredTeams,
+    );
+  }
 }

@@ -110,14 +110,14 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
                               registrationsOpen: registrationsOpen,
                             ),
                           );
-                      if (result) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => TournamentInfo(),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => TournamentInfo(
+                            data: result,
                           ),
-                        );
-                      }
+                        ),
+                      );
                     },
                     title: "Register",
                     width: 100,
