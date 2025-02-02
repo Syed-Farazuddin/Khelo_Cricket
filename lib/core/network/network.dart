@@ -53,5 +53,6 @@ class Network {
 
   static String registerTournament() => "/tournament/register";
   static String getYourTournaments() => "/tournament";
+  static String addNewTeam({required int id}) => "$id/add_team";
   static String getTournamentItems() => "tournament/items";
 }

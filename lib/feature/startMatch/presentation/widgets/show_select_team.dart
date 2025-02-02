@@ -40,16 +40,6 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
 
   @override
   Widget build(BuildContext context) {
-    // Team teamA = widget.yourTeams
-    //     .where(
-    //       (team) => team.teamId == widget.teamIds.teamA,
-    //     )
-    //     .toList()[0];
-    // Team teamB = widget.yourTeams
-    //     .where(
-    //       (team) => team.teamId == widget.teamIds.teamB,
-    //     )
-    //     .toList()[0];
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 8.0,
@@ -59,7 +49,9 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SearchTeam(),
+          SearchTeam(
+            onSearch: () {},
+          ),
           const SizedBox(
             height: 20,
           ),

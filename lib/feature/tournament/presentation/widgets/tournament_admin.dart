@@ -1,6 +1,6 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
-import 'package:crick_hub/feature/tournament/presentation/widgets/add_team.dart';
+import 'package:crick_hub/feature/tournament/presentation/widgets/add_tournament_team.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,6 +33,7 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
                   context,
                   MaterialPageRoute(
                     builder: (builder) => AddTeam(
+                      label: "Add New Team",
                       addTeam: () {
                         registerNewTeam(
                           id: widget.tournamentId,
@@ -65,6 +66,7 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
     ref.read(tournamentRepositoryProvider).addNewTeam(
           teamName: name,
           tournamentId: id,
+          teamId: 1,
         );
   }
 

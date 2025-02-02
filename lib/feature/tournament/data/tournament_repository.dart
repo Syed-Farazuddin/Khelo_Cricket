@@ -72,16 +72,22 @@ class TournamentRepository extends TournamentRepo {
 
   @override
   Future<bool> addNewTeam({
-    required String teamName,
+    required String? teamName,
     required int tournamentId,
+    required int? teamId,
   }) async {
     bool res = false;
     try {
       Options options = await authorization();
-      final result = await baseService
-          .post(Network.getTournamentItems(), options: options, body: {
-        'teamName': teamName,
-      });
+      final result = await baseService.post(
+          Network.addNewTeam(
+            id: tournamentId,
+          ),
+          options: options,
+          body: {
+            'teamName': teamName ?? '',
+            'teamId': teamId ?? 0,
+          });
       if (result['success']) {
         res = true;
       }

@@ -8,5 +8,6 @@ abstract class TournamentRepo {
   Future<bool> addNewTeam({
     required String teamName,
     required int tournamentId,
+    required int teamId,
   });
 }

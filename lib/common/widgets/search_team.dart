@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchTeam extends ConsumerStatefulWidget {
-  const SearchTeam({super.key});
+  const SearchTeam({
+    super.key,
+    required this.onSearch,
+  });
+  final Function() onSearch;
 
   @override
   ConsumerState<SearchTeam> createState() => _SearchTeamState();
@@ -27,7 +31,7 @@ class _SearchTeamState extends ConsumerState<SearchTeam> {
             width: 10,
           ),
           Custombutton(
-            onTap: () {},
+            onTap: widget.onSearch,
             title: "Search",
             showIcon: true,
             width: 100,
