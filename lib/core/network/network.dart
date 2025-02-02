@@ -52,5 +52,6 @@ class Network {
   // Tournament URLS
 
   static String registerTournament() => "/tournament/register";
+  static String getYourTournaments() => "/tournament";
   static String getTournamentItems() => "tournament/items";
 }

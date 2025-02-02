@@ -21,6 +21,8 @@ class TournamentInfo extends ConsumerStatefulWidget {
 class _TournamentInfoState extends ConsumerState<TournamentInfo> {
   List items = [];
   bool loading = false;
+  int active = 0;
+
   @override
   void initState() {
     super.initState();
@@ -45,16 +47,22 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      left: 10,
+                    ),
                     child: Text(
                       widget.data.name ?? "",
-                      style: CustomTextStyles.subheadings,
+                      style: CustomTextStyles.large.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Container(
+                    height: 400,
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.all(0),
                     child: Image.network(
@@ -65,10 +73,20 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                   const SizedBox(
                     height: 20,
                   ),
-                  ButtonList(
-                    list: items,
-                    onTap: (v) {},
-                    active: 0,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8.0,
+                      top: 10,
+                    ),
+                    child: ButtonList(
+                      list: items,
+                      onTap: (value) {
+                        setState(() {
+                          active = value;
+                        });
+                      },
+                      active: active,
+                    ),
                   )
                 ],
               ),

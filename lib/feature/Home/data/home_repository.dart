@@ -3,6 +3,7 @@ import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/Home/domain/home_repo.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,5 +46,28 @@ class HomeRepository extends HomeRepo {
     }
 
     return result;
+  }
+
+  @override
+  Future<List<TournamentData>> getYourTournaments() async {
+    List<TournamentData> tournaments = [];
+    try {
+      final List response = await baseService.post(
+        Network.getYourTournaments(),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      ) as List;
+      tournaments = response
+          .map((tournament) => TournamentData.fromJson(tournament))
+          .toList();
+    } catch (e) {
+      debugPrint("Error while fetching my tournaments");
+    }
+    return tournaments;
   }
 }
