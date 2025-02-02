@@ -69,4 +69,25 @@ class TournamentRepository extends TournamentRepo {
     }
     return items;
   }
+
+  @override
+  Future<bool> addNewTeam({
+    required String teamName,
+    required int tournamentId,
+  }) async {
+    bool res = false;
+    try {
+      Options options = await authorization();
+      final result = await baseService
+          .post(Network.getTournamentItems(), options: options, body: {
+        'teamName': teamName,
+      });
+      if (result['success']) {
+        res = true;
+      }
+    } catch (e) {
+      debugPrint("Error while fetching tournament items");
+    }
+    return res;
+  }
 }

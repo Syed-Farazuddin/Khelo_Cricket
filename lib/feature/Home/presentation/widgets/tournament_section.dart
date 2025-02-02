@@ -1,7 +1,6 @@
 import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
-import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 import 'package:crick_hub/feature/tournament/presentation/pages/tournament_info.dart';

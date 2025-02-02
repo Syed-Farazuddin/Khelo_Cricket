@@ -1,5 +1,4 @@
-import 'package:crick_hub/common/widgets/custom_button.dart';
-import 'package:crick_hub/common/widgets/custom_input.dart';
+import 'package:crick_hub/common/widgets/add_new_team.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
@@ -73,33 +72,11 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
           const SizedBox(
             height: 20,
           ),
-          Text(
-            "Add new Team",
-            style: GoogleFonts.golosText(
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          CustomInputField(
+          AddNewTeam(
             controller: newTeamController,
-            label: 'Enter team name',
-            textAllowed: true,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Custombutton(
-                    onTap: () async {
-                      await addNewTeam(name: newTeamController.text);
-                    },
-                    title: "Add",
-                    width: 100,
-                  ),
-                ),
-              ),
-            ],
+            addTeam: () async {
+              await addNewTeam(name: newTeamController.text);
+            },
           )
         ],
       ),

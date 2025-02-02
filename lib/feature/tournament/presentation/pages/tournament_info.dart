@@ -5,6 +5,7 @@ import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
+import 'package:crick_hub/feature/tournament/presentation/widgets/tournament_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -83,7 +84,10 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                   const SizedBox(
                     height: 20,
                   ),
-                  if (userId == widget.data.id) Container(),
+                  if (userId == widget.data.createdById)
+                    TournamentAdmin(
+                      tournamentId: widget.data.id ?? 0,
+                    ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 8.0,
