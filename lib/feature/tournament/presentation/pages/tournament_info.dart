@@ -87,7 +87,7 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                       },
                       active: active,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

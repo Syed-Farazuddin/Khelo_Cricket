@@ -8,7 +8,10 @@ final storageProvider = Provider<Storage>((ref) {
 class Storage {
   final _storage = const FlutterSecureStorage();
 
-  void addItem({required String key, required dynamic value}) async {
+  void addItem({
+    required String key,
+    required dynamic value,
+  }) async {
     await _storage.write(key: key, value: value);
   }
 

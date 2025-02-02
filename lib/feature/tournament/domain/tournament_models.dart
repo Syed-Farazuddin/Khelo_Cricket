@@ -43,6 +43,7 @@ class TournamentData {
   String? imageUrl;
   bool? openForAll;
   bool? registrationsOpen;
+  int? createdById;
 
   TournamentData({
     this.endDate,
@@ -55,6 +56,7 @@ class TournamentData {
     this.place,
     this.registrationsOpen,
     this.startDate,
+    this.createdById,
   });
 
   factory TournamentData.fromJson(Map<String, dynamic> json) {
@@ -66,6 +68,7 @@ class TournamentData {
       startDate: json['startDate'],
       endDate: json['endDate'],
       imageUrl: json['imageUrl'],
+      createdById: json['createdBy']['id'],
       matches: matches,
       registrationsOpen: json['registrationsOpen'],
       openForAll: json['openForAll'],

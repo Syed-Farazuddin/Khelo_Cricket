@@ -1,6 +1,7 @@
 import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
+import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/Home/data/home_repository.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 import 'package:crick_hub/feature/tournament/presentation/pages/tournament_info.dart';
@@ -17,6 +18,7 @@ class TournamentSection extends ConsumerStatefulWidget {
 class _TournamentSectionState extends ConsumerState<TournamentSection> {
   bool loading = false;
   List<TournamentData> myTournaments = [];
+  late int userId;
 
   @override
   void initState() {
@@ -28,6 +30,10 @@ class _TournamentSectionState extends ConsumerState<TournamentSection> {
     loading = true;
     await getYourTournaments();
     loading = false;
+  }
+
+  void setUserId() async {
+    ref.read(storageProvider).read(key: 'userId');
   }
 
   @override
