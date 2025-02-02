@@ -40,42 +40,32 @@ class Custombutton extends StatelessWidget {
               )
             : BorderRadius.zero,
       ),
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
       child: InkWell(
         onTap: onTap,
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (showIcon == true)
+                Row(
+                  children: [
+                    Icon(
+                      icon,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    )
+                  ],
+                ),
               Text(
                 title,
                 style: GoogleFonts.golosText(
                   color: textColor,
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.center,
               ),
-              if (showIcon == true)
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(
-                          50,
-                        ),
-                      ),
-                      child: Icon(
-                        icon,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                )
             ],
           ),
         ),

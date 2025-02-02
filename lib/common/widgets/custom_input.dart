@@ -20,38 +20,35 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 12,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 12,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(
+            width: 0.3,
+            color: Colors.white,
           ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(
-              width: 0.3,
-              color: Colors.white,
-            ),
-          ),
-          child: TextField(
-            onChanged: onchanged,
-            controller: controller,
-            // maxLength: 10,
-            cursorColor: Colors.white,
-            keyboardType: textAllowed ? null : TextInputType.number,
-            inputFormatters: textAllowed
-                ? []
-                : <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(maxlength)
-                  ],
-            decoration: InputDecoration(
-              hintText: label,
-              border: InputBorder.none,
-            ),
+        ),
+        child: TextField(
+          onChanged: onchanged,
+          controller: controller,
+          // maxLength: 10,
+          cursorColor: Colors.white,
+          keyboardType: textAllowed ? null : TextInputType.number,
+          inputFormatters: textAllowed
+              ? []
+              : <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(maxlength)
+                ],
+          decoration: InputDecoration(
+            hintText: label,
+            border: InputBorder.none,
           ),
         ),
       ),

@@ -48,7 +48,10 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
             const SizedBox(
               width: 10,
             ),
-            action(label: "Schedule a Match", onTap: () {}),
+            action(
+              label: "Schedule a Match",
+              onTap: () {},
+            ),
           ],
         ),
       ),

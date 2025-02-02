@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/widgets/add_new_team.dart';
+import 'package:crick_hub/common/widgets/search_team.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
@@ -57,6 +58,10 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SearchTeam(),
+          const SizedBox(
+            height: 20,
+          ),
           Text(
             "Select your Team",
             style: GoogleFonts.golosText(

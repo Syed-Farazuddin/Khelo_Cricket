@@ -34,27 +34,28 @@ class _AddNewTeamState extends State<AddNewTeam> {
         const SizedBox(
           height: 10,
         ),
-        CustomInputField(
-          controller: widget.controller,
-          label: 'Enter team name',
-          textAllowed: true,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Custombutton(
-                  onTap: widget.addTeam,
-                  title: "Add",
-                  width: 100,
+        IntrinsicHeight(
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomInputField(
+                  controller: widget.controller,
+                  label: 'Enter team name',
+                  textAllowed: true,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                width: 10,
+              ),
+              Custombutton(
+                onTap: widget.addTeam,
+                title: "Add",
+                showIcon: true,
+                icon: Icons.add_circle,
+                width: 100,
+              ),
+            ],
+          ),
         ),
       ],
     );
