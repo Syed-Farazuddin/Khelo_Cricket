@@ -2,6 +2,7 @@ import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
+import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class TournamentInfo extends ConsumerStatefulWidget {
 
 class _TournamentInfoState extends ConsumerState<TournamentInfo> {
   List items = [];
+  late int userId;
   bool loading = false;
   int active = 0;
 
@@ -29,8 +31,16 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
     init();
   }
 
+  Future<void> setUserId() async {
+    final id = await ref.read(storageProvider).read(key: 'userId');
+    setState(() {
+      userId = int.parse(id ?? "");
+    });
+  }
+
   void init() async {
     loading = true;
+    await setUserId();
     await getTournamentItems();
     loading = false;
   }
@@ -73,6 +83,7 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                   const SizedBox(
                     height: 20,
                   ),
+                  if (userId == widget.data.id) Container(),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 8.0,

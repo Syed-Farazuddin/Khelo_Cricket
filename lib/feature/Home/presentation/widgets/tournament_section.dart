@@ -32,10 +32,6 @@ class _TournamentSectionState extends ConsumerState<TournamentSection> {
     loading = false;
   }
 
-  void setUserId() async {
-    ref.read(storageProvider).read(key: 'userId');
-  }
-
   @override
   Widget build(BuildContext context) {
     return loading
@@ -135,7 +131,9 @@ class _TournamentSectionState extends ConsumerState<TournamentSection> {
                           height: 8,
                         ),
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(
+                            8,
+                          ),
                           child: Image.network(
                             tournament.imageUrl ?? Constants.dummyImage,
                           ),

@@ -27,7 +27,9 @@ class Storage {
     return _storage.readAll();
   }
 
-  Future<dynamic> read({required String key}) async {
+  Future<dynamic> read({
+    required String key,
+  }) async {
     return await _storage.read(key: key);
   }
 
