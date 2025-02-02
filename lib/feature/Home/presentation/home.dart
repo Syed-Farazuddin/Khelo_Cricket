@@ -39,30 +39,36 @@ class _HomeState extends ConsumerState<Home> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Custombutton(
-                      onTap: () {
-                        context.pushNamed("/selectTeams");
-                      },
-                      width: MediaQuery.of(context).size.width / 2,
-                      title: "Start Match",
-                      icon: (Icons.add),
-                      color: Colors.grey.withValues(alpha: 0.18),
-                      textColor: Colors.white,
+                    child: SizedBox(
+                      height: 45,
+                      child: Custombutton(
+                        onTap: () {
+                          context.pushNamed("/selectTeams");
+                        },
+                        width: MediaQuery.of(context).size.width / 2,
+                        title: "Start Match",
+                        icon: (Icons.add),
+                        color: Colors.grey.withValues(alpha: 0.18),
+                        textColor: Colors.white,
+                      ),
                     ),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
-                    child: Custombutton(
-                      width: MediaQuery.of(context).size.width / 2,
-                      onTap: () {
-                        context.pushNamed("/startTournament");
-                      },
-                      title: "Register tournament",
-                      icon: (Icons.add),
-                      color: Colors.grey.withValues(alpha: 0.18),
-                      textColor: Colors.white,
+                    child: SizedBox(
+                      height: 45,
+                      child: Custombutton(
+                        width: MediaQuery.of(context).size.width / 2,
+                        onTap: () {
+                          context.pushNamed("/startTournament");
+                        },
+                        title: "Register tournament",
+                        icon: (Icons.add),
+                        color: Colors.grey.withValues(alpha: 0.18),
+                        textColor: Colors.white,
+                      ),
                     ),
                   ),
                 ],

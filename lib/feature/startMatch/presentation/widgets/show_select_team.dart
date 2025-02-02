@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/add_new_team.dart';
 import 'package:crick_hub/common/widgets/search_team.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
@@ -63,12 +64,8 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
             height: 20,
           ),
           Text(
-            "Select your Team",
-            style: GoogleFonts.golosText(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
+            "Select from your Team",
+            style: CustomTextStyles.large.copyWith(fontSize: 18),
           ),
           const SizedBox(
             height: 30,
@@ -93,7 +90,7 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
       shrinkWrap: true,
       itemCount: teams.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+        crossAxisCount: 4,
         crossAxisSpacing: 16,
         mainAxisSpacing: 12,
       ),

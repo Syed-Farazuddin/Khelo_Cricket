@@ -97,6 +97,7 @@ class _MatchScorecardState extends ConsumerState<MatchScorecard> {
   Widget showInningsDetails({required Innings? innings}) {
     List<BattingDetails> batsmens = innings!.batting!.batmens;
     List<BowlingDetails> bowlers = innings.bowling!.bowlers;
+    debugPrint(bowlers.toString());
     return Column(
       children: [
         const SizedBox(

@@ -48,12 +48,21 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
             controller: name,
             textAllowed: true,
           ),
+          const SizedBox(
+            height: 20,
+          ),
           CustomInputField(
             label: "Place",
             controller: place,
             textAllowed: true,
           ),
+          const SizedBox(
+            height: 20,
+          ),
           const CustomImageSelector(),
+          const SizedBox(
+            height: 10,
+          ),
           CustomDatePicker(
             label: startDate.text.isEmpty
                 ? "Select Start Date"
@@ -65,6 +74,9 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
               });
               debugPrint("New date is selected $d");
             },
+          ),
+          const SizedBox(
+            height: 10,
           ),
           CustomDatePicker(
             label: endDate.text.isEmpty
@@ -78,6 +90,9 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
               debugPrint("New date is selected $d");
             },
           ),
+          const SizedBox(
+            height: 10,
+          ),
           CheckboxFiled(
             label: 'Open For All',
             onChanged: (value) {
@@ -86,6 +101,9 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
               });
             },
             value: openForAll,
+          ),
+          const SizedBox(
+            height: 10,
           ),
           CheckboxFiled(
             label: 'Registrations open?',
@@ -96,42 +114,45 @@ class _StartTournamentState extends ConsumerState<StartTournament> {
             },
             value: registrationsOpen,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Custombutton(
-                    onTap: () async {
-                      final result = await ref
-                          .read(tournamentRepositoryProvider)
-                          .registerTournament(
-                            RegisterTournamentRequest(
-                              endDate: endDate.text,
-                              place: place.text,
-                              startDate: startDate.text,
-                              imageUrl:
-                                  'https://img.freepik.com/premium-vector/cricket-championship-tournament-match-background_30996-6111.jpg',
-                              name: name.text,
-                              openForAll: openForAll,
-                              registrationsOpen: registrationsOpen,
+          SizedBox(
+            height: 80,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Custombutton(
+                      onTap: () async {
+                        final result = await ref
+                            .read(tournamentRepositoryProvider)
+                            .registerTournament(
+                              RegisterTournamentRequest(
+                                endDate: endDate.text,
+                                place: place.text,
+                                startDate: startDate.text,
+                                imageUrl:
+                                    'https://img.freepik.com/premium-vector/cricket-championship-tournament-match-background_30996-6111.jpg',
+                                name: name.text,
+                                openForAll: openForAll,
+                                registrationsOpen: registrationsOpen,
+                              ),
+                            );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => TournamentInfo(
+                              data: result,
                             ),
-                          );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (builder) => TournamentInfo(
-                            data: result,
                           ),
-                        ),
-                      );
-                    },
-                    title: "Register",
-                    width: 100,
+                        );
+                      },
+                      title: "Register Now",
+                      width: 100,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
