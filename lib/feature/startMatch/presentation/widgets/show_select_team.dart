@@ -1,13 +1,13 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/add_new_team.dart';
 import 'package:crick_hub/common/widgets/search_team.dart';
+import 'package:crick_hub/common/widgets/show_teams.dart';
 import 'package:crick_hub/core/toaster/toaster.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/startMatch/presentation/pages/select_team.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ShowSelectTeam extends ConsumerStatefulWidget {
   const ShowSelectTeam({
@@ -67,7 +67,11 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
           const SizedBox(
             height: 30,
           ),
-          showteams(teams: widget.yourTeams),
+          ShowTeams(
+            teams: widget.yourTeams,
+            selectTeam: widget.selectTeam,
+            selectedTeam: widget.selectedTeam,
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -79,49 +83,6 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
           )
         ],
       ),
-    );
-  }
-
-  Widget showteams({required List<Team> teams}) {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: teams.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 12,
-      ),
-      itemBuilder: (builder, index) {
-        return GestureDetector(
-          onTap: () => widget.selectTeam(index),
-          child: Container(
-            decoration: BoxDecoration(
-              color: index == selectedTeam
-                  ? Colors.blue
-                  : Colors.white.withValues(
-                      alpha: 0.18,
-                    ),
-              border: Border.all(
-                color: Colors.white.withValues(
-                  alpha: 0.2,
-                ),
-              ),
-            ),
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                teams[index].name,
-                style: GoogleFonts.golosText(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 

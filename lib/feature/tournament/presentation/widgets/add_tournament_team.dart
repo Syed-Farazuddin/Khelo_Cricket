@@ -1,6 +1,7 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/add_new_team.dart';
 import 'package:crick_hub/common/widgets/search_team.dart';
+import 'package:crick_hub/common/widgets/show_teams.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,8 +49,35 @@ class _AddTeamState extends ConsumerState<AddTeam> {
                 controller: widget.searchController,
               ),
             ),
+            if (widget.teams.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, top: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your Search results",
+                      style: CustomTextStyles.large.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ShowTeams(
+                      teams: widget.teams,
+                      selectTeam: (idx) {
+                        debugPrint("Change selected team $idx");
+                      },
+                      selectedTeam: 0,
+                    ),
+                  ],
+                ),
+              ),
             const SizedBox(
-              height: 20,
+              height: 24,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -63,4 +91,6 @@ class _AddTeamState extends ConsumerState<AddTeam> {
       ),
     );
   }
+
+  showTeams() {}
 }
