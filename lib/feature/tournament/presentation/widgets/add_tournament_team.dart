@@ -1,27 +1,33 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/widgets/add_new_team.dart';
 import 'package:crick_hub/common/widgets/search_team.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddTeam extends StatefulWidget {
+class AddTeam extends ConsumerStatefulWidget {
   const AddTeam({
     super.key,
     required this.addTeam,
+    required this.onSearch,
     required this.controller,
     required this.label,
+    required this.teams,
+    required this.searchController,
   });
 
   final TextEditingController controller;
+  final TextEditingController searchController;
+  final Function() onSearch;
+  final List<Team> teams;
   final Function() addTeam;
   final String label;
 
   @override
-  State<AddTeam> createState() => _AddTeamState();
+  ConsumerState<AddTeam> createState() => _AddTeamState();
 }
 
-class _AddTeamState extends State<AddTeam> {
-  List teams = [];
-
+class _AddTeamState extends ConsumerState<AddTeam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +44,8 @@ class _AddTeamState extends State<AddTeam> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SearchTeam(
-                onSearch: () {},
+                onSearch: widget.onSearch,
+                controller: widget.searchController,
               ),
             ),
             const SizedBox(

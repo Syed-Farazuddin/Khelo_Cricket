@@ -7,15 +7,16 @@ class SearchTeam extends ConsumerStatefulWidget {
   const SearchTeam({
     super.key,
     required this.onSearch,
+    required this.controller,
   });
   final Function() onSearch;
+  final TextEditingController controller;
 
   @override
   ConsumerState<SearchTeam> createState() => _SearchTeamState();
 }
 
 class _SearchTeamState extends ConsumerState<SearchTeam> {
-  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
@@ -23,7 +24,11 @@ class _SearchTeamState extends ConsumerState<SearchTeam> {
         children: [
           Expanded(
             child: CustomInputField(
-              controller: controller,
+              controller: widget.controller,
+              textAllowed: true,
+              onchanged: (s) {
+                widget.onSearch();
+              },
               label: 'Search for a Team',
             ),
           ),

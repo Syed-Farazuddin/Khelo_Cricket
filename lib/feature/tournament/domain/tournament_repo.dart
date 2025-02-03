@@ -1,3 +1,4 @@
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 
 abstract class TournamentRepo {
@@ -9,5 +10,9 @@ abstract class TournamentRepo {
     required String teamName,
     required int tournamentId,
     required int teamId,
+  });
+
+  Future<List<Team>> searchForTeams({
+    required String teamName,
   });
 }

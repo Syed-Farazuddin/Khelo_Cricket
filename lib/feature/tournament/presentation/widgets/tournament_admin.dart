@@ -1,4 +1,5 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
 import 'package:crick_hub/feature/tournament/presentation/widgets/add_tournament_team.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,10 @@ class TournamentAdmin extends ConsumerStatefulWidget {
 
 class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
   final TextEditingController team = TextEditingController();
+  int teamid = 0;
+  final TextEditingController searchController = TextEditingController();
+  List<Team> teams = [];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +38,13 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
                   context,
                   MaterialPageRoute(
                     builder: (builder) => AddTeam(
+                      searchController: searchController,
+                      onSearch: () {
+                        debugPrint("Your search for ${searchController.text}");
+                        searchTeams(name: searchController.text);
+                      },
                       label: "Add New Team",
+                      teams: teams,
                       addTeam: () {
                         registerNewTeam(
                           id: widget.tournamentId,
@@ -57,6 +68,20 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
         ),
       ),
     );
+  }
+
+  Future<void> searchTeams({
+    required String name,
+  }) async {
+    if (name.isEmpty) {
+      return;
+    }
+    final response = await ref
+        .read(tournamentRepositoryProvider)
+        .searchForTeams(teamName: name);
+    setState(() {
+      teams = response;
+    });
   }
 
   Future<void> registerNewTeam({

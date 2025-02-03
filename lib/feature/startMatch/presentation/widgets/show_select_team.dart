@@ -32,6 +32,8 @@ class ShowSelectTeam extends ConsumerStatefulWidget {
 class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
   TextEditingController newTeamController = TextEditingController();
   late int selectedTeam;
+  TextEditingController searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +52,10 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SearchTeam(
-            onSearch: () {},
+            onSearch: () {
+              debugPrint("You searched for ${searchController.text}");
+            },
+            controller: searchController,
           ),
           const SizedBox(
             height: 20,

@@ -1,6 +1,7 @@
 import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
+import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_repo.dart';
 import 'package:dio/dio.dart';
@@ -26,7 +27,8 @@ class TournamentRepository extends TournamentRepo {
 
   @override
   Future<TournamentData> registerTournament(
-      RegisterTournamentRequest request) async {
+    RegisterTournamentRequest request,
+  ) async {
     TournamentData result = TournamentData();
     try {
       Options options = await authorization();
@@ -41,6 +43,25 @@ class TournamentRepository extends TournamentRepo {
       debugPrint("Error while registering for tournament $e");
     }
     return result;
+  }
+
+  @override
+  Future<List<Team>> searchForTeams({
+    required String teamName,
+  }) async {
+    List<Team> teams = [];
+    try {
+      Options options = await authorization();
+      final response = await baseService.get(
+        Network.searchTeams(name: teamName),
+        options: options,
+      ) as List;
+
+      teams = response.map((r) => Team.fromJson(r)).toList();
+    } catch (e) {
+      debugPrint("Error while registering for tournament $e");
+    }
+    return teams;
   }
 
   Future<Options> authorization() async {
