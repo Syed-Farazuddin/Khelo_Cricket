@@ -3,34 +3,29 @@ import 'package:crick_hub/common/widgets/add_new_team.dart';
 import 'package:crick_hub/common/widgets/search_team.dart';
 import 'package:crick_hub/common/widgets/show_teams.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
+import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddTeam extends ConsumerStatefulWidget {
   const AddTeam({
     super.key,
-    required this.addTeam,
-    required this.onSearch,
-    required this.controller,
     required this.label,
-    required this.teams,
-    required this.selectTeam,
-    required this.searchController,
+    required this.tournamentId,
   });
 
-  final TextEditingController controller;
-  final TextEditingController searchController;
-  final Function() onSearch;
-  final List<Team> teams;
-  final Function() addTeam;
-  final Function(int val) selectTeam;
   final String label;
-
+  final int tournamentId;
   @override
   ConsumerState<AddTeam> createState() => _AddTeamState();
 }
 
 class _AddTeamState extends ConsumerState<AddTeam> {
+  int selectedTeam = -1;
+  List<Team> teams = [];
+  final TextEditingController searchController = TextEditingController();
+  final TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,11 +42,13 @@ class _AddTeamState extends ConsumerState<AddTeam> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SearchTeam(
-                onSearch: widget.onSearch,
-                controller: widget.searchController,
+                onSearch: () {
+                  searchTeams(name: searchController.text);
+                },
+                controller: searchController,
               ),
             ),
-            if (widget.teams.isNotEmpty)
+            if (teams.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 30),
                 child: Column(
@@ -69,8 +66,12 @@ class _AddTeamState extends ConsumerState<AddTeam> {
                       height: 15,
                     ),
                     ShowTeams(
-                      teams: widget.teams,
-                      selectTeam: widget.selectTeam,
+                      teams: teams,
+                      selectTeam: (val) {
+                        setState(() {
+                          selectedTeam = val;
+                        });
+                      },
                       selectedTeam: 0,
                     ),
                   ],
@@ -82,8 +83,13 @@ class _AddTeamState extends ConsumerState<AddTeam> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: AddNewTeam(
-                addTeam: widget.addTeam,
-                controller: widget.controller,
+                addTeam: () {
+                  registerNewTeam(
+                    name: controller.text,
+                    id: widget.tournamentId,
+                  );
+                },
+                controller: controller,
               ),
             ),
           ],
@@ -92,5 +98,31 @@ class _AddTeamState extends ConsumerState<AddTeam> {
     );
   }
 
-  showTeams() {}
+  Future<void> registerNewTeam({
+    required String name,
+    required int id,
+  }) async {
+    ref.read(tournamentRepositoryProvider).addNewTeam(
+          teamName: name,
+          tournamentId: id,
+          teamId: 1,
+        );
+  }
+
+  Future<void> searchTeams({
+    required String name,
+  }) async {
+    if (name.isEmpty) {
+      setState(() {
+        teams = [];
+      });
+      return;
+    }
+    final response = await ref
+        .read(tournamentRepositoryProvider)
+        .searchForTeams(teamName: name);
+    setState(() {
+      teams = response;
+    });
+  }
 }

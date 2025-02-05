@@ -120,25 +120,28 @@ class _OtpFormWidgetState extends ConsumerState<OtpFormWidget> {
           const SizedBox(
             height: 30,
           ),
-          Custombutton(
-            onTap: () async {
-              focusNode.unfocus();
-              debugPrint("Otp text is  ${pinController.text}");
-              bool res = await verifyOtp(
-                mobile: widget.mobile,
-                otp: pinController.text,
-                isNewplayer: widget.isNewPlayer,
-              );
-              if (res) {
-                if (widget.isNewPlayer) {
-                  context.goNamed('/playerDetails');
-                  return;
+          SizedBox(
+            height: 50,
+            child: Custombutton(
+              onTap: () async {
+                focusNode.unfocus();
+                debugPrint("Otp text is  ${pinController.text}");
+                bool res = await verifyOtp(
+                  mobile: widget.mobile,
+                  otp: pinController.text,
+                  isNewplayer: widget.isNewPlayer,
+                );
+                if (res) {
+                  if (widget.isNewPlayer) {
+                    context.goNamed('/playerDetails');
+                    return;
+                  }
+                  context.goNamed('/home');
                 }
-                context.goNamed('/home');
-              }
-            },
-            title: "Verify Otp",
-            width: 300,
+              },
+              title: "Verify Otp",
+              width: 300,
+            ),
           ),
         ],
       ),
