@@ -83,12 +83,15 @@ class _AuthenticationPageState extends ConsumerState<AuthenticationPage> {
               ),
               const SizedBox(height: 20),
               if (!showOtp)
-                Custombutton(
-                  onTap: () async {
-                    await sendOtp(mobile: controller.text);
-                  },
-                  title: "Send OTP",
-                  width: MediaQuery.of(context).size.width / 2,
+                SizedBox(
+                  height: 50,
+                  child: Custombutton(
+                    onTap: () async {
+                      await sendOtp(mobile: controller.text);
+                    },
+                    title: "Send OTP",
+                    width: MediaQuery.of(context).size.width / 2,
+                  ),
                 ),
             ],
           ),

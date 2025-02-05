@@ -26,9 +26,6 @@ class _SearchTeamState extends ConsumerState<SearchTeam> {
             child: CustomInputField(
               controller: widget.controller,
               textAllowed: true,
-              onchanged: (s) {
-                widget.onSearch();
-              },
               label: 'Search for a Team',
             ),
           ),

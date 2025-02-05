@@ -14,6 +14,7 @@ class AddTeam extends ConsumerStatefulWidget {
     required this.controller,
     required this.label,
     required this.teams,
+    required this.selectTeam,
     required this.searchController,
   });
 
@@ -22,6 +23,7 @@ class AddTeam extends ConsumerStatefulWidget {
   final Function() onSearch;
   final List<Team> teams;
   final Function() addTeam;
+  final Function(int val) selectTeam;
   final String label;
 
   @override
@@ -68,9 +70,7 @@ class _AddTeamState extends ConsumerState<AddTeam> {
                     ),
                     ShowTeams(
                       teams: widget.teams,
-                      selectTeam: (idx) {
-                        debugPrint("Change selected team $idx");
-                      },
+                      selectTeam: widget.selectTeam,
                       selectedTeam: 0,
                     ),
                   ],

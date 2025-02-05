@@ -21,6 +21,7 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
   int teamid = 0;
   final TextEditingController searchController = TextEditingController();
   List<Team> teams = [];
+  int selectedTeam = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +40,12 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
                   MaterialPageRoute(
                     builder: (builder) => AddTeam(
                       searchController: searchController,
+                      selectTeam: (val) {
+                        setState(() {
+                          selectedTeam = val;
+                        });
+                      },
                       onSearch: () {
-                        debugPrint("Your search for ${searchController.text}");
                         searchTeams(name: searchController.text);
                       },
                       label: "Add New Team",
@@ -74,13 +79,16 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
     required String name,
   }) async {
     if (name.isEmpty) {
+      setState(() {
+        teams = [];
+      });
       return;
     }
     final response = await ref
         .read(tournamentRepositoryProvider)
         .searchForTeams(teamName: name);
     setState(() {
-      teams = response;
+      teams = response; // Ensures a new reference
     });
   }
 
