@@ -38,7 +38,6 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
                     builder: (builder) => AddTeam(
                       label: "Add New Team",
                       tournamentId: widget.tournamentId,
-
                       // // addTeam: () {
                       // //   registerNewTeam(
                       // //     id: widget.tournamentId,
