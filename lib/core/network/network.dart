@@ -18,7 +18,7 @@ class Network {
 
   static String fetchTeams() => 'team/get_your_teams';
   static String searchTeams({required String name}) => 'team/$name/search';
-
+  static String fetchTeamDetails({required int id}) => 'team/$id/details';
   static String createNewTeam() => 'team/create_team';
   static String addNewPlayer({
     required int teamId,

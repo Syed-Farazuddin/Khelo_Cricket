@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/widgets/show_player.dart';
 import 'package:crick_hub/feature/startMatch/data/models/start_match_models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,40 +67,7 @@ class _SquadsState extends State<Squads> {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (builder, index) {
             return players[index].selected || !(widget.showSelectedPlayers)
-                ? Container(
-                    padding: const EdgeInsets.all(
-                      12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withValues(
-                        alpha: 0.12,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              players[index].name.toString(),
-                              style: GoogleFonts.golosText(
-                                fontSize: 16,
-                              ),
-                            ),
-                            if (players[index].isCaptain)
-                              const Text(
-                                "(C)",
-                              )
-                          ],
-                        ),
-                        const Icon(
-                          Icons.arrow_right,
-                          size: 28,
-                        )
-                      ],
-                    ),
-                  )
+                ? ShowPlayer(player: players[index])
                 : const SizedBox.shrink();
           },
           separatorBuilder: (builder, index) => const SizedBox(

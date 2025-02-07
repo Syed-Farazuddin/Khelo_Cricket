@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/models/team_details.dart';
 import 'package:crick_hub/core/network/base_service.dart';
 import 'package:crick_hub/core/network/network.dart';
 import 'package:crick_hub/core/storage/storage.dart';
@@ -116,5 +117,22 @@ class TournamentRepository extends TournamentRepo {
       debugPrint("Error while fetching tournament items");
     }
     return res;
+  }
+
+  @override
+  Future<TeamDetails> fetchTeamDetails({required int id}) async {
+    TeamDetails teamDetails = TeamDetails();
+    try {
+      Options options = await authorization();
+      final result = await baseService.get(
+        Network.fetchTeamDetails(id: id),
+        options: options,
+      );
+      teamDetails = TeamDetails.fromJson(result);
+      debugPrint("Fetched team details");
+    } catch (e) {
+      debugPrint("Error while fetching team Details");
+    }
+    return teamDetails;
   }
 }
