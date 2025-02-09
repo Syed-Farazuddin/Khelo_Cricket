@@ -1,6 +1,7 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/models/team_details.dart';
 import 'package:crick_hub/common/widgets/add_new_team.dart';
+import 'package:crick_hub/common/widgets/custom_button.dart';
 import 'package:crick_hub/common/widgets/search_team.dart';
 import 'package:crick_hub/common/widgets/show_team_info.dart';
 import 'package:crick_hub/common/widgets/show_teams.dart';
@@ -79,8 +80,37 @@ class _AddTeamState extends ConsumerState<AddTeam> {
                         selectedTeam: selectedTeam,
                       ),
                       if (teamDetails.id != null)
-                        ShowTeamInfo(
-                          teamDetails: teamDetails,
+                        Column(
+                          children: [
+                            ShowTeamInfo(
+                              teamDetails: teamDetails,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Custombutton(
+                                      onTap: () {
+                                        registerNewTeam(
+                                          name: controller.text,
+                                          teamId: teamDetails.id ?? 0,
+                                          id: widget.tournamentId,
+                                        );
+                                      },
+                                      title: "Add Team",
+                                      color: Colors.blue,
+                                      textColor: Colors.white,
+                                      width: 100,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         )
                     ],
                   ),
@@ -95,6 +125,7 @@ class _AddTeamState extends ConsumerState<AddTeam> {
                     registerNewTeam(
                       name: controller.text,
                       id: widget.tournamentId,
+                      teamId: 0,
                     );
                   },
                   controller: controller,
@@ -112,13 +143,17 @@ class _AddTeamState extends ConsumerState<AddTeam> {
 
   Future<void> registerNewTeam({
     required String name,
+    required int teamId,
     required int id,
   }) async {
-    ref.read(tournamentRepositoryProvider).addNewTeam(
+    final res = await ref.read(tournamentRepositoryProvider).addNewTeam(
           teamName: name,
           tournamentId: id,
-          teamId: 1,
+          teamId: teamId,
         );
+    if (res) {
+      Navigator.pop(context);
+    }
   }
 
   Future<void> fetchTeamDetails({

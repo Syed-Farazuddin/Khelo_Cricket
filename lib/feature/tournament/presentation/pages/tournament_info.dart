@@ -2,6 +2,7 @@ import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
+import 'package:crick_hub/common/widgets/show_teams.dart';
 import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
 import 'package:crick_hub/feature/tournament/domain/tournament_models.dart';
@@ -103,6 +104,11 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                       active: active,
                     ),
                   ),
+                  ShowTeams(
+                    teams: widget.data.teams,
+                    selectTeam: (val) {},
+                    selectedTeam: 0,
+                  )
                 ],
               ),
             ),
@@ -110,6 +116,14 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
   }
 
   Future<void> getTournamentItems() async {
+    final result =
+        await ref.read(tournamentRepositoryProvider).getTournamentItems();
+    setState(() {
+      items = result;
+    });
+  }
+
+  Future<void> getTournamentInfo() async {
     final result =
         await ref.read(tournamentRepositoryProvider).getTournamentItems();
     setState(() {

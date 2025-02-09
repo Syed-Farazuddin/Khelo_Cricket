@@ -17,6 +17,10 @@ abstract class TournamentRepo {
     required int id,
   });
 
+  Future<dynamic> getTournamentInfo({
+    required int id,
+  });
+
   Future<List<Team>> searchForTeams({
     required String teamName,
   });

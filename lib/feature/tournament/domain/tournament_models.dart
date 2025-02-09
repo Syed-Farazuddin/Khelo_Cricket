@@ -33,7 +33,7 @@ class RegisterTournamentRequest {
 }
 
 class TournamentData {
-  List<TeamData> teams;
+  List<Team> teams;
   List<MatchData> matches;
   String? name;
   int? id;
@@ -61,7 +61,9 @@ class TournamentData {
 
   factory TournamentData.fromJson(Map<String, dynamic> json) {
     List<MatchData> matches = [];
-    List<TeamData> registeredTeams = [];
+    List<Team> registeredTeams = [];
+    final teams = json['registeredTeams'] as List;
+    registeredTeams = teams.map((t) => Team.fromJson(t)).toList();
     return TournamentData(
       name: json['name'],
       id: json['id'],

@@ -167,6 +167,13 @@ class TeamData {
     required this.name,
     required this.id,
   });
+
+  factory TeamData.fromJson(Map<String, dynamic> json) {
+    return TeamData(
+      name: json['name'],
+      id: json['id'],
+    );
+  }
 }
 
 class MatchData {

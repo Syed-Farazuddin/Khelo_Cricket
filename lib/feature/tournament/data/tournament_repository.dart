@@ -135,4 +135,18 @@ class TournamentRepository extends TournamentRepo {
     }
     return teamDetails;
   }
+
+  @override
+  Future getTournamentInfo({required int id}) async {
+    try {
+      Options options = await authorization();
+      final result = await baseService.get(
+        Network.getTournamentInfo(id: id),
+        options: options,
+      );
+      debugPrint(result.toString());
+    } catch (e) {
+      debugPrint("Error while fetching tournament details");
+    }
+  }
 }
