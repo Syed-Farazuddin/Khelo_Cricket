@@ -104,14 +104,42 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                       active: active,
                     ),
                   ),
-                  ShowTeams(
-                    teams: widget.data.teams,
-                    selectTeam: (val) {},
-                    selectedTeam: 0,
-                  )
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  if (active == 0) showTournamentMatches(),
+                  if (active == 1) showTournamentteams(),
                 ],
               ),
             ),
+    );
+  }
+
+  Widget showTournamentMatches() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        top: 10,
+      ),
+      child: ShowTeams(
+        teams: widget.data.teams,
+        selectTeam: (val) {},
+        selectedTeam: 0,
+      ),
+    );
+  }
+
+  Widget showTournamentteams() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        top: 10,
+      ),
+      child: ShowTeams(
+        teams: widget.data.teams,
+        selectTeam: (val) {},
+        selectedTeam: 0,
+      ),
     );
   }
 
