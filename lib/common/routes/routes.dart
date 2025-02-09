@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/models/select_team.dart';
 import 'package:crick_hub/feature/authentication/presentation/pages/authentication.dart';
 import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
@@ -75,7 +76,11 @@ class Routes {
         path: "/selectTeams",
         name: "/selectTeams",
         builder: (context, state) {
-          return const SelectTeams();
+          final data = state.extra as SelectTeamModel;
+          return SelectTeams(
+            isTournamentMatch: data.isTournamentMatch,
+            tournamentId: data.touranmentId,
+          );
         },
       ),
       GoRoute(
@@ -94,10 +99,11 @@ class Routes {
         name: "/selectTeam",
         builder: (context, state) {
           final StartMatchExtras extra = state.extra as StartMatchExtras;
-
           return SelectTeam(
             teamName: extra.teamName,
             teamNo: extra.teamNo,
+            isTournamentMatch: extra.isTournamentMatch,
+            tournamentId: extra.tournamentId,
             fetchYourTeams: extra.refreshData,
           );
         },

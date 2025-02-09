@@ -11,9 +11,13 @@ class SelectTeam extends ConsumerStatefulWidget {
     required this.teamName,
     required this.fetchYourTeams,
     required this.teamNo,
+    required this.isTournamentMatch,
+    required this.tournamentId,
   });
   final int teamNo;
   final String teamName;
+  final bool isTournamentMatch;
+  final int tournamentId;
   final Future<void> Function() fetchYourTeams;
 
   @override

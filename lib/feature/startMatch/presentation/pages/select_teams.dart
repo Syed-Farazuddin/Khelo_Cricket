@@ -14,7 +14,12 @@ import 'package:google_fonts/google_fonts.dart';
 class SelectTeams extends ConsumerStatefulWidget {
   const SelectTeams({
     super.key,
+    required this.isTournamentMatch,
+    required this.tournamentId,
   });
+  final bool isTournamentMatch;
+  final int tournamentId;
+
   @override
   ConsumerState<SelectTeams> createState() => _SelectTeamsState();
 }
@@ -78,6 +83,8 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                                     teamA.name.isEmpty ? "Team A" : teamA.name,
                                 teamNo: 1,
                                 refreshData: fetchYourTeams,
+                                isTournamentMatch: widget.isTournamentMatch,
+                                tournamentId: widget.tournamentId,
                                 yourTeams: yourTeams,
                               ),
                             );
@@ -95,6 +102,8 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                             context.pushNamed(
                               "/selectTeam",
                               extra: StartMatchExtras(
+                                isTournamentMatch: widget.isTournamentMatch,
+                                tournamentId: widget.tournamentId,
                                 teamName:
                                     teamB.name.isEmpty ? "Team B" : teamB.name,
                                 teamNo: 2,
@@ -163,24 +172,30 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                       Row(
                         children: [
                           Expanded(
-                            child: Custombutton(
-                              onTap: () {
-                                context.pushNamed("/startMatch");
-                              },
-                              title: "Schedule Match",
-                              width: 100,
+                            child: SizedBox(
+                              height: 50,
+                              child: Custombutton(
+                                onTap: () {
+                                  context.pushNamed("/startMatch");
+                                },
+                                title: "Schedule Match ",
+                                width: 100,
+                              ),
                             ),
                           ),
                           const SizedBox(
                             width: 25,
                           ),
                           Expanded(
-                            child: Custombutton(
-                              onTap: () {
-                                context.pushNamed("/startMatch");
-                              },
-                              title: "Start Match",
-                              width: 100,
+                            child: SizedBox(
+                              height: 50,
+                              child: Custombutton(
+                                onTap: () {
+                                  context.pushNamed("/startMatch");
+                                },
+                                title: "Start Match",
+                                width: 100,
+                              ),
                             ),
                           ),
                         ],

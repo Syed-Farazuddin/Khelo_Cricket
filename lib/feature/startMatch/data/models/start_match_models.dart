@@ -38,7 +38,12 @@ class StartMatchExtras {
   int teamNo;
   final Future<void> Function() refreshData;
   List<Team> yourTeams;
+  final bool isTournamentMatch;
+  final int tournamentId;
+
   StartMatchExtras({
+    required this.isTournamentMatch,
+    required this.tournamentId,
     required this.yourTeams,
     required this.teamName,
     required this.refreshData,

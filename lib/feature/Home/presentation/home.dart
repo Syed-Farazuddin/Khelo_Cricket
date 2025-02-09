@@ -1,3 +1,4 @@
+import 'package:crick_hub/common/models/select_team.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
 import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/Home/presentation/widgets/matches_section.dart';
@@ -43,7 +44,13 @@ class _HomeState extends ConsumerState<Home> {
                       height: 45,
                       child: Custombutton(
                         onTap: () {
-                          context.pushNamed("/selectTeams");
+                          context.pushNamed(
+                            "/selectTeams",
+                            extra: SelectTeamModel(
+                              isTournamentMatch: false,
+                              touranmentId: 0,
+                            ),
+                          );
                         },
                         width: MediaQuery.of(context).size.width / 2,
                         title: "Start Match",

@@ -132,28 +132,33 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
           const SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: CustomInputField(
-                  controller: mobileController,
-                  maxlength: 10,
-                  label: "Enter mobile number",
+          IntrinsicHeight(
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomInputField(
+                    controller: mobileController,
+                    maxlength: 10,
+                    label: "Enter mobile number",
+                  ),
                 ),
-              ),
-              Custombutton(
-                onTap: () async {
-                  await addNewPlayer(
-                    teamId: widget.team.teamId,
-                    mobile: mobileController.text,
-                  );
-                },
-                width: 80.0,
-                showIcon: true,
-                title: "Add",
-                icon: Icons.add,
-              ),
-            ],
+                const SizedBox(
+                  width: 8,
+                ),
+                Custombutton(
+                  onTap: () async {
+                    await addNewPlayer(
+                      teamId: widget.team.teamId,
+                      mobile: mobileController.text,
+                    );
+                  },
+                  width: 80.0,
+                  showIcon: true,
+                  title: "Add",
+                  icon: Icons.add,
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -230,36 +235,42 @@ class _SelectTeamPlayerState extends ConsumerState<SelectTeamPlayer> {
             child: Row(
               children: [
                 Expanded(
-                  child: Custombutton(
-                    onTap: () {
-                      context.goNamed('/startMatch');
-                    },
-                    title: "Cancel",
-                    textColor: Colors.white,
-                    color: Colors.red,
-                    width: 100,
+                  child: SizedBox(
+                    height: 50,
+                    child: Custombutton(
+                      onTap: () {
+                        context.goNamed('/startMatch');
+                      },
+                      title: "Cancel",
+                      textColor: Colors.white,
+                      color: Colors.red,
+                      width: 100,
+                    ),
                   ),
                 ),
                 const SizedBox(
                   width: 20,
                 ),
                 Expanded(
-                  child: Custombutton(
-                    onTap: () {
-                      if (widget.teamNo == 1) {
-                        ref.watch(selectedTeamA.notifier).state = widget.team;
-                        // setState(() {});
-                      } else {
-                        ref.read(selectedTeamB.notifier).state = widget.team;
-                        // setState(() {});
-                      }
-                      context.pop();
-                      setState(() {});
-                    },
-                    textColor: Colors.white,
-                    title: "Done",
-                    color: Colors.green,
-                    width: 100,
+                  child: SizedBox(
+                    height: 50,
+                    child: Custombutton(
+                      onTap: () {
+                        if (widget.teamNo == 1) {
+                          ref.watch(selectedTeamA.notifier).state = widget.team;
+                          // setState(() {});
+                        } else {
+                          ref.read(selectedTeamB.notifier).state = widget.team;
+                          // setState(() {});
+                        }
+                        context.pop();
+                        setState(() {});
+                      },
+                      textColor: Colors.white,
+                      title: "Done",
+                      color: Colors.green,
+                      width: 100,
+                    ),
                   ),
                 ),
               ],

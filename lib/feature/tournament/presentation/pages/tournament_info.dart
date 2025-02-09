@@ -2,6 +2,7 @@ import 'package:crick_hub/common/constants/constants.dart';
 import 'package:crick_hub/common/constants/text_styles.dart';
 import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/widgets/button_list.dart';
+import 'package:crick_hub/common/widgets/show_matches.dart';
 import 'package:crick_hub/common/widgets/show_teams.dart';
 import 'package:crick_hub/core/storage/storage.dart';
 import 'package:crick_hub/feature/tournament/data/tournament_repository.dart';
@@ -107,7 +108,10 @@ class _TournamentInfoState extends ConsumerState<TournamentInfo> {
                   const SizedBox(
                     height: 10,
                   ),
-                  if (active == 0) showTournamentMatches(),
+                  if (active == 0)
+                    ShowMatches(
+                      matches: widget.data.matches,
+                    ),
                   if (active == 1) showTournamentteams(),
                 ],
               ),
