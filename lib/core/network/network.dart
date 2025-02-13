@@ -28,6 +28,8 @@ class Network {
   // Matches LINKS
 
   static String startYourMatch() => "/matches/start_match";
+  static String scheduleYourMatch() => "/matches/schedule_match";
+
   static String startNewInnings() => '/matches/start_new_innings';
   static String getYourMatches() => "/matches/your_matches";
   static String updateBatmans({required int inningsId}) =>

@@ -176,7 +176,7 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                               height: 50,
                               child: Custombutton(
                                 onTap: () {
-                                  context.pushNamed("/startMatch");
+                                  context.pushNamed("/scheduleMatch");
                                 },
                                 title: "Schedule Match ",
                                 width: 100,

@@ -1,5 +1,4 @@
 import 'package:crick_hub/common/constants/text_styles.dart';
-import 'package:crick_hub/common/models/select_team.dart';
 import 'package:crick_hub/feature/tournament/presentation/widgets/add_tournament_team.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,11 +57,7 @@ class _TournamentAdminState extends ConsumerState<TournamentAdmin> {
               label: "Schedule a Match",
               onTap: () {
                 context.pushNamed(
-                  "/selectTeams",
-                  extra: SelectTeamModel(
-                    isTournamentMatch: true,
-                    touranmentId: widget.tournamentId,
-                  ),
+                  "/scheduleMatch",
                 );
               },
             ),

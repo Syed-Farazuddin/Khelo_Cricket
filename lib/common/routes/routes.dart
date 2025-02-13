@@ -4,6 +4,7 @@ import 'package:crick_hub/feature/dashboard/presentation/dashboard.dart';
 import 'package:crick_hub/feature/flpCoin/presentation/pages/flip_coin.dart';
 import 'package:crick_hub/feature/match/presentation/pages/match_details.dart';
 import 'package:crick_hub/feature/player/presentation/pages/player_details.dart';
+import 'package:crick_hub/feature/scheduleMatch/presentation/pages/schedule_match.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
 import 'package:crick_hub/feature/scoring/presentation/pages/scoring.dart';
 import 'package:crick_hub/feature/splashScreens/main_splash.dart';
@@ -81,6 +82,13 @@ class Routes {
             isTournamentMatch: data.isTournamentMatch,
             tournamentId: data.touranmentId,
           );
+        },
+      ),
+      GoRoute(
+        path: "/scheduleMatch",
+        name: "/scheduleMatch",
+        builder: (context, state) {
+          return const ScheduleMatch();
         },
       ),
       GoRoute(
