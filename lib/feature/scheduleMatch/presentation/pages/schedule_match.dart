@@ -16,7 +16,9 @@ class _ScheduleMatchState extends State<ScheduleMatch> {
           'Schedule Match',
         ),
       ),
-      body: const Column(),
+      body: Column(
+        children: [],
+      ),
     );
   }
 }

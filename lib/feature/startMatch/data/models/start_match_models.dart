@@ -21,6 +21,11 @@ class Players {
     this.isWicketKeepet = false,
   });
 
+  @override
+  String toString() {
+    return 'Player * $name $id $battingStyle $bowlingStyle $isCaptain $isWicketKeepet';
+  }
+
   factory Players.fromJson(json) {
     Players player = Players(
       name: json['user']['name'].toString(),

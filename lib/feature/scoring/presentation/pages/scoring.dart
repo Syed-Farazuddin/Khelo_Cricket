@@ -4,7 +4,10 @@ import 'package:crick_hub/common/loaders/loader.dart';
 import 'package:crick_hub/common/models/scoring_models.dart';
 import 'package:crick_hub/common/providers/scoring_provider.dart';
 import 'package:crick_hub/common/routes/routes.dart';
+import 'package:crick_hub/common/widgets/custom_button.dart';
+import 'package:crick_hub/common/widgets/custom_input.dart';
 import 'package:crick_hub/common/widgets/pop_up.dart';
+import 'package:crick_hub/common/widgets/square_field.dart';
 import 'package:crick_hub/core/colors/colors.dart';
 import 'package:crick_hub/feature/match/presentation/widgets/match_app_bar.dart';
 import 'package:crick_hub/feature/scoring/data/scoring_models.dart';
@@ -15,6 +18,7 @@ import 'package:crick_hub/feature/startMatch/presentation/pages/select_batsman.d
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_controller.dart';
 import 'package:crick_hub/feature/startMatch/presentation/providers/start_match_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -179,23 +183,31 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
         name: '6',
       ),
       ScoringModel(
-        name: 'W',
-        isWicket: true,
+        name: '5,7',
       ),
       ScoringModel(
         name: 'Undo',
         isUndo: true,
+        isColored: true,
+      ),
+      ScoringModel(
+        name: 'W',
+        isWicket: true,
+        isColored: true,
       ),
       ScoringModel(
         name: 'WD',
         isWide: true,
+        isColored: true,
       ),
       ScoringModel(
         name: 'NB',
+        isColored: true,
         isNoBall: true,
       ),
       ScoringModel(
         name: 'NB',
+        isColored: true,
         isNoBall: true,
       ),
     ];
@@ -320,115 +332,283 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
                       ],
                     ),
                     // The bottom should contain the scoring card where we can manually enter score and all.
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 16,
-                      ),
-                      child: GridView.builder(
-                        itemCount: scoringData.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 6,
-                          mainAxisSpacing: 6,
-                        ),
-                        itemBuilder: (builder, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (scoringData[index].isWicket ?? false) {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (builder) => Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height:
-                                        MediaQuery.of(context).size.height / 2,
-                                    // color: Colors.grey[400],
-                                    padding: const EdgeInsets.all(8),
-                                    child: GridView.builder(
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                      ),
-                                      itemBuilder: (context, index) =>
-                                          GestureDetector(
-                                        onTap: wicketList[index].onclick,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: SvgPicture.asset(
-                                                wicketList[index].asset ?? '',
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    12,
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  Colors.white, // Desired color
-                                                  BlendMode
-                                                      .srcIn, // Blend mode for applying the color
-                                                ),
-                                                width: 50,
-                                              ),
-                                            ),
-                                            Text(
-                                              wicketList[index].name ?? '',
-                                              style:
-                                                  CustomTextStyles.mediumText,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      itemCount: wicketList.length,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                updateScore(
-                                  score: scoringData[index],
-                                  inningsId:
-                                      matchData.firstInnings?.isCompleted ??
-                                              false
-                                          ? matchData.inningsB
-                                          : matchData.inningsA,
-                                  matchData: matchData,
-                                  wicketInfo: WicketModel(
-                                    bowlerId: currentBowler.id ?? 0,
-                                  ),
-                                  currentBowler: currentBowler,
-                                );
-                              }
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(
-                                  alpha: 0.07,
-                                ),
-                              ),
-                              child: Text(
-                                scoringData[index].name,
-                                style: GoogleFonts.golosText(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
+                    scoringBaord(
+                      currentBowler: currentBowler,
+                      matchData: matchData,
+                      scoringData: scoringData,
+                      wicketList: wicketList,
+                    ),
                   ],
                 ),
               ),
             ),
+    );
+  }
+
+  Widget scoringBaord({
+    required List<ScoringModel> scoringData,
+    required List<WicketData> wicketList,
+    required MatchData matchData,
+    required BowlerDetails currentBowler,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 16,
+      ),
+      child: GridView.builder(
+        itemCount: scoringData.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          crossAxisSpacing: 6,
+          mainAxisSpacing: 6,
+        ),
+        itemBuilder: (builder, index) {
+          return GestureDetector(
+            onTap: () {
+              if (scoringData[index].isWicket ?? false) {
+                showWicketDialog(
+                  wicketList: wicketList,
+                );
+              } else if (scoringData[index].isUndo ?? false) {
+                undoScoreDialog();
+              } else if (scoringData[index].isWide ?? false) {
+                wideDialog();
+              } else if (scoringData[index].name == '5,7') {
+                multiRunsDialog(
+                  matchData: matchData,
+                  currentbowler: currentBowler,
+                );
+              } else {
+                updateScore(
+                  score: scoringData[index],
+                  inningsId: matchData.firstInnings?.isCompleted ?? false
+                      ? matchData.inningsB
+                      : matchData.inningsA,
+                  matchData: matchData,
+                  wicketInfo: WicketModel(
+                    bowlerId: currentBowler.id ?? 0,
+                  ),
+                  currentBowler: currentBowler,
+                );
+              }
+            },
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(
+                  alpha: 0.07,
+                ),
+              ),
+              child: Text(
+                scoringData[index].name,
+                style: GoogleFonts.golosText(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  wideDialog() {
+    List<String> scores = ['1', '2', '3', '4', '5'];
+    showModalBottomSheet(
+      context: context,
+      builder: (builder) => Container(
+        height: 200,
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Text(
+              "Wide",
+              style: CustomTextStyles.large,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 50,
+              child: ListView.separated(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (builder, index) {
+                  return Container(
+                    height: 30,
+                    width: 30,
+                    color: Colors.blue.withValues(alpha: 0.4),
+                    alignment: Alignment.center, // Centers text
+                    child: Text(
+                      scores[index],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 10,
+                      ), // Reduce font size to fit
+                    ),
+                  );
+                },
+                separatorBuilder: (builder, index) => const SizedBox(
+                  width: 10,
+                ),
+                itemCount: scores.length,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  undoScoreDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (builder) => SafeArea(
+        minimum: const EdgeInsets.only(top: 50),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          height: 300,
+          child: Column(
+            children: [
+              Text(
+                "Are you sure you want undo ?",
+                style: CustomTextStyles.large,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Custombutton(
+                      onTap: () {},
+                      title: 'Yes',
+                      width: 100,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Custombutton(
+                      onTap: () {},
+                      title: 'No',
+                      width: 100,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  multiRunsDialog({
+    required MatchData matchData,
+    required BowlerDetails currentbowler,
+  }) {
+    TextEditingController runsController = TextEditingController();
+    return showModalBottomSheet(
+      context: context,
+      builder: (builder) => Container(
+        height: 300,
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 18,
+        ),
+        child: Column(
+          children: [
+            Text(
+              "Runs Scored",
+              style: CustomTextStyles.large,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SquareInputField(
+              controller: runsController,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Custombutton(
+              onTap: () {
+                updateScore(
+                  score: ScoringModel(
+                    name: runsController.text,
+                  ),
+                  wicketInfo: WicketModel(
+                    bowlerId: currentbowler.id ?? 0,
+                  ),
+                  inningsId: matchData.firstInnings?.isCompleted ?? false
+                      ? matchData.inningsB
+                      : matchData.inningsA,
+                  matchData: matchData,
+                  currentBowler: currentbowler,
+                );
+                Navigator.pop(context);
+              },
+              // color: Colors.blue,
+              title: "Update",
+              width: 100,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  showWicketDialog({
+    required List<WicketData> wicketList,
+  }) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (builder) => Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 2,
+        // color: Colors.grey[400],
+        padding: const EdgeInsets.all(8),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+          ),
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: wicketList[index].onclick,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(
+                    wicketList[index].asset ?? '',
+                    height: MediaQuery.of(context).size.height / 12,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white, // Desired color
+                      BlendMode.srcIn, // Blend mode for applying the color
+                    ),
+                    width: 50,
+                  ),
+                ),
+                Text(
+                  wicketList[index].name ?? '',
+                  style: CustomTextStyles.mediumText,
+                ),
+              ],
+            ),
+          ),
+          itemCount: wicketList.length,
+        ),
+      ),
     );
   }
 
@@ -652,7 +832,7 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
     final updateScoring = Updatescoring(
       ball: 0,
       bowlerId: currentBowler.playerId,
-      isBye: score.isBye,
+      isBye: score.isBye ?? false,
       isNoBall: score.isNoBall ?? false,
       isWide: score.isWide ?? false,
       isRunOut: false,
@@ -694,11 +874,14 @@ class _ScoringPageState extends ConsumerState<ScoringPage> {
             selectBatman: true,
             previousPlayerId: currentBowler.id ?? 0,
             data: matchData,
-            onTap: (player) => updateBatsman(
-              currentBatsmanid: inningsData.strikerId ?? 0,
-              batsman: player,
-              matchData: matchData,
-            ),
+            onTap: (player) {
+              updateBatsman(
+                currentBatsmanid: inningsData.strikerId ?? 0,
+                batsman: player,
+                matchData: matchData,
+              );
+              fetchInningsData(matchData: matchData);
+            },
           ),
         ),
       );
@@ -870,10 +1053,12 @@ class ScoringModel {
   bool? isBye;
   bool? isUndo;
   bool? isWicket;
+  bool? isColored;
   ScoringModel({
     required this.name,
     this.isNoBall,
     this.isWide,
+    this.isColored,
     this.isBye,
     this.isUndo,
     this.isWicket = false,

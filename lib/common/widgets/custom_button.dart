@@ -25,48 +25,51 @@ class Custombutton extends StatelessWidget {
   final bool isCircle;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      decoration: BoxDecoration(
-        shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-        color: color,
-        border: Border.all(
+    return SizedBox(
+      height: 50,
+      child: Container(
+        width: width,
+        decoration: BoxDecoration(
+          shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           color: color,
-          width: 1,
+          border: Border.all(
+            color: color,
+            width: 1,
+          ),
+          borderRadius: isCircle == false
+              ? BorderRadius.circular(
+                  radius ?? 12,
+                )
+              : BorderRadius.zero,
         ),
-        borderRadius: isCircle == false
-            ? BorderRadius.circular(
-                radius ?? 12,
-              )
-            : BorderRadius.zero,
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (showIcon == true)
-                Row(
-                  children: [
-                    Icon(
-                      icon,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    )
-                  ],
+        child: InkWell(
+          onTap: onTap,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (showIcon == true)
+                  Row(
+                    children: [
+                      Icon(
+                        icon,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      )
+                    ],
+                  ),
+                Text(
+                  title,
+                  style: GoogleFonts.golosText(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              Text(
-                title,
-                style: GoogleFonts.golosText(
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

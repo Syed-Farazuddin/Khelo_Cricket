@@ -25,18 +25,16 @@ class SelectBowler extends ConsumerStatefulWidget {
 }
 
 class _SelectBowlerState extends ConsumerState<SelectBowler> {
-  late final MatchData data;
+  Players bowler = Players(name: '', id: 0);
 
   @override
   void initState() {
     super.initState();
-    // data = widget.data;
   }
 
   @override
   Widget build(BuildContext context) {
     final MatchData data = ref.watch(currentMatchProvider);
-    Players bowler = Players(name: '', id: 0);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -53,7 +51,9 @@ class _SelectBowlerState extends ConsumerState<SelectBowler> {
           children: [
             ShowRoles(
               ontap: (player) {
-                bowler = player;
+                setState(() {
+                  bowler = player;
+                });
                 context.pop();
               },
               role: bowler.id != 0 ? "${bowler.name} (BOWLER)" : "Bowler",

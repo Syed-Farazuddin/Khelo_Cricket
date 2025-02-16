@@ -89,15 +89,24 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                 label: "Enter State",
                 textAllowed: true,
               ),
+              const SizedBox(
+                height: 10,
+              ),
               CustomInputField(
                 controller: ground,
                 label: "Enter Ground",
                 textAllowed: true,
               ),
+              const SizedBox(
+                height: 10,
+              ),
               CustomInputField(
                 controller: location,
                 label: "Enter Location",
                 textAllowed: true,
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Row(
                 children: [
@@ -109,6 +118,9 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
                       },
                       label: "Overs",
                     ),
+                  ),
+                  const SizedBox(
+                    width: 10,
                   ),
                   Expanded(
                     child: CustomInputField(
@@ -234,16 +246,19 @@ class _StartOrScheduleMatchState extends ConsumerState<StartOrScheduleMatch> {
           child: Row(
             children: [
               Expanded(
-                child: Custombutton(
-                  onTap: () async {
-                    if (isStartMatch) {
-                      await onStartMatch(teamA: teamA, teamB: teamB);
-                    } else {
-                      await onScheduleMatch();
-                    }
-                  },
-                  title: isStartMatch ? "Start" : "Schedule",
-                  width: 200,
+                child: SizedBox(
+                  height: 50,
+                  child: Custombutton(
+                    onTap: () async {
+                      if (isStartMatch) {
+                        await onStartMatch(teamA: teamA, teamB: teamB);
+                      } else {
+                        await onScheduleMatch();
+                      }
+                    },
+                    title: isStartMatch ? "Start" : "Schedule",
+                    width: 200,
+                  ),
                 ),
               ),
             ],

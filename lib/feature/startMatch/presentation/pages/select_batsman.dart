@@ -21,18 +21,18 @@ class SelectBatsman extends ConsumerStatefulWidget {
 }
 
 class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
-  // late final MatchData data;
   @override
   void initState() {
     super.initState();
-    // data = widget.data;
   }
+
+  Players striker = Players(name: 'name', id: 0);
+  Players nonStriker = Players(name: 'name', id: 0);
 
   @override
   Widget build(BuildContext context) {
     final MatchData data = ref.watch(currentMatchProvider);
-    Players striker = Players(name: 'name', id: 0);
-    Players nonStriker = Players(name: 'name', id: 0);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -68,7 +68,10 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   player: striker,
                   data: data,
                   ontap: (player) {
-                    striker = player;
+                    setState(() {
+                      striker = player;
+                    });
+                    debugPrint("Striker is $striker");
                     context.pop();
                   },
                 ),
@@ -91,7 +94,9 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
                   ),
                   player: nonStriker,
                   ontap: (player) {
-                    nonStriker = player;
+                    setState(() {
+                      nonStriker = player;
+                    });
                     context.pop();
                   },
                 ),
@@ -103,47 +108,53 @@ class _SelectBatsmanState extends ConsumerState<SelectBatsman> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Custombutton(
-                  onTap: () {
-                    context.pop();
-                  },
-                  title: "Back",
-                  width: 100,
+                SizedBox(
+                  height: 50,
+                  child: Custombutton(
+                    onTap: () {
+                      context.pop();
+                    },
+                    title: "Back",
+                    width: 100,
+                  ),
                 ),
-                Custombutton(
-                  onTap: () async {
-                    if (striker.id == 0) {
-                      Toaster.onError(
-                        message: "Make sure you select Striker",
-                      );
-                      return;
-                    }
-
-                    if (striker.id == 0) {
-                      Toaster.onError(
-                        message: "Make sure you select Non Striker",
-                      );
-                      return;
-                    }
-                    await ref
-                        .watch(startMatchControllerProvider.notifier)
-                        .selectBatsmans(
-                          striker: striker,
-                          nonStriker: nonStriker,
-                          inningsId: data.firstInnings?.isCompleted ?? false
-                              ? data.inningsB ?? 0
-                              : data.inningsA ?? 0,
+                SizedBox(
+                  height: 50,
+                  child: Custombutton(
+                    onTap: () async {
+                      if (striker.id == 0) {
+                        Toaster.onError(
+                          message: "Make sure you select Striker",
                         );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (builder) => const SelectBowler(),
-                      ),
-                    );
-                  },
-                  color: Colors.green,
-                  title: "Next",
-                  width: 100,
+                        return;
+                      }
+
+                      if (striker.id == 0) {
+                        Toaster.onError(
+                          message: "Make sure you select Non Striker",
+                        );
+                        return;
+                      }
+                      await ref
+                          .watch(startMatchControllerProvider.notifier)
+                          .selectBatsmans(
+                            striker: striker,
+                            nonStriker: nonStriker,
+                            inningsId: data.firstInnings?.isCompleted ?? false
+                                ? data.inningsB ?? 0
+                                : data.inningsA ?? 0,
+                          );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => const SelectBowler(),
+                        ),
+                      );
+                    },
+                    color: Colors.green,
+                    title: "Next",
+                    width: 100,
+                  ),
                 ),
               ],
             ),
