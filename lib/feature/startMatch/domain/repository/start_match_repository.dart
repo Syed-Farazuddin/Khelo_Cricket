@@ -10,6 +10,10 @@ abstract class StartMatchRepository {
     required String mobile,
   });
 
+  Future<List<Team>> fetchTournamentTeams({
+    required int tournamentId,
+  });
+
   Future<AddTeamResponse> createNewPlayerAndAddInTeam({
     required int teamId,
     required String mobile,

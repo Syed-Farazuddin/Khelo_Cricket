@@ -40,7 +40,9 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
     Future.microtask(() {
       removeSelectedTeamAData();
       removeSelectedTeamBData();
-      fetchYourTeams();
+      fetchYourTeams(
+        isTournamentMatch: widget.isTournamentMatch,
+      );
     });
   }
 
@@ -82,7 +84,11 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                                 teamName:
                                     teamA.name.isEmpty ? "Team A" : teamA.name,
                                 teamNo: 1,
-                                refreshData: fetchYourTeams,
+                                refreshData: () async {
+                                  fetchYourTeams(
+                                    isTournamentMatch: widget.isTournamentMatch,
+                                  );
+                                },
                                 isTournamentMatch: widget.isTournamentMatch,
                                 tournamentId: widget.tournamentId,
                                 yourTeams: yourTeams,
@@ -107,7 +113,11 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                                 teamName:
                                     teamB.name.isEmpty ? "Team B" : teamB.name,
                                 teamNo: 2,
-                                refreshData: fetchYourTeams,
+                                refreshData: () async {
+                                  fetchYourTeams(
+                                    isTournamentMatch: widget.isTournamentMatch,
+                                  );
+                                },
                                 yourTeams: yourTeams,
                               ),
                             );
@@ -176,7 +186,12 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
                               height: 50,
                               child: Custombutton(
                                 onTap: () {
-                                  context.pushNamed("/scheduleMatch");
+                                  context.pushNamed(
+                                    "/scheduleMatch",
+                                    extra: widget.isTournamentMatch
+                                        ? widget.tournamentId
+                                        : 0,
+                                  );
                                 },
                                 title: "Schedule Match ",
                                 width: 100,
@@ -228,13 +243,27 @@ class _SelectTeamsState extends ConsumerState<SelectTeams> {
     );
   }
 
-  Future<void> fetchYourTeams() async {
+  Future<void> fetchYourTeams({
+    required bool isTournamentMatch,
+  }) async {
     loading = true;
-    final res =
-        await ref.read(startMatchControllerProvider.notifier).fetchYourTeams();
-    setState(() {
-      yourTeams = res;
-    });
+    List<Team> res = [];
+    if (isTournamentMatch) {
+      res = await ref
+          .read(startMatchControllerProvider.notifier)
+          .fetchTournamentTeams(touranmentId: widget.tournamentId);
+      setState(() {
+        yourTeams = res;
+      });
+    } else {
+      res = await ref
+          .read(startMatchControllerProvider.notifier)
+          .fetchYourTeams();
+      setState(() {
+        yourTeams = res;
+      });
+    }
+
     ref.watch(teamDataProvider.notifier).state = res;
     loading = false;
   }

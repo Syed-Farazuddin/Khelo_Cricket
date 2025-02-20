@@ -88,7 +88,10 @@ class Routes {
         path: "/scheduleMatch",
         name: "/scheduleMatch",
         builder: (context, state) {
-          return const ScheduleMatch();
+          final id = state.extra;
+          return ScheduleMatch(
+            tournamentId: id as int,
+          );
         },
       ),
       GoRoute(

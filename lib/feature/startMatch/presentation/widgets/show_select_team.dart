@@ -17,8 +17,10 @@ class ShowSelectTeam extends ConsumerStatefulWidget {
     required this.selectedTeam,
     required this.refreshTeamsData,
     required this.teamIds,
+    required this.isTournamentMatch,
   });
   final List<Team> yourTeams;
+  final bool isTournamentMatch;
   final SelectedTeamIds teamIds;
   final int selectedTeam;
   final Future<void> Function() refreshTeamsData;
@@ -61,7 +63,9 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
             height: 20,
           ),
           Text(
-            "Select from your Team",
+            widget.isTournamentMatch
+                ? "Select from tournament Teams"
+                : "Select from your Teams",
             style: CustomTextStyles.large.copyWith(fontSize: 18),
           ),
           const SizedBox(
@@ -78,7 +82,10 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
           AddNewTeam(
             controller: newTeamController,
             addTeam: () async {
-              await addNewTeam(name: newTeamController.text);
+              await addNewTeam(
+                name: newTeamController.text,
+                isTournamentMatch: widget.isTournamentMatch,
+              );
             },
           )
         ],
@@ -86,7 +93,10 @@ class _ShowSelectTeamState extends ConsumerState<ShowSelectTeam> {
     );
   }
 
-  Future<void> addNewTeam({required String name}) async {
+  Future<void> addNewTeam({
+    required String name,
+    required bool isTournamentMatch,
+  }) async {
     if (name.isEmpty) {
       Toaster.onError(message: "Please Enter a valid team name");
       return;

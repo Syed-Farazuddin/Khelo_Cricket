@@ -52,6 +52,34 @@ class StartMatchRepo extends StartMatchRepository {
   }
 
   @override
+  Future<List<Team>> fetchTournamentTeams({required int tournamentId}) async {
+    try {
+      final response = await baseService.get(
+        Network.fetchTournamentTeams(id: tournamentId),
+        options: Options(
+          headers: {
+            "Authorization": await storage.read(
+              key: 'token',
+            ),
+          },
+        ),
+      );
+      final teamData = response['registeredTeams'] as List;
+      debugPrint(response.toString());
+      final teams = teamData
+          .map(
+            (json) => Team.fromJson(json),
+          )
+          .toList();
+
+      return teams;
+    } catch (e) {
+      debugPrint("Error while fetching your teams");
+    }
+    return [];
+  }
+
+  @override
   Future<bool> addNewTeam({
     required String name,
   }) async {

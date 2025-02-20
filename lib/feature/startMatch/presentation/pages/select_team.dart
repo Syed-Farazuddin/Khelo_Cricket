@@ -43,6 +43,7 @@ class _SelectTeamState extends ConsumerState<SelectTeam> {
         child: !teamSelected
             ? ShowSelectTeam(
                 teamIds: teams,
+                isTournamentMatch: widget.isTournamentMatch,
                 refreshTeamsData: widget.fetchYourTeams,
                 yourTeams: yourTeams,
                 selectedTeam: selectedTeam,
